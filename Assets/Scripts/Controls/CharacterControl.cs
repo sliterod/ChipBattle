@@ -9,6 +9,9 @@ public class CharacterControl : MonoBehaviour {
         character = this.transform;
     }
 
+    /// <summary>
+    /// Moves character gameobject through mouse clicking
+    /// </summary>
     public void MoveCharacterMouse() {
 
         RaycastHit hit;
@@ -29,5 +32,41 @@ public class CharacterControl : MonoBehaviour {
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// Moves character through controller and keyboard input
+    /// </summary>
+    public void MoveCharacter(Movement direction) {
+
+        Vector3 newPosition = Vector3.zero;
+
+        switch (direction) {
+            case Movement.up:
+                newPosition = new Vector3(character.position.x, character.position.y, character.position.z + 0.1f);
+                break;
+
+            case Movement.down:
+                newPosition = new Vector3(character.position.x, character.position.y, character.position.z - 0.1f);
+                break;
+
+            case Movement.left:
+                newPosition = new Vector3(character.position.x - 0.1f, character.position.y, character.position.z);
+                break;
+
+            case Movement.right:
+                newPosition = new Vector3(character.position.x + 0.1f, character.position.y, character.position.z);
+                break;
+        }
+
+        //Boundaries
+        if (newPosition.x >= -9.0 && newPosition.x <= -0.6) {
+            if (newPosition.z >= -4.4 && newPosition.z <= 4.4)
+            {
+                character.position = newPosition;
+            }
+        }
+        
+        Debug.Log(character.position);
     }
 }

@@ -40,16 +40,17 @@ public class InputCapture : MonoBehaviour {
         }
 
         //Fixed 1
-        if (Input.GetButtonDown("LT") || Input.GetKeyDown(KeyCode.LeftShift))
+        if (Mathf.Round(Input.GetAxis("LT")) == 1.0f || Input.GetKeyDown(KeyCode.LeftShift))
         {
             Debug.Log("Input captured. Using Fixed 1");
         }
 
         //Fixed 2
-        if (Input.GetButtonDown("RT") || Input.GetKeyDown(KeyCode.Space))
+        if (Mathf.Round(Input.GetAxis("RT")) == -1.0f || Input.GetKeyDown(KeyCode.Space))
         {
             Debug.Log("Input captured. Using Fixed 2");
         }
+        
     }
 
     /// <summary>
@@ -86,45 +87,60 @@ public class InputCapture : MonoBehaviour {
     /// Captures input from d-pad or sticks
     /// </summary>
     void MovementInputsController() {
+
+        CharacterControl cube = GameObject.Find("testchar").GetComponent<CharacterControl>();
+
         //Sticks
-        if (Input.GetAxis("Horizontal") == -1.0f || Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetAxis("Horizontal") == -1.0f || Input.GetKey(KeyCode.LeftArrow))
         {
             Debug.Log("Input captured. Movement left");
+
+            cube.MoveCharacter(Movement.left);
         }
 
-        if (Input.GetAxis("Horizontal") == 1.0f || Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetAxis("Horizontal") == 1.0f || Input.GetKey(KeyCode.RightArrow))
         {
             Debug.Log("Input captured. Movement right");
+
+            cube.MoveCharacter(Movement.right);
         }
 
-        if (Input.GetAxis("Vertical") == -1.0f || Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetAxis("Vertical") == 1.0f || Input.GetKey(KeyCode.DownArrow))
         {
             Debug.Log("Input captured. Movement down");
+
+            cube.MoveCharacter(Movement.down);
         }
 
-        if (Input.GetAxis("Vertical") == 1.0f || Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetAxis("Vertical") == -1.0f || Input.GetKey(KeyCode.UpArrow))
         {
             Debug.Log("Input captured. Movement up");
+
+            cube.MoveCharacter(Movement.up);
         }
 
         //Dpad
-        if (Input.GetAxis("DpadHorizontal") == -1.0f || Input.GetKeyDown(KeyCode.LeftArrow)) {
+        if (Input.GetAxis("DpadHorizontal") == -1.0f || Input.GetKey(KeyCode.LeftArrow)) {
             Debug.Log("Input captured. Movement left");
+            cube.MoveCharacter(Movement.left);
         }
 
-        if (Input.GetAxis("DpadHorizontal") == 1.0f || Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetAxis("DpadHorizontal") == 1.0f || Input.GetKey(KeyCode.RightArrow))
         {
             Debug.Log("Input captured. Movement right");
+            cube.MoveCharacter(Movement.right);
         }
 
-        if (Input.GetAxis("DpadVertical") == -1.0f || Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetAxis("DpadVertical") == -1.0f || Input.GetKey(KeyCode.DownArrow))
         {
             Debug.Log("Input captured. Movement down");
+            cube.MoveCharacter(Movement.down);
         }
 
-        if (Input.GetAxis("DpadVertical") == 1.0f || Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetAxis("DpadVertical") == 1.0f || Input.GetKey(KeyCode.UpArrow))
         {
             Debug.Log("Input captured. Movement up");
+            cube.MoveCharacter(Movement.up);
         }
     }
 
