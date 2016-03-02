@@ -4,9 +4,37 @@ using System.Collections;
 public class CharacterControl : MonoBehaviour {
 
     Transform character;
+    CharacterController movementController; 
+    Character characterState;
+    Vector3 movementArray = new Vector3(0, 0, 0);
 
     void Start() {
         character = this.transform;
+        movementController = gameObject.GetComponent<CharacterController>();
+        characterState = gameObject.GetComponent<Character>();
+    }
+
+    /// <summary>
+    /// Move the character using unity's character controller script
+    /// it checks if the player is able to move before executing the movement
+    /// </summary>
+    public void Move(float x_axis,float y_axis)
+    {
+        if (x_axis == 0.0f && y_axis == 0.0f) //If the character stop moving
+        {
+            //We report it to the player status controller
+            characterState.eventReportStopMovement();
+        }
+        else
+        {
+            characterState.eventReportMovement(x_axis, y_axis); //We report it to the player status controller
+            movementArray.x = x_axis;
+            movementArray.z = y_axis;
+            movementArray *= characterState.movementSpeed;
+            movementController.Move(movementArray * Time.deltaTime);
+
+        }
+
     }
 
     /// <summary>

@@ -3,6 +3,8 @@ using System.Collections;
 
 public class InputCapture : MonoBehaviour {
 
+    public CharacterControl characterControl;
+
 	// Update is called once per frame
 	void Update () {
         CardModuleInputs();
@@ -88,60 +90,38 @@ public class InputCapture : MonoBehaviour {
     /// </summary>
     void MovementInputsController() {
 
-        CharacterControl cube = GameObject.Find("testchar").GetComponent<CharacterControl>();
+        float x_axis = 0; //the amount of movement on the horizontal axis
+        float y_axis = 0; //the amount of movement on the vertical axis
 
         //Sticks
-        if (Input.GetAxis("Horizontal") == -1.0f || Input.GetKey(KeyCode.LeftArrow))
+        if (Mathf.Abs(Input.GetAxis("Horizontal")) >= 0.2f || Mathf.Abs(Input.GetAxis("Vertical")) >= 0.2f)
         {
-            Debug.Log("Input captured. Movement left");
-
-            cube.MoveCharacter(Movement.left);
+            x_axis = Input.GetAxis("Horizontal");
+            y_axis = Input.GetAxis("Vertical");
         }
 
-        if (Input.GetAxis("Horizontal") == 1.0f || Input.GetKey(KeyCode.RightArrow))
-        {
-            Debug.Log("Input captured. Movement right");
-
-            cube.MoveCharacter(Movement.right);
-        }
-
-        if (Input.GetAxis("Vertical") == 1.0f || Input.GetKey(KeyCode.DownArrow))
-        {
-            Debug.Log("Input captured. Movement down");
-
-            cube.MoveCharacter(Movement.down);
-        }
-
-        if (Input.GetAxis("Vertical") == -1.0f || Input.GetKey(KeyCode.UpArrow))
-        {
-            Debug.Log("Input captured. Movement up");
-
-            cube.MoveCharacter(Movement.up);
-        }
-
-        //Dpad
+        //Dpad y teclado
         if (Input.GetAxis("DpadHorizontal") == -1.0f || Input.GetKey(KeyCode.LeftArrow)) {
-            Debug.Log("Input captured. Movement left");
-            cube.MoveCharacter(Movement.left);
+            x_axis = -1.0f;
         }
 
         if (Input.GetAxis("DpadHorizontal") == 1.0f || Input.GetKey(KeyCode.RightArrow))
         {
-            Debug.Log("Input captured. Movement right");
-            cube.MoveCharacter(Movement.right);
+            x_axis = 1.0f;
         }
 
         if (Input.GetAxis("DpadVertical") == -1.0f || Input.GetKey(KeyCode.DownArrow))
         {
-            Debug.Log("Input captured. Movement down");
-            cube.MoveCharacter(Movement.down);
+            y_axis = -1.0F;
         }
 
         if (Input.GetAxis("DpadVertical") == 1.0f || Input.GetKey(KeyCode.UpArrow))
         {
-            Debug.Log("Input captured. Movement up");
-            cube.MoveCharacter(Movement.up);
+            y_axis = 1.0F;
         }
+
+        //Call the movement function on the charater
+        characterControl.Move(x_axis, y_axis);
     }
 
     void MovementInputsMouse() {
