@@ -94,10 +94,10 @@ public class InputCapture : MonoBehaviour {
         float y_axis = 0; //the amount of movement on the vertical axis
 
         //Sticks
-        if (Mathf.Abs(Input.GetAxis("Horizontal")) >= 0.2f || Mathf.Abs(Input.GetAxis("Vertical")) >= 0.2f)
+        if (Mathf.Abs(Input.GetAxis("Horizontal")) >= 0.8f || Mathf.Abs(Input.GetAxis("Vertical")) >= 0.8f)
         {
             x_axis = Input.GetAxis("Horizontal");
-            y_axis = Input.GetAxis("Vertical");
+            y_axis = Input.GetAxis("Vertical")*-1;
         }
 
         //Dpad y teclado
