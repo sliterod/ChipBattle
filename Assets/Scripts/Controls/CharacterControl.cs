@@ -20,19 +20,22 @@ public class CharacterControl : MonoBehaviour {
     /// </summary>
     public void Move(float x_axis,float y_axis)
     {
-        if (x_axis == 0.0f && y_axis == 0.0f) //If the character stop moving
-        {
-            //We report it to the player status controller
-            characterState.eventReportStopMovement();
-        }
-        else
-        {
-            characterState.eventReportMovement(x_axis, y_axis); //We report it to the player status controller
-            movementArray.x = x_axis;
-            movementArray.z = y_axis;
-            movementArray *= characterState.movementSpeed;
-            movementController.Move(movementArray * Time.deltaTime);
+        if(characterState.CurrentState == PlayerStates.idle || characterState.CurrentState == PlayerStates.moving) {
+            //If the character can be moved or is already moving 
+            if (x_axis == 0.0f && y_axis == 0.0f) //If the character stop moving
+            {
+                //We report it to the player status controller
+                characterState.eventReportStopMovement();
+            }
+            else
+            {
+                characterState.eventReportMovement(x_axis, y_axis); //We report it to the player status controller
+                movementArray.x = x_axis;
+                movementArray.z = y_axis;
+                movementArray *= characterState.movementSpeed;
+                movementController.Move(movementArray * Time.deltaTime);
 
+            }
         }
 
     }
@@ -97,4 +100,34 @@ public class CharacterControl : MonoBehaviour {
         
         Debug.Log(character.position);
     }
+
+    /// <summary>
+    /// Tells the character to use the appropiate chip, if that chip is not available it automatically use the default Chip
+    /// It also check if Chips are usable in the first place so it can be called any time without worrying about the state of the character
+    /// </summary>
+    /// <param name="chipSlot">The slot of the chip (1-4) any other number will result in using the default chip </param>
+    public void UseChip(int chipSlot)
+    {
+        if(characterState.CurrentState == PlayerStates.idle || characterState.CurrentState == PlayerStates.moving)
+        {
+            switch (chipSlot)
+            {
+                case 1:
+                    transform.FindChild("Chip1").GetChild(0).SendMessage("Activate");
+                    break;
+
+                default:
+                    transform.FindChild("DefaultChip").GetChild(0).SendMessage("Activate");
+                    break;
+            }
+
+
+        }
+        else
+        {
+            //Play a sound... maybe
+        }
+    }
+
+
 }

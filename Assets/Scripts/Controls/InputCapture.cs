@@ -21,6 +21,7 @@ public class InputCapture : MonoBehaviour {
         //Chip 1
         if (Input.GetButtonDown("A") || Input.GetKeyDown(KeyCode.Q)) {
             Debug.Log("Input captured. Using Chip 1");
+            characterControl.UseChip(1);
         }
 
         //Chip 2
@@ -128,9 +129,9 @@ public class InputCapture : MonoBehaviour {
 
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("Input captured. Moving character to click position");
+           /* Debug.Log("Input captured. Moving character to click position");
             Transform cube = GameObject.Find("testchar").transform;
-            cube.GetComponent<CharacterControl>().MoveCharacterMouse();
+            cube.GetComponent<CharacterControl>().MoveCharacterMouse(); */
         }
     }
 }
