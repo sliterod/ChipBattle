@@ -3,12 +3,21 @@ using System.Collections;
 
 public class Chip : MonoBehaviour {
 
-    protected string chipName = "Default";
-    public string ChipName
+    protected string _chipName = "Chip"; //Name or stringTag of the chip
+    public string ChipName //Property to be read from other scripts 
     {
         get
         {
-            return chipName;
+            return _chipName;
+        }
+    }
+
+    protected string _chipPrefabName = "ChipPrefab"; //Name of the prefab
+    public string ChipPrefabName ////Property to be read from other scripts 
+    {
+        get
+        {
+            return _chipPrefabName;
         }
     }
 
@@ -37,6 +46,14 @@ public class Chip : MonoBehaviour {
     public void Activate()
     {
 
+    }
+
+    /// <summary>
+    /// Destroy the current chip
+    /// </summary>
+    public void KillSelf()
+    {
+        Destroy(gameObject);
     }
 
 }

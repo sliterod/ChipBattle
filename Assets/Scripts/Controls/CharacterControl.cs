@@ -102,22 +102,106 @@ public class CharacterControl : MonoBehaviour {
     }
 
     /// <summary>
+    /// Instance a prefeb of the chip and put it in the corresponding slot
+    /// </summary>
+    /// <param name="chipPrefabName"> The name of the prefab</param>
+    /// <param name="slot">number between 1 - 4 (both included)</param>
+    public void setChip(string chipPrefabName,int slot)
+    {
+        
+        GameObject newChip = Instantiate(Resources.Load("ChipsInBattle/"+ chipPrefabName, typeof(GameObject))) as GameObject;
+
+        switch (slot)
+        {
+            case 1:
+                newChip.transform.parent = transform.FindChild("Chip1"); 
+                break;
+            case 2:
+                newChip.transform.parent = transform.FindChild("Chip2");
+                break;
+            case 3:
+                newChip.transform.parent = transform.FindChild("Chip3");
+                break;
+            case 4:
+                newChip.transform.parent = transform.FindChild("Chip4");
+                break;
+        }
+
+        newChip.transform.localPosition = Vector3.zero;
+    }
+
+    /// <summary>
     /// Tells the character to use the appropiate chip, if that chip is not available it automatically use the default Chip
     /// It also check if Chips are usable in the first place so it can be called any time without worrying about the state of the character
     /// </summary>
     /// <param name="chipSlot">The slot of the chip (1-4) any other number will result in using the default chip </param>
     public void UseChip(int chipSlot)
     {
+        Transform chipTransform; //Tranform property of the chip slot to check if it has a child
+
         if(characterState.CurrentState == PlayerStates.idle || characterState.CurrentState == PlayerStates.moving)
         {
             switch (chipSlot)
             {
                 case 1:
-                    transform.FindChild("Chip1").GetChild(0).SendMessage("Activate");
+                    chipTransform = transform.FindChild("Chip1");
+                    if(chipTransform.childCount > 0)
+                    {
+                        //If it has a chlid it means that the slot contains an usable chip
+                        chipTransform.GetChild(0).SendMessage("Activate"); //so we activate it
+                    }
+                    else
+                    {
+                        //If is empty
+                        UseChip(-1); //we call the use chip function to use the default chip instead
+                    }
+                    break;
+
+                case 2:
+                    chipTransform = transform.FindChild("Chip2");
+                    if (chipTransform.childCount > 0)
+                    {
+                        //If it has a chlid it means that the slot contains an usable chip
+                        chipTransform.GetChild(0).SendMessage("Activate"); //so we activate it
+                    }
+                    else
+                    {
+                        //If is empty
+                        UseChip(-1); //we call the use chip function to use the default chip instead
+                    }
+                    break;
+
+                case 3:
+                    chipTransform = transform.FindChild("Chip3");
+                    if (chipTransform.childCount > 0)
+                    {
+                        //If it has a chlid it means that the slot contains an usable chip
+                        chipTransform.GetChild(0).SendMessage("Activate"); //so we activate it
+                    }
+                    else
+                    {
+                        //If is empty
+                        UseChip(-1); //we call the use chip function to use the default chip instead
+                    }
+                    break;
+
+                case 4:
+                    chipTransform = transform.FindChild("Chip4");
+                    if (chipTransform.childCount > 0)
+                    {
+                        //If it has a chlid it means that the slot contains an usable chip
+                        chipTransform.GetChild(0).SendMessage("Activate"); //so we activate it
+                    }
+                    else
+                    {
+                        //If is empty
+                        UseChip(-1); //we call the use chip function to use the default chip instead
+                    }
                     break;
 
                 default:
-                    transform.FindChild("DefaultChip").GetChild(0).SendMessage("Activate");
+                    chipTransform = transform.FindChild("DefaultChip");
+                    chipTransform.GetChild(0).SendMessage("Activate");
                     break;
             }
 

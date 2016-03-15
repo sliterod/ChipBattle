@@ -28,18 +28,21 @@ public class InputCapture : MonoBehaviour {
         if (Input.GetButtonDown("B") || Input.GetKeyDown(KeyCode.W))
         {
             Debug.Log("Input captured. Using Chip 2");
+            characterControl.UseChip(2);
         }
 
         //Chip 3
         if (Input.GetButtonDown("X") || Input.GetKeyDown(KeyCode.E))
         {
             Debug.Log("Input captured. Using Chip 3");
+            characterControl.UseChip(3);
         }
 
         //Chip 4
         if (Input.GetButtonDown("Y") || Input.GetKeyDown(KeyCode.R))
         {
             Debug.Log("Input captured. Using Chip 4");
+            characterControl.UseChip(4);
         }
 
         //Fixed 1
@@ -77,6 +80,10 @@ public class InputCapture : MonoBehaviour {
         if (Input.GetButtonDown("LB") || Input.GetKeyDown(KeyCode.Tab))
         {
             Debug.Log("Input captured. Custom bar full, entering selection screen");
+            characterControl.setChip("Cannon", 1);
+            characterControl.setChip("Cannon", 2);
+            characterControl.setChip("Cannon", 3);
+            characterControl.setChip("Cannon", 4);
         }
 
         //Custom screen
