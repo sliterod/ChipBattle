@@ -4,6 +4,7 @@ using System.Collections;
 public class InputCapture : MonoBehaviour {
 
     public CharacterControl characterControl;
+    public Gamestate gamestate;
 
 	// Update is called once per frame
 	void Update () {
@@ -20,8 +21,26 @@ public class InputCapture : MonoBehaviour {
 
         //Chip 1
         if (Input.GetButtonDown("A") || Input.GetKeyDown(KeyCode.Q)) {
-            Debug.Log("Input captured. Using Chip 1");
-            characterControl.UseChip(1);
+            if (gamestate.CurrentBattleState == BattleState.battle)
+            {
+                Debug.Log("Input captured. Using Chip 1");
+                characterControl.UseChip(1);
+            }
+
+            if (gamestate.CurrentBattleState == BattleState.standby)
+            {
+                Debug.Log("Input captured. Standing by, no chip can be used.");
+            }
+
+            if (gamestate.CurrentBattleState == BattleState.selectionScreen)
+            {
+                Debug.Log("Input captured. Current highlighted card assigned to Chip 1 button");
+            }
+
+            if (gamestate.CurrentBattleState == BattleState.results)
+            {
+                Debug.Log("Input captured. Result screen, skiping results");
+            }
         }
 
         //Chip 2
@@ -67,13 +86,39 @@ public class InputCapture : MonoBehaviour {
         //Pause/ OK button
         if (Input.GetButtonDown("Start") || Input.GetKeyDown(KeyCode.Return))
         {
-            Debug.Log("Input captured. Start button");
+            if (gamestate.CurrentBattleState == BattleState.battle && Time.timeScale > 0)
+            {
+                Debug.Log("Input captured. Start button, pausing game");
+                gamestate.CurrentBattleState = BattleState.pause;
+            }
+
+            if (gamestate.CurrentBattleState == BattleState.pause && Time.timeScale == 0)
+            {
+                Debug.Log("Input captured. Start button, unpausing game");
+                gamestate.CurrentBattleState = BattleState.battle;
+            }
+
+            if (gamestate.CurrentBattleState == BattleState.selectionScreen)
+            {
+                Debug.Log("Input captured. Setting cursor on OK button");
+                gamestate.SetSelectionScreenCursorOK();
+            }
         }
 
         //Return
         if (Input.GetButtonDown("Back") || Input.GetKeyDown(KeyCode.Escape))
         {
-            Debug.Log("Input captured. Back button");
+            if (gamestate.CurrentBattleState == BattleState.battle && Time.timeScale > 0)
+            {
+                Debug.Log("Input captured. Back button, pausing game");
+                gamestate.CurrentBattleState = BattleState.pause;
+            }
+
+            if (gamestate.CurrentBattleState == BattleState.pause && Time.timeScale == 0)
+            {
+                Debug.Log("Input captured. Back button, unpausing game");
+                gamestate.CurrentBattleState = BattleState.battle;
+            }
         }
 
         //Custom screen
@@ -84,12 +129,23 @@ public class InputCapture : MonoBehaviour {
             characterControl.setChip("Cannon", 2);
             characterControl.setChip("Cannon", 3);
             characterControl.setChip("Cannon", 4);
+
+            if (gamestate.CurrentBattleState == BattleState.battle)
+            {
+                Debug.Log("Input captured. Custom bar full, entering selection screen");
+                gamestate.CurrentBattleState = BattleState.selectionScreen;
+            }
         }
 
         //Custom screen
         if (Input.GetButtonDown("RB") || Input.GetKeyDown(KeyCode.RightShift))
         {
-            Debug.Log("Input captured. Custom bar full, entering selection screen");
+            if (gamestate.CurrentBattleState == BattleState.battle)
+            {
+                Debug.Log("Input captured. Custom bar full, entering selection screen");
+                gamestate.CurrentBattleState = BattleState.selectionScreen;
+            }
+            
         }
     }
 
@@ -98,6 +154,22 @@ public class InputCapture : MonoBehaviour {
     /// </summary>
     void MovementInputsController() {
 
+        if (gamestate.CurrentBattleState == BattleState.battle)
+        {
+            Debug.Log("Input captured. Moving character");
+            MoveCharacter();
+        }
+
+        if (gamestate.CurrentBattleState == BattleState.selectionScreen)
+        {
+            MoveChipSelector();
+        }
+    }
+
+    /// <summary>
+    /// Moves character after axis input was captured. BattleState = battle
+    /// </summary>
+    void MoveCharacter() {
         float x_axis = 0; //the amount of movement on the horizontal axis
         float y_axis = 0; //the amount of movement on the vertical axis
 
@@ -105,11 +177,12 @@ public class InputCapture : MonoBehaviour {
         if (Mathf.Abs(Input.GetAxis("Horizontal")) >= 0.8f || Mathf.Abs(Input.GetAxis("Vertical")) >= 0.8f)
         {
             x_axis = Input.GetAxis("Horizontal");
-            y_axis = Input.GetAxis("Vertical")*-1;
+            y_axis = Input.GetAxis("Vertical") * -1;
         }
 
         //Dpad y teclado
-        if (Input.GetAxis("DpadHorizontal") == -1.0f || Input.GetKey(KeyCode.LeftArrow)) {
+        if (Input.GetAxis("DpadHorizontal") == -1.0f || Input.GetKey(KeyCode.LeftArrow))
+        {
             x_axis = -1.0f;
         }
 
@@ -130,6 +203,41 @@ public class InputCapture : MonoBehaviour {
 
         //Call the movement function on the charater
         characterControl.Move(x_axis, y_axis);
+    }
+
+    /// <summary>
+    /// Moves chip selector after axis input was captured. BattleState = selectionScreen
+    /// </summary>
+    void MoveChipSelector() {
+        
+        //Dpad, Sticks, Keyboard
+        if (Input.GetAxis("Horizontal") <= -0.8f ||
+            Input.GetAxis("DpadHorizontal") == -1.0f || 
+            Input.GetKey(KeyCode.LeftArrow))
+        {
+            gamestate.MoveSelectionScreenCursor(Movement.left);
+        }
+
+        if (Input.GetAxis("Horizontal") >= 0.8f ||
+            Input.GetAxis("DpadHorizontal") == 1.0f || 
+            Input.GetKey(KeyCode.RightArrow))
+        {
+            gamestate.MoveSelectionScreenCursor(Movement.right);
+        }
+
+        if (Input.GetAxis("Vertical") >= 0.8f ||
+            Input.GetAxis("DpadVertical") == -1.0f || 
+            Input.GetKey(KeyCode.DownArrow))
+        {
+            gamestate.MoveSelectionScreenCursor(Movement.down);
+        }
+
+        if (Input.GetAxis("Vertical") <= -0.8f || 
+            Input.GetAxis("DpadVertical") == 1.0f || 
+            Input.GetKey(KeyCode.UpArrow))
+        {
+            gamestate.MoveSelectionScreenCursor(Movement.up);
+        }
     }
 
     void MovementInputsMouse() {
