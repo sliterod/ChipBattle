@@ -3,6 +3,7 @@ using System.Collections;
 
 public class CharacterControl : MonoBehaviour {
 
+    public CharacterAnimationController animatorController;
     Transform character;
     CharacterController movementController; 
     Character characterState;
@@ -26,6 +27,7 @@ public class CharacterControl : MonoBehaviour {
             {
                 //We report it to the player status controller
                 characterState.eventReportStopMovement();
+                animatorController.PlayIdleAnim();
             }
             else
             {
@@ -34,6 +36,7 @@ public class CharacterControl : MonoBehaviour {
                 movementArray.z = y_axis;
                 movementArray *= characterState.movementSpeed;
                 movementController.Move(movementArray * Time.deltaTime);
+                animatorController.PlayRunAnim(x_axis);
 
             }
         }
@@ -149,6 +152,7 @@ public class CharacterControl : MonoBehaviour {
                     {
                         //If it has a chlid it means that the slot contains an usable chip
                         chipTransform.GetChild(0).SendMessage("Activate"); //so we activate it
+                        characterState.eventReportChipActivation();
                     }
                     else
                     {
@@ -163,6 +167,7 @@ public class CharacterControl : MonoBehaviour {
                     {
                         //If it has a chlid it means that the slot contains an usable chip
                         chipTransform.GetChild(0).SendMessage("Activate"); //so we activate it
+                        characterState.eventReportChipActivation();
                     }
                     else
                     {
@@ -177,6 +182,7 @@ public class CharacterControl : MonoBehaviour {
                     {
                         //If it has a chlid it means that the slot contains an usable chip
                         chipTransform.GetChild(0).SendMessage("Activate"); //so we activate it
+                        characterState.eventReportChipActivation();
                     }
                     else
                     {
@@ -191,6 +197,7 @@ public class CharacterControl : MonoBehaviour {
                     {
                         //If it has a chlid it means that the slot contains an usable chip
                         chipTransform.GetChild(0).SendMessage("Activate"); //so we activate it
+                        characterState.eventReportChipActivation();
                     }
                     else
                     {
@@ -202,6 +209,7 @@ public class CharacterControl : MonoBehaviour {
                 default:
                     chipTransform = transform.FindChild("DefaultChip");
                     chipTransform.GetChild(0).SendMessage("Activate");
+                    characterState.eventReportChipActivation();
                     break;
             }
 
@@ -213,5 +221,5 @@ public class CharacterControl : MonoBehaviour {
         }
     }
 
-
+    
 }

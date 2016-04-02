@@ -21,6 +21,15 @@ public class Chip : MonoBehaviour {
         }
     }
 
+    protected int _animation; //Animation to be played by the character
+    public int Animation
+    {
+        get
+        {
+            return _animation;
+        }
+    }
+
     protected int chipAttk = 0;
     public int ChipAttk
     {

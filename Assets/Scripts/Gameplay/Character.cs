@@ -69,4 +69,21 @@ public class Character : MonoBehaviour {
             //here we should call the animator and tell it to start playing the moving animation
         }
     }
+
+    /// <summary>
+    /// Function that should be called when a chip is activated
+    /// </summary>
+    public void eventReportChipActivation()
+    {
+        currentState = PlayerStates.usingChip;
+    }
+
+    /// <summary>
+    /// Function that is called at the end of the chip animation
+    /// </summary>
+    void OnChipAnimationFinish()
+    {
+        currentState = PlayerStates.idle;
+    }
+
 }
