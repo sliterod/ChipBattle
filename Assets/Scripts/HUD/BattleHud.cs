@@ -175,11 +175,13 @@ public class BattleHud : MonoBehaviour {
         {
             Debug.Log("Showing custom bar");
             iTweenEvent.GetEvent(battleCustomBar, "Show").Play();
+            battleCustomBar.SendMessage("ActivateGaugeFilling", true);
         }
         else
         {
             Debug.Log("Hiding custom bar");
             iTweenEvent.GetEvent(battleCustomBar, "Hide").Play();
+            battleCustomBar.SendMessage("ResetGaugeFilling", true);
         }
     }
 

@@ -199,6 +199,8 @@ public class Gamestate : MonoBehaviour {
                 //Battle
                 battleHud.ShowCustomBar(true);
                 battleHud.ShowBattleChipHelp(true);
+
+                GameObject.Find("Gamestate").SendMessage("ActivateCustomGauge", true);
                 break;
 
             case BattleState.selectionScreen:
