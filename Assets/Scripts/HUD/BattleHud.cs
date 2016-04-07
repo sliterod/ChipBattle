@@ -43,10 +43,10 @@ public class BattleHud : MonoBehaviour {
     public void ShowBattleChipHelp(bool state) {
         if (state)
         {
-
+            iTweenEvent.GetEvent(battleChipHelp.gameObject, "Show").Play();
         }
         else {
-
+            iTweenEvent.GetEvent(battleChipHelp.gameObject, "Hide").Play();
         }
     }
 
