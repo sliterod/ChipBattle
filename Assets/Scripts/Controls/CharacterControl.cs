@@ -31,7 +31,7 @@ public class CharacterControl : MonoBehaviour {
             }
             else
             {
-                characterState.eventReportMovement(x_axis, y_axis); //We report it to the player status controller
+                characterState.eventReportMovement(); //We report it to the player status controller
                 movementArray.x = x_axis;
                 movementArray.z = y_axis;
                 movementArray *= characterState.movementSpeed;

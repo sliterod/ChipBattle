@@ -8,7 +8,7 @@ public class CannonBall : MonoBehaviour {
     /// </summary>
     bool isActive = false;
 
-    int damage = 0;
+    int damage = 40;
 
     float speed = 15;
 
@@ -46,6 +46,12 @@ public class CannonBall : MonoBehaviour {
     void OnBecameInvisible()
     {
         //When the projectile left the visible space we destroy it
+        Destroy(gameObject);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        other.SendMessage("OnHit", damage);
         Destroy(gameObject);
     }
 }

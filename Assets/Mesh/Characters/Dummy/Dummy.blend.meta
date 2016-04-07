@@ -203,7 +203,15 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 1
+        functionName: OnDamageAnimationFisnish
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 7ac1ccd0416f5ad4d85b969315c9f0cb,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1
@@ -259,7 +267,31 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.005438091
+        functionName: OnHitFrame
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 7ac1ccd0416f5ad4d85b969315c9f0cb,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.5519773
+        functionName: OnHitFrame
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 7ac1ccd0416f5ad4d85b969315c9f0cb,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 1
+        functionName: OnChipAnimationFinish
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 7ac1ccd0416f5ad4d85b969315c9f0cb,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1
