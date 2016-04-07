@@ -39,10 +39,10 @@ public class ChipHelpPosition : MonoBehaviour {
     /// Sets keyboard position for helper buttons
     /// </summary>
     void KeyboardPosition() {
-        positionsKeyboard = new[] { new Vector2 (-450.0f, -30.0f),  //Q
-                                    new Vector2 (-150.0f, -30.0f),  //W
-                                    new Vector2 (150.0f, -30.0f),   //E
-                                    new Vector2 (450.0f, -30.0f)};  //R
+        positionsKeyboard = new[] { new Vector2 (-300.0f, -30.0f),  //Q
+                                    new Vector2 (-100.0f, -30.0f),  //W
+                                    new Vector2 (100.0f, -30.0f),   //E
+                                    new Vector2 (300.0f, -30.0f)};  //R
 
         chipA.anchoredPosition = positionsKeyboard[0];
         chipB.anchoredPosition = positionsKeyboard[1];
