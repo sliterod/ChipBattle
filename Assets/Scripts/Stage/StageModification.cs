@@ -25,36 +25,41 @@ public class StageModification : MonoBehaviour {
     float defaultAreaStealTime;     //Default duration for area steal effect.
     float currentAreaStealTime;     //Current area steal timer after decreasing on update
     float areaStealTimeOnReset;     //Contains default value to restore after timer reaches zero
+    float areaStealBonusTime;       //Bonus time to apply only if a second area steal was made with < 5sec on timer
 
     /********************** CONTROL BOOLS *************************/
     bool canAreaStealTimerDecrease; //Indicates if update can activate timer decrease for Area Steal
+    bool isAreaStealBonusTimeAdded; //Indicates if bonus time for area steal was added
 
     void Start() {
-        limitWall = GameObject.Find("LimitLine").transform;
 
-        player1 = GameObject.Find("Player1").transform;
-        player2 = GameObject.Find("Player2").transform;
+        InitializeStageRelatedObjects();
 
-        //Area Steal
-        defaultAreaStealTime = 20.0f;
-
-        currentAreaStealTime = defaultAreaStealTime;
-        areaStealTimeOnReset = defaultAreaStealTime;
-
+        InitializeTimers();
         InitializeArrays();
     }
 
-    
+
     void Update() {
         if (canAreaStealTimerDecrease)
             UpdateAreaStealTimer();
     }
 
     /// <summary>
+    /// Initializes the player, opponent and limit wall objects.
+    /// </summary>
+    void InitializeStageRelatedObjects() {
+        limitWall = GameObject.Find("LimitLine").transform;
+
+        player1 = GameObject.Find("Player1").transform;
+        player2 = GameObject.Find("Player2").transform;
+    }
+
+    /// <summary>
     /// Iniatializes arrays according to current player object
     /// </summary>
     void InitializeArrays() {
-        
+
         if (this.name.Contains("P1"))
         {
             limitWallPositions = new float[] { 0.0f, 3.33f, 6.66f };
@@ -71,6 +76,18 @@ public class StageModification : MonoBehaviour {
         }
 
         currentAreaIndex = 0;
+    }
+
+    /// <summary>
+    /// Initializes all timers used for stage modifications
+    /// </summary>
+    void InitializeTimers() {
+        //Area Steal
+        defaultAreaStealTime = 20.0f;
+        areaStealBonusTime = 5.0f;
+
+        currentAreaStealTime = defaultAreaStealTime;
+        areaStealTimeOnReset = defaultAreaStealTime;
     }
 
     /**********************************************************
@@ -97,12 +114,15 @@ public class StageModification : MonoBehaviour {
             AreaStealChangePositions();
 
             //Activating timer
-            ActivateAreaStealTimer(true);
+            AreaStealActivateTimer(true);
 
             if (this.name.Contains("P1"))
-                GameObject.Find("P2Side").SendMessage("AreaStealOpponentArea", (Transform) stolenArea.transform);
+                GameObject.Find("P2Side").SendMessage("AreaStealOpponentArea", (Transform)stolenArea.transform);
             else if (this.name.Contains("P2"))
-                GameObject.Find("P1Side").SendMessage("AreaStealOpponentArea", (Transform) stolenArea.transform);
+                GameObject.Find("P1Side").SendMessage("AreaStealOpponentArea", (Transform)stolenArea.transform);
+
+            //Check if bonus should be added to timer
+            AreaStealBonusTime();
         }
     }
 
@@ -129,7 +149,7 @@ public class StageModification : MonoBehaviour {
     /// Restores stolen area to the original player
     /// </summary>
     void AreaStealRestore() {
-        AreaStealDestroy();       
+        AreaStealDestroy();
     }
 
     /// <summary>
@@ -142,6 +162,20 @@ public class StageModification : MonoBehaviour {
         yield return new WaitForSeconds(0.2f);
 
         AreaStealRestore();
+    }
+
+    /// <summary>
+    /// Gives bonus secs. to timer if player performed a second area steal action
+    /// with less than 5 seconds remaining
+    /// </summary>
+    void AreaStealBonusTime() {
+        if (currentAreaStealTime < 5.0f && !isAreaStealBonusTimeAdded)
+        {
+            isAreaStealBonusTimeAdded = true;
+
+            Debug.Log("Bonus time of " + areaStealBonusTime + " added to the area steal timer");
+            currentAreaStealTime += areaStealBonusTime;
+        }
     }
 
     /// <summary>
@@ -184,8 +218,7 @@ public class StageModification : MonoBehaviour {
             //Restoting timer values
             if (currentAreaIndex == 0) {
                 Debug.Log("Stolen areas destroyed. Setting timers to default");
-                ActivateAreaStealTimer(false);
-                currentAreaStealTime = areaStealTimeOnReset;
+                AreaStealReset();
             }
         }
     }
@@ -222,7 +255,7 @@ public class StageModification : MonoBehaviour {
                                             {"easetype","easeOutElastic"},
                                             {"time",0.2f}});
         }
-        
+
     }
 
     /// <summary>
@@ -239,7 +272,7 @@ public class StageModification : MonoBehaviour {
         limitWall.position = new Vector3(limitWallPositions[currentAreaIndex],
                                          limitWall.position.y,
                                          limitWall.position.z);
-        
+
         if (playerObject.transform.position.x <= maxBoundsX &&
             playerObject.transform.position.x >= minBoundsX)
         {
@@ -252,12 +285,12 @@ public class StageModification : MonoBehaviour {
             else if (playerObject.transform.position.x < limitWall.position.x)
                 newPlayerPos = limitWall.position.x + 0.5f;
 
-            iTween.MoveTo(  playerObject,
+            iTween.MoveTo(playerObject,
                             new Hashtable() {   {"x",newPlayerPos},
                                                 {"easetype","easeOutElastic"},
                                                 {"time",0.2f}});
         }
-        
+
     }
 
     /// <summary>
@@ -272,9 +305,9 @@ public class StageModification : MonoBehaviour {
         else if (this.name.Contains("P2"))
             player = "P2";
 
-        stolenArea = Instantiate(Resources.Load("Stage/Stolen"+player, typeof(GameObject))) as GameObject;
+        stolenArea = Instantiate(Resources.Load("Stage/Stolen" + player, typeof(GameObject))) as GameObject;
 
-        stolenArea.transform.position = new Vector3 (   stolenAreaPositions[currentAreaIndex-1],
+        stolenArea.transform.position = new Vector3(stolenAreaPositions[currentAreaIndex - 1],
                                                         stolenArea.transform.position.y,
                                                         stolenArea.transform.position.z);
 
@@ -294,8 +327,7 @@ public class StageModification : MonoBehaviour {
         else if (currentAreaStealTime <= 0.0f)
         {
             //Reseting values
-            currentAreaStealTime = areaStealTimeOnReset;
-            ActivateAreaStealTimer(false);
+            AreaStealReset();
 
             //Restoring stolen area
             Debug.Log("Area Steal time ended. Restoring areas");
@@ -307,12 +339,20 @@ public class StageModification : MonoBehaviour {
     /// Activates area steal timer after changing states
     /// </summary>
     /// <param name="state"></param>
-    void ActivateAreaStealTimer(bool state)
+    void AreaStealActivateTimer(bool state)
     {
         Debug.Log("Setting area steal activation to: " + state.ToString());
         canAreaStealTimerDecrease = state;
     }
 
+    /// <summary>
+    /// Resets timers and bools related to area steal action
+    /// </summary>
+    void AreaStealReset() {
+        AreaStealActivateTimer(false);
+        currentAreaStealTime = areaStealTimeOnReset;
+        isAreaStealBonusTimeAdded = false;
+    }
 
     /**********************************************************
                             CRACK PANELS
