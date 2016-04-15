@@ -11,7 +11,7 @@ public class TimeModifiers : MonoBehaviour {
     //Custom Gauge modifiers
     float slowModifier;
     float fastModifier;
-
+    
     //Control booleans
     bool canGaugeTimerDecrease;
 
@@ -34,13 +34,15 @@ public class TimeModifiers : MonoBehaviour {
 
 	void FixedUpdate () {
         if (canGaugeTimerDecrease)
-            UpdateGaugeTimer();    
+            UpdateGaugeTimer();
 	}
 
     /// <summary>
     /// Initializes custom gauge timers
     /// </summary>
     void InitializeTimers() {
+
+        //Custom gauge
         defaultCustomGaugeTime = 9.0f;
 
         currentCustomGaugeTime = defaultCustomGaugeTime;
@@ -48,7 +50,12 @@ public class TimeModifiers : MonoBehaviour {
 
         slowModifier = 1.5f;
         fastModifier = 0.5f;
+
     }
+
+    /**********************************************************
+                            CUSTOM GAUGE
+    **********************************************************/
 
     /// <summary>
     /// Updates the gauge timer using fixed delta time
@@ -133,4 +140,5 @@ public class TimeModifiers : MonoBehaviour {
         Debug.Log("Setting gauge activation to: " + state.ToString());
         canGaugeTimerDecrease = state;
     }
+
 }

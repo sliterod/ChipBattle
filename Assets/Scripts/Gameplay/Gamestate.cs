@@ -73,6 +73,27 @@ public class Gamestate : MonoBehaviour {
         {
             currentBattleState = BattleState.results;
         }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            GameObject.Find("P2Side").SendMessage("AreaSteal");
+        }
+
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            GameObject.Find("P1Side").SendMessage("AreaSteal");
+        }
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            GameObject.Find("P1Side").SendMessage("AreaStealRestore");
+        }
+
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            GameObject.Find("P1Side").SendMessage("AreaStealRetrieve");
+        }
+        
     }
 
     /// <summary>
