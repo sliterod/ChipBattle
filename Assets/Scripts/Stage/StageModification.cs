@@ -21,11 +21,23 @@ public class StageModification : MonoBehaviour {
     GameObject stolenArea;          //Object containing the latest instantiated stolen area
     Transform opponentStolenArea;   //Object containing an area stolen by the opponent (for retrieve purposes)
 
+    /********************** CRACKED STAGE  *************************/
+    Vector3 crackedStagePosition;   //Position for cracked stage (geddon mode)
+
+    /********************** CRACKED PANELS  *************************/
+    float[] crackedPanelPositions;  //Individual axis positions (x & z) for a cracked panel
+
     /********************** TIMERS *************************/
     float defaultAreaStealTime;     //Default duration for area steal effect.
     float currentAreaStealTime;     //Current area steal timer after decreasing on update
     float areaStealTimeOnReset;     //Contains default value to restore after timer reaches zero
     float areaStealBonusTime;       //Bonus time to apply only if a second area steal was made with < 5sec on timer
+
+    float defaultAreaChangeTime;
+    float currentAreaChangeTime;
+
+    float defaultStageChangeTime;
+    float currentStageChangeTime;
 
     /********************** CONTROL BOOLS *************************/
     bool canAreaStealTimerDecrease; //Indicates if update can activate timer decrease for Area Steal
@@ -36,7 +48,9 @@ public class StageModification : MonoBehaviour {
         InitializeStageRelatedObjects();
 
         InitializeTimers();
-        InitializeArrays();
+        InitializeAreaStealArrays();
+
+        InitializeCrackedStageArrays();
     }
 
 
@@ -56,9 +70,9 @@ public class StageModification : MonoBehaviour {
     }
 
     /// <summary>
-    /// Iniatializes arrays according to current player object
+    /// Iniatializes arrays according to current player object. Area Steal only
     /// </summary>
-    void InitializeArrays() {
+    void InitializeAreaStealArrays() {
 
         if (this.name.Contains("P1"))
         {
@@ -79,6 +93,26 @@ public class StageModification : MonoBehaviour {
     }
 
     /// <summary>
+    /// Initializes arrays and positions according to current player object. 
+    /// Cracked panels and cracked stages
+    /// </summary>
+    void InitializeCrackedStageArrays()
+    {
+        if (this.name.Contains("P1"))
+        {
+            crackedStagePosition = new Vector3 (-5.0f, 0.5f, 0.0f);
+
+            //crackedPanelPositions = new float[] {};
+        }
+        else if (this.name.Contains("P2"))
+        {
+            crackedStagePosition = new Vector3(5.0f, 0.5f, 0.0f);
+
+            //crackedPanelPositions = new float[] {};
+        }
+    }
+
+    /// <summary>
     /// Initializes all timers used for stage modifications
     /// </summary>
     void InitializeTimers() {
@@ -88,6 +122,14 @@ public class StageModification : MonoBehaviour {
 
         currentAreaStealTime = defaultAreaStealTime;
         areaStealTimeOnReset = defaultAreaStealTime;
+
+        //Area Change
+        defaultAreaChangeTime = 20.0f;
+        currentAreaChangeTime = defaultAreaChangeTime;
+
+        //Stage Change
+        defaultStageChangeTime = 20.0f;
+        currentStageChangeTime = defaultStageChangeTime;
     }
 
     /**********************************************************
@@ -367,7 +409,7 @@ public class StageModification : MonoBehaviour {
                             STAGE CHANGE
     **********************************************************/
 
-    void ChangeField() {
+    void StageChange() {
 
     }
 
@@ -375,7 +417,7 @@ public class StageModification : MonoBehaviour {
     /**********************************************************
                             AREA CHANGE
     **********************************************************/
-    void ChangeArea() {
+    void AreaChange() {
 
     }
 }
