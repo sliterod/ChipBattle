@@ -4,7 +4,7 @@ using System.Collections;
 public class CharacterFxController : MonoBehaviour {
 
     public ParticleSystem DamageFX;
-
+    public GameObject DeathFX;
 
     //Flags
     bool damageNeedReset;
@@ -38,5 +38,9 @@ public class CharacterFxController : MonoBehaviour {
 
     }
 
-   
+   void OnDeath()
+    {
+        transform.FindChild("Mesh").gameObject.SetActive(false);
+        DeathFX.SetActive(true);
+    }
 }

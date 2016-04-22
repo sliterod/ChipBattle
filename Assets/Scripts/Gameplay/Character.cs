@@ -22,7 +22,7 @@ public class Character : MonoBehaviour {
         }
     }
 
-    private int startingLife = 700; //The starting and maximum amount of HP of the character
+    private int startingLife = 100; //The starting and maximum amount of HP of the character
     public int StartingLife
     {
         get
@@ -80,6 +80,15 @@ public class Character : MonoBehaviour {
     {
         lifePoint = Mathf.Clamp(LifePoints - damage, 0, startingLife);
         Debug.Log("Damage recieved, Life:" + lifePoint);
+        if(lifePoint == 0)
+        {
+            currentState = PlayerStates.dead;
+        }
+        else
+        {
+            currentState = PlayerStates.takingDamage;
+        }
+
         if(currentState != PlayerStates.usingChip && currentState != PlayerStates.takingDamage)
         {
             //Chip use and Damage are unstapable animation
@@ -143,7 +152,15 @@ public class Character : MonoBehaviour {
     /// </summary>
     void OnDamageAnimationFisnish()
     {
-        currentState = PlayerStates.idle;
+        if(currentState != PlayerStates.dead)
+        {
+            currentState = PlayerStates.idle;
+        }
+        else
+        {
+            SendMessage("OnDeath", SendMessageOptions.DontRequireReceiver);
+        }
+        
     }
 
 }

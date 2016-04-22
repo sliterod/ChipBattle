@@ -1,13 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class StraightShot : MonoBehaviour {
+public class StraightShot : Projectile {
 
     private static float START_POINT_SPEED = 100;
     private static float END_POINT_SPEED = 60;
     private static float SCALE_SPEED = 1.2f;
-
-    int damage = 20;
 
     private float endPointDelay = 0.1f;
     private float lineScale = 0.25f;
@@ -18,16 +16,13 @@ public class StraightShot : MonoBehaviour {
 
     Vector3 endPoint;
 
-    /// <summary>
-    /// Tells if the projectile is flying
-    /// </summary>
-    bool isActive = false;
 
     // Use this for initialization
     void Start () {
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.SetPosition(0, this.transform.position);
         lineRenderer.SetPosition(1, endPoint);
+        damage = 20;
     }
 	
 	// Update is called once per frame

@@ -1,20 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CannonBall : MonoBehaviour {
+public class CannonBall : Projectile {
     
-    /// <summary>
-    /// Tells if the projectile is flying
-    /// </summary>
-    bool isActive = false;
-
-    int damage = 40;
-
     float speed = 15;
 
 	// Use this for initialization
 	void Start () {
-        
+        damage = 40;
 	}
 	
 	// Update is called once per frame
@@ -33,6 +26,8 @@ public class CannonBall : MonoBehaviour {
     /// <param name="side">Indicates if the projectile is shot from the Blue o Red side of the stage</param>
     public void Launch(StageSide side)
     {
+        SetLayerOfEffect(side);
+
         //First we check in wich side of the stage is the projectile
         if(side == StageSide.red)
         {
@@ -51,7 +46,10 @@ public class CannonBall : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        other.SendMessage("OnHit", damage);
+        if(other.gameObject.layer == layerOfEffect)
+        {
+            other.SendMessage("OnHit", damage);
+        }
         Destroy(gameObject);
     }
 }

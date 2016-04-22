@@ -3,9 +3,13 @@ using System.Collections;
 
 public class DoubleShot : Chip {
 
-    bool isActive = false; //Flag to know if the chip had been activated
+    static float COOLDOWN_TIME = 0.3f;
+
+    float cooldownTimeLeft;
 
     int shootsCount = 0; //How many shots were fired since the activation
+
+    bool isOnCooldown = false;
 
     Transform projectilePoint;
 
@@ -26,7 +30,14 @@ public class DoubleShot : Chip {
 	
 	// Update is called once per frame
 	void Update () {
-	
+        if (isOnCooldown)
+        {
+            cooldownTimeLeft -= Time.deltaTime;
+            if (cooldownTimeLeft <= 0.0f)
+            {
+                isOnCooldown = false;
+            }
+        }
 	}
 
     //Since this is a fixed chip and it should'nt be destroyed on use we need a reset function to call instead of the killself
@@ -34,14 +45,16 @@ public class DoubleShot : Chip {
     {
         isActive = false; //Deactivate the chip
         shootsCount = 0; //Reset the shots count
+        cooldownTimeLeft = COOLDOWN_TIME;
+        isOnCooldown = true;
     }
 
     /// <summary>
     /// Override of the Chip's Activate function
     /// </summary>
-    public new void Activate()
+    public override void Activate()
     {
-        if (!isActive) //To prevent using the chip multiple times
+        if (!isActive && !isOnCooldown) //To prevent using the chip multiple times and spaming
         {
 
             Debug.Log("Double Shot Activated");
@@ -84,7 +97,10 @@ public class DoubleShot : Chip {
         }
     }
 
-    void OnChipAnimationFinish()
+    /// <summary>
+    /// Since this a fixed-ability chip it shouldn't be destroyed
+    /// </summary>
+    new void OnChipAnimationFinish()
     {
         if (isActive)
         {
@@ -92,5 +108,15 @@ public class DoubleShot : Chip {
         }
     }
 
-    
+    public override bool IsReady()
+    {
+        if (!isActive && !isOnCooldown)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

@@ -208,8 +208,13 @@ public class CharacterControl : MonoBehaviour {
 
                 default:
                     chipTransform = transform.FindChild("DefaultChip");
-                    chipTransform.GetChild(0).SendMessage("Activate");
-                    characterState.eventReportChipActivation();
+                    //chipTransform.GetChild(0).SendMessage("Activate");
+                    Chip currentChip = chipTransform.GetChild(0).GetComponent<Chip>();
+                    if (currentChip.IsReady())
+                    {
+                        characterState.eventReportChipActivation();
+                        currentChip.Activate();
+                    }
                     break;
             }
 
@@ -221,5 +226,21 @@ public class CharacterControl : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Clear any unused chip from the chips slots
+    /// </summary>
+    public void FlushChips()
+    {
+        foreach (GameObject element in GameObject.FindGameObjectsWithTag("Chip"))
+        //We search for every "Chip" objects in the scene
+        {
+            if (element.transform.root == this.transform.root)
+            {
+                //we select the one inside our hierchy
+                element.SendMessage("FlushChip");
+                //and tell it to play the corresponding animation 
+            }
+        }
+    }
     
 }
