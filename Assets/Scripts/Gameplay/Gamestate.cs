@@ -180,15 +180,27 @@ public class Gamestate : MonoBehaviour {
     /// <summary>
     /// Shows StandBy bar UI
     /// </summary>
-    /// <returns>Changes the battle state after showing StandBy bar. Transition</returns>
-    IEnumerator ChangeToStandBy() {
+    void ChangeToStandBy() {
 
         battleHud.ShowSelectionScreen(false);
         battleHud.ShowStandBy(true);
+    }
 
-        yield return new WaitForSeconds(3.2f);
+    /// <summary>
+    /// Changes BattleState from standby to battle
+    /// </summary>
+    void ChangeToBattle() {
+
+        Time.timeScale = 1.0f;
 
         currentBattleState = BattleState.battle;
+    }
+
+    /// <summary>
+    /// Triggers the activation of battle results screen after any player is defeated
+    /// </summary>
+    void ChangeToBattleEnd() {
+        currentBattleState = BattleState.results;
     }
 
     /// <summary>
@@ -229,11 +241,14 @@ public class Gamestate : MonoBehaviour {
                 battleHud.ShowCustomBar(false);
                 battleHud.ShowBattleChipHelp(false);
                 battleHud.ShowSelectionScreen(true);
+
+                //Setting time to zero
+                Time.timeScale = 0.0f;
                 break;
 
             case BattleState.standby:
                 Debug.Log("Standing by...");
-                StartCoroutine(ChangeToStandBy());
+                ChangeToStandBy();
                 break;
 
             case BattleState.pause:
@@ -243,6 +258,11 @@ public class Gamestate : MonoBehaviour {
                 break;
 
             case BattleState.results:
+                //Stoping custom gauge
+                GameObject.Find("Gamestate").SendMessage("ActivateCustomGauge", false);
+                battleHud.ShowSelectionScreen(false);
+
+                //Ending battle
                 Debug.Log("Battle has ended, showing results screen");
                 battleHud.ShowResultsScreen();
                 break;

@@ -65,7 +65,9 @@ public class Character : MonoBehaviour {
     void Start () {
         currentState = PlayerStates.idle;
         lifePoint = startingLife;
-	}
+        SendMessage("UpdateHpValue", lifePoint);
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -88,6 +90,10 @@ public class Character : MonoBehaviour {
         {
             currentState = PlayerStates.takingDamage;
         }
+
+        //Report damage to the UI
+        SendMessage("UpdateHpValue", lifePoint);
+
 
         if(currentState != PlayerStates.usingChip && currentState != PlayerStates.takingDamage)
         {
@@ -159,6 +165,7 @@ public class Character : MonoBehaviour {
         else
         {
             SendMessage("OnDeath", SendMessageOptions.DontRequireReceiver);
+            GameObject.Find("Gamestate").SendMessage("ChangeToBattleEnd");
         }
         
     }
