@@ -192,6 +192,13 @@ public class Gamestate : MonoBehaviour {
     }
 
     /// <summary>
+    /// Triggers the activation of battle results screen after any player is defeated
+    /// </summary>
+    void ChangeToBattleEnd() {
+        currentBattleState = BattleState.results;
+    }
+
+    /// <summary>
     /// Executes a method after StateListener captures a change on currentBattleState variable
     /// </summary>
     /// <param name="newBattleState">The new BattleState value</param>
