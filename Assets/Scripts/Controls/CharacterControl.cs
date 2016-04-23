@@ -3,6 +3,7 @@ using System.Collections;
 
 public class CharacterControl : MonoBehaviour {
 
+    public CharacterAnimationController animatorController;
     Transform character;
     CharacterController movementController; 
     Character characterState;
@@ -26,14 +27,16 @@ public class CharacterControl : MonoBehaviour {
             {
                 //We report it to the player status controller
                 characterState.eventReportStopMovement();
+                animatorController.PlayIdleAnim();
             }
             else
             {
-                characterState.eventReportMovement(x_axis, y_axis); //We report it to the player status controller
+                characterState.eventReportMovement(); //We report it to the player status controller
                 movementArray.x = x_axis;
                 movementArray.z = y_axis;
                 movementArray *= characterState.movementSpeed;
                 movementController.Move(movementArray * Time.deltaTime);
+                animatorController.PlayRunAnim(x_axis);
 
             }
         }
@@ -149,6 +152,7 @@ public class CharacterControl : MonoBehaviour {
                     {
                         //If it has a chlid it means that the slot contains an usable chip
                         chipTransform.GetChild(0).SendMessage("Activate"); //so we activate it
+                        characterState.eventReportChipActivation();
                     }
                     else
                     {
@@ -163,6 +167,7 @@ public class CharacterControl : MonoBehaviour {
                     {
                         //If it has a chlid it means that the slot contains an usable chip
                         chipTransform.GetChild(0).SendMessage("Activate"); //so we activate it
+                        characterState.eventReportChipActivation();
                     }
                     else
                     {
@@ -177,6 +182,7 @@ public class CharacterControl : MonoBehaviour {
                     {
                         //If it has a chlid it means that the slot contains an usable chip
                         chipTransform.GetChild(0).SendMessage("Activate"); //so we activate it
+                        characterState.eventReportChipActivation();
                     }
                     else
                     {
@@ -191,6 +197,7 @@ public class CharacterControl : MonoBehaviour {
                     {
                         //If it has a chlid it means that the slot contains an usable chip
                         chipTransform.GetChild(0).SendMessage("Activate"); //so we activate it
+                        characterState.eventReportChipActivation();
                     }
                     else
                     {
@@ -201,7 +208,13 @@ public class CharacterControl : MonoBehaviour {
 
                 default:
                     chipTransform = transform.FindChild("DefaultChip");
-                    chipTransform.GetChild(0).SendMessage("Activate");
+                    //chipTransform.GetChild(0).SendMessage("Activate");
+                    Chip currentChip = chipTransform.GetChild(0).GetComponent<Chip>();
+                    if (currentChip.IsReady())
+                    {
+                        characterState.eventReportChipActivation();
+                        currentChip.Activate();
+                    }
                     break;
             }
 
@@ -213,5 +226,21 @@ public class CharacterControl : MonoBehaviour {
         }
     }
 
-
+    /// <summary>
+    /// Clear any unused chip from the chips slots
+    /// </summary>
+    public void FlushChips()
+    {
+        foreach (GameObject element in GameObject.FindGameObjectsWithTag("Chip"))
+        //We search for every "Chip" objects in the scene
+        {
+            if (element.transform.root == this.transform.root)
+            {
+                //we select the one inside our hierchy
+                element.SendMessage("FlushChip");
+                //and tell it to play the corresponding animation 
+            }
+        }
+    }
+    
 }

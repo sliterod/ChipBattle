@@ -8,6 +8,7 @@ public class Character : MonoBehaviour {
                                      //also a charater could move faster or slower if is affected by a buff or debuff
                                      //and inputs via keyboard or Dpad always result in moving at maximum speed
 
+      
     private PlayerStates currentState;
     public PlayerStates CurrentState
     {
@@ -18,6 +19,32 @@ public class Character : MonoBehaviour {
         private set
         {
             currentState = value;
+        }
+    }
+
+    private int startingLife = 100; //The starting and maximum amount of HP of the character
+    public int StartingLife
+    {
+        get
+        {
+            return startingLife;
+        }
+        private set
+        {
+            startingLife = value;
+        }
+    }
+
+    private int lifePoint = 700; //The current amount of HP of the character, if it reach 0 the character dies
+    public int LifePoints
+    {
+        get
+        {
+            return lifePoint;
+        }
+        private set
+        {
+            lifePoint = value;
         }
     }
 
@@ -37,12 +64,48 @@ public class Character : MonoBehaviour {
     // Use this for initialization
     void Start () {
         currentState = PlayerStates.idle;
+        lifePoint = startingLife;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
+
+    /// <summary>
+    /// Functon that is called via SendMessage by the proyectiles when they hit you
+    /// </summary>
+    /// <param name="damage">The amount of damage deal by the attack</param>
+    void OnHit(int damage)
+    {
+        lifePoint = Mathf.Clamp(LifePoints - damage, 0, startingLife);
+        Debug.Log("Damage recieved, Life:" + lifePoint);
+        if(lifePoint == 0)
+        {
+            currentState = PlayerStates.dead;
+        }
+        else
+        {
+            currentState = PlayerStates.takingDamage;
+        }
+
+        if(currentState != PlayerStates.usingChip && currentState != PlayerStates.takingDamage)
+        {
+            //Chip use and Damage are unstapable animation
+            //The damage is still recieved but no animation is played to prevent loose ends in the chip activation process
+            foreach (GameObject element in GameObject.FindGameObjectsWithTag("AnimationController"))
+            //We search for every "animationController" objects in the scene
+            {
+                if (element.transform.root == this.transform.root)
+                {
+                    Debug.Log("Animation Controller found");
+                    //we select the one inside our hierchy
+                    element.GetComponent<CharacterAnimationController>().PlayDamageAnimation();
+                    //and tell it to play the corresponding animation 
+                }
+            }
+        }
+    }
 
     /// <summary>
     /// Function that should be called every time that the character stop moving
@@ -60,13 +123,44 @@ public class Character : MonoBehaviour {
     /// Function that should be called every time that the character strat moving
     /// the X and Y value helps to decide what animation should be played (if the character is walking up or going back, etc)
     /// </summary>
-    public void eventReportMovement(float x_value,float y_value)
+    public void eventReportMovement()
     {
         if (currentState == PlayerStates.idle)
         {
             currentState = PlayerStates.moving;
-            //here we should decide wich animation we're going to play using the X and Y parameters
-            //here we should call the animator and tell it to start playing the moving animation
         }
     }
+
+    /// <summary>
+    /// Function that should be called when a chip is activated
+    /// </summary>
+    public void eventReportChipActivation()
+    {
+        currentState = PlayerStates.usingChip;
+    }
+
+    /// <summary>
+    /// Function that is called at the end of the chip animation
+    /// </summary>
+    void OnChipAnimationFinish()
+    {
+        currentState = PlayerStates.idle;
+    }
+
+    /// <summary>
+    /// Function that is called at the end of the damage animation
+    /// </summary>
+    void OnDamageAnimationFisnish()
+    {
+        if(currentState != PlayerStates.dead)
+        {
+            currentState = PlayerStates.idle;
+        }
+        else
+        {
+            SendMessage("OnDeath", SendMessageOptions.DontRequireReceiver);
+        }
+        
+    }
+
 }

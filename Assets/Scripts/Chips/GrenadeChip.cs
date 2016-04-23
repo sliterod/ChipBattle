@@ -1,24 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Cannon : Chip {
+public class GrenadeChip : Chip {
 
-    
     Transform projectilePoint;
 
     /// <summary>
     /// Class constructor
     /// </summary>
-    public Cannon()
+    public GrenadeChip()
     {
-        _chipName = "#Cannon";
-        _chipPrefabName = "Cannon";
-        _animation = (int)ChipAnimations.SingleShot;
+        _chipName = "#Grenade";
+        _chipPrefabName = "GrenadeChip";
+        _animation = (int)ChipAnimations.Launch;
     }
 
     // Use this for initialization
     void Start () {
-        
+	
 	}
 	
 	// Update is called once per frame
@@ -31,16 +30,16 @@ public class Cannon : Chip {
     /// </summary>
     public override void Activate()
     {
-        if(!isActive) //To prevent using the chip multiple times
+        if (!isActive) //To prevent using the chip multiple times
         {
 
-            Debug.Log("Cannon Activated");
+            Debug.Log("Grenade Activated");
             projectilePoint = GameObject.Find("Hand_R").transform;
             isActive = true;
             foreach (GameObject element in GameObject.FindGameObjectsWithTag("AnimationController"))
-                //We search for every "animationController" objects in the scene
+            //We search for every "animationController" objects in the scene
             {
-                if(element.transform.root == this.transform.root)
+                if (element.transform.root == this.transform.root)
                 {
                     Debug.Log("Animation Controller found");
                     //we select the one inside our hierchy
@@ -50,27 +49,18 @@ public class Cannon : Chip {
             }
 
         }
-        
-        /*
-        GameObject projectile = Instantiate(Resources.Load("Projectiles/CannonBall", typeof(GameObject))) as GameObject;
-        //We take the projectile form the resources
-        projectile.transform.position = this.transform.position; //Put it into position
-        projectile.GetComponent<CannonBall>().Launch(StageSide.blue); //And we shoot it
-
-        // This is a temporal solution, the chip shouldn't be destroyed before the amimation ends
-        KillSelf();
-        */
     }
 
     void OnHitFrame()
     {
         if (isActive)
         {
-            GameObject projectile = Instantiate(Resources.Load("Projectiles/CannonBall", typeof(GameObject))) as GameObject;
+            GameObject projectile = Instantiate(Resources.Load("Projectiles/Grenade", typeof(GameObject))) as GameObject;
             //We take the projectile form the resources
             projectile.transform.position = projectilePoint.position; //Put it into position
             Debug.Log(projectilePoint.position);
-            projectile.GetComponent<CannonBall>().Launch(StageSide.blue); //And we shoot it
-        } 
+            projectile.transform.GetChild(0).GetComponent<Grenade>().Launch(StageSide.blue); //And we shoot it
+        }
     }
+
 }
