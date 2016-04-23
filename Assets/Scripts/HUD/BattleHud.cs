@@ -265,17 +265,18 @@ public class BattleHud : MonoBehaviour {
 
         if (playerToRender == Player.player1) {
 
-            GameObject player = GameObject.Find("Player1");
-
-            player.gameObject.GetComponent<MeshRenderer>().enabled = true;
-            player.SendMessage("EnableHpUpdate");
+            GameObject player = GameObject.Find("Player1").transform.FindChild("Mesh").gameObject;
+            player.SetActive(true);
+            //player.gameObject.GetComponent<MeshRenderer>().enabled = true;
+            GameObject.Find("Player1").SendMessage("EnableHpUpdate");
         }
         else if (playerToRender == Player.player2 || playerToRender == Player.ai) {
 
-            GameObject player = GameObject.Find("Player2");
+            GameObject player = GameObject.Find("Player2").transform.FindChild("Mesh").gameObject;
 
-            player.gameObject.GetComponent<MeshRenderer>().enabled = true;
-            player.SendMessage("EnableHpUpdate");
+            player.SetActive(true);
+            //player.gameObject.GetComponent<MeshRenderer>().enabled = true;
+            GameObject.Find("Player2").SendMessage("EnableHpUpdate");
         }
     }
 
