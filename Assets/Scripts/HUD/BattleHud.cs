@@ -33,6 +33,18 @@ public class BattleHud : MonoBehaviour {
     void Update() {
         if (isStandbyTimerOffline)
             StandByMessageTimer();
+
+        if (Input.GetKeyDown(KeyCode.M)) {
+            GameObject cannon = Instantiate(Resources.Load("Cannon", typeof(GameObject))) as GameObject;
+            
+            cannon.transform.parent = selectionScreen.transform;
+
+            //Scale
+            cannon.transform.localScale = Vector3.one;
+
+            //Position
+            cannon.transform.localPosition = Vector3.zero;
+        }
     }
 
 
