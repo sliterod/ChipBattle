@@ -125,8 +125,9 @@ public class InputCapture : MonoBehaviour {
         if (Input.GetButtonDown("LB") || Input.GetKeyDown(KeyCode.Tab))
         {
             Debug.Log("Input captured. Custom bar full, entering selection screen");
-            characterControl.setChip("Cannon", 1);
-            characterControl.setChip("Cannon", 2);
+            characterControl.FlushChips();
+            characterControl.setChip("GrenadeChip", 1);
+            characterControl.setChip("GrenadeChip", 2);
             characterControl.setChip("Cannon", 3);
             characterControl.setChip("Cannon", 4);
 
