@@ -70,7 +70,15 @@ public class Cannon : Chip {
             //We take the projectile form the resources
             projectile.transform.position = projectilePoint.position; //Put it into position
             Debug.Log(projectilePoint.position);
-            projectile.GetComponent<CannonBall>().Launch(StageSide.blue); //And we shoot it
+            if (transform.root.gameObject.layer == 8)
+            {
+                projectile.GetComponent<CannonBall>().Launch(StageSide.blue); //And we shoot it
+            }
+            else
+            {
+                projectile.GetComponent<CannonBall>().Launch(StageSide.red); //And we shoot it
+            }
+                
         } 
     }
 }

@@ -43,6 +43,10 @@ public class Grenade : Projectile {
     public void Launch(StageSide side)
     {
         SetLayerOfEffect(side);
+        if(side == StageSide.red)
+        {
+            xForce *= -1;
+        }
         Vector3 force = new Vector3(xForce, yForce, 0);
         GetComponent<Rigidbody>().AddForce(force,ForceMode.Impulse);
     }

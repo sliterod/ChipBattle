@@ -59,7 +59,15 @@ public class GrenadeChip : Chip {
             //We take the projectile form the resources
             projectile.transform.position = projectilePoint.position; //Put it into position
             Debug.Log(projectilePoint.position);
-            projectile.transform.GetChild(0).GetComponent<Grenade>().Launch(StageSide.blue); //And we shoot it
+            if(transform.root.gameObject.layer == 8)
+            {
+                projectile.transform.GetChild(0).GetComponent<Grenade>().Launch(StageSide.blue); //And we shoot it
+            }
+            else
+            {
+                projectile.transform.GetChild(0).GetComponent<Grenade>().Launch(StageSide.red); //And we shoot it
+            }
+            
         }
     }
 

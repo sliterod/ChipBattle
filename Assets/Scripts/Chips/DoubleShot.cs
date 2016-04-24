@@ -21,6 +21,7 @@ public class DoubleShot : Chip {
         _chipName = "#DoubleShot";
         _chipPrefabName = "DoubleShot";
         _animation = (int)ChipAnimations.DoubleShot;
+        isFixed = true;
     }
 
     // Use this for initialization
@@ -84,14 +85,29 @@ public class DoubleShot : Chip {
             {
                 //We take the projectile form the resources
                 projectile.transform.position = projectilePoint.position; //Put it into position
-                projectile.GetComponent<StraightShot>().Launch(StageSide.blue); //And we shoot it
+                if(transform.root.gameObject.layer == 8)
+                {
+                    projectile.GetComponent<StraightShot>().Launch(StageSide.blue); //And we shoot it
+                }
+                else
+                {
+                    projectile.GetComponent<StraightShot>().Launch(StageSide.red); //And we shoot it
+                }
+                
                 shootsCount ++;
             }
             else
             {
                 projectilePoint = GameObject.Find("Hand_L").transform;
                 projectile.transform.position = projectilePoint.position; //Put it into position
-                projectile.GetComponent<StraightShot>().Launch(StageSide.blue); //And we shoot it
+                if (transform.root.gameObject.layer == 8)
+                {
+                    projectile.GetComponent<StraightShot>().Launch(StageSide.blue); //And we shoot it
+                }
+                else
+                {
+                    projectile.GetComponent<StraightShot>().Launch(StageSide.red); //And we shoot it
+                }
             }
             
         }
