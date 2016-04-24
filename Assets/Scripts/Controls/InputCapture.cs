@@ -121,7 +121,7 @@ public class InputCapture : MonoBehaviour {
             }
         }
 
-        //Custom screen
+        //
         if (Input.GetButtonDown("LB") || Input.GetKeyDown(KeyCode.Tab))
         {
             Debug.Log("Input captured. Custom bar full, entering selection screen");
@@ -130,22 +130,11 @@ public class InputCapture : MonoBehaviour {
             characterControl.setChip("GrenadeChip", 2);
             characterControl.setChip("Cannon", 3);
             characterControl.setChip("Cannon", 4);
-
-            if (gamestate.CurrentBattleState == BattleState.battle)
-            {
-                Debug.Log("Input captured. Custom bar full, entering selection screen");
-                gamestate.CurrentBattleState = BattleState.selectionScreen;
-            }
         }
 
-        //Custom screen
+        //
         if (Input.GetButtonDown("RB") || Input.GetKeyDown(KeyCode.RightShift))
         {
-            if (gamestate.CurrentBattleState == BattleState.battle)
-            {
-                Debug.Log("Input captured. Custom bar full, entering selection screen");
-                gamestate.CurrentBattleState = BattleState.selectionScreen;
-            }
             
         }
     }
@@ -214,14 +203,14 @@ public class InputCapture : MonoBehaviour {
         //Dpad, Sticks, Keyboard
         if (Input.GetAxis("Horizontal") <= -0.8f ||
             Input.GetAxis("DpadHorizontal") == -1.0f || 
-            Input.GetKey(KeyCode.LeftArrow))
+            Input.GetKeyDown(KeyCode.LeftArrow))
         {
             gamestate.MoveSelectionScreenCursor(Movement.left);
         }
 
         if (Input.GetAxis("Horizontal") >= 0.8f ||
             Input.GetAxis("DpadHorizontal") == 1.0f || 
-            Input.GetKey(KeyCode.RightArrow))
+            Input.GetKeyDown(KeyCode.RightArrow))
         {
             gamestate.MoveSelectionScreenCursor(Movement.right);
         }

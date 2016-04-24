@@ -29,6 +29,7 @@ public class BattleHud : MonoBehaviour {
     //General variables
     float[] cursorPositionsArray;
     float standByTimer;
+    float realTimeStamp;
 
     void Update() {
         if (isStandbyTimerOffline)
@@ -100,7 +101,7 @@ public class BattleHud : MonoBehaviour {
                 if (!isCursorMoved)
                 {
                     isCursorMoved = true;
-                    StartCoroutine(ChangeCursorPosition(-1));
+                    ChangeCursorPosition(-1);
                 }
                 break;
 
@@ -108,7 +109,7 @@ public class BattleHud : MonoBehaviour {
                 if (!isCursorMoved)
                 {
                     isCursorMoved = true;
-                    StartCoroutine(ChangeCursorPosition(1));
+                    ChangeCursorPosition(1);
                 }
                 break;
 
@@ -129,8 +130,7 @@ public class BattleHud : MonoBehaviour {
     /// Changes selection screen cursor position
     /// </summary>
     /// <param name="newCursorIndex">New cursor index value</param>
-    /// <returns>New cursor position</returns>
-    IEnumerator ChangeCursorPosition(int newCursorIndex) {
+    void ChangeCursorPosition(int newCursorIndex) {
 
         int posArraySize = cursorPositionsArray.Length - 1;
 
@@ -145,8 +145,6 @@ public class BattleHud : MonoBehaviour {
 
         selectionCursor.anchoredPosition = new Vector2(cursorPositionsArray[selCursorIndex],
                                                         selectionCursor.anchoredPosition.y);
-
-        yield return new WaitForSeconds(0.25f);
 
         isCursorMoved = false;
     }
@@ -215,6 +213,7 @@ public class BattleHud : MonoBehaviour {
                 .GetComponent<Text>();
 
             standByTimer = 3.0f;
+            realTimeStamp = Time.realtimeSinceStartup;
             isStandbyTimerOffline = true;
         }
     }
@@ -222,17 +221,32 @@ public class BattleHud : MonoBehaviour {
     /// <summary>
     /// Change the message of the StandBy UI message
     /// </summary>
+    /// <returns></returns>
     void StandByMessageTimer() {
-        if (standByTimer >= 1.0f) {
-            standByTimer -= Time.deltaTime;
-            SetStandByMessage(standByTimer.ToString("0.00"));
-        }
-        else if (standByTimer < 1.0f)
-        {
-            standByTimer = 0.0f;
-            isStandbyTimerOffline = false;
 
-            SetStandByMessage("BATTLE START");
+        float timeNow = Time.realtimeSinceStartup;
+        float difference = timeNow - realTimeStamp;
+
+        if (standByTimer > difference) {
+            float displayTimer = standByTimer - difference;
+            SetStandByMessage(displayTimer.ToString("0.00"));
+        }
+        else if (standByTimer < difference)
+        {
+            if (difference < 4.0f)
+            {
+                SetStandByMessage("BATTLE START");
+            }
+            else if (difference > 4.0f) {
+
+                standByTimer = 0.0f;
+                realTimeStamp = 0.0f;
+                isStandbyTimerOffline = false;
+
+                //Returns to battle
+                GameObject.Find("Gamestate").SendMessage("ChangeToBattle");
+            }
+
         }
     }
 
