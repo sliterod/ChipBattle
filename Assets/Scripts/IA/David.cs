@@ -149,6 +149,9 @@ public class David : MonoBehaviour
     {
         gameObject.GetComponent<CharacterControl>().Move(-1.0f, 1.0f);
     }
+    void stop() {
+        gameObject.GetComponent<CharacterControl>().Move(0.0f, 0.0f);
+    }
 
     bool goToPosition(float coordinateX, float coordinateZ, float positionX, float positionZ)
     {
@@ -174,6 +177,7 @@ public class David : MonoBehaviour
             return false;
         }
         else {
+            this.stop();
             this.wallking = true;
                 return true;
             }
