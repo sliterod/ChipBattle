@@ -34,7 +34,7 @@ public class GrenadeChip : Chip {
         {
 
             Debug.Log("Grenade Activated");
-            projectilePoint = GameObject.Find("Hand_R").transform;
+            projectilePoint = transform.root.Find(RIGHT_HAND_PATH);
             isActive = true;
             foreach (GameObject element in GameObject.FindGameObjectsWithTag("AnimationController"))
             //We search for every "animationController" objects in the scene
