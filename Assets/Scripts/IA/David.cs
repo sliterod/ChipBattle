@@ -96,6 +96,7 @@ public class David : MonoBehaviour
     bool weAreInBatlle()
     {
         battleState = BattleState.battle;
+        gamestate = (Gamestate)GameObject.Find("Gamestate").GetComponent("Gamestate");
         if (battleState == gamestate.CurrentBattleState)
         {
             return true;
@@ -118,10 +119,10 @@ public class David : MonoBehaviour
     void OnCollisionEnter(Collision col)
     {
         Debug.Log("collide (name) : " + col.collider.gameObject.name);
-        if (col.gameObject.name == "Wall_Back")
+        /*if (col.gameObject.name == "Wall_Back")
         {
             this.wallking = false;
-        }
+        }*/
     }
 
     public bool amIInPosition(float coordinateX, float coordinateZ, float positionX, float positionZ)
@@ -178,7 +179,7 @@ public class David : MonoBehaviour
         }
         else {
             this.stop();
-            this.wallking = true;
+            //this.wallking = true;
                 return true;
             }
     }
@@ -193,12 +194,17 @@ public class David : MonoBehaviour
     void walkToTheFront()
     {
         //Debug.Log("Position x: "+ gameObject.transform.position.x+" Position z: "+ gameObject.transform.position.z);
+        
         if (weAreInBatlle())
         {
             if ((!this.wallking) &&(!this.attaking)) {
                 this.probability=this.calculateProbability();
             }
             //Debug.Log("Distance between player 1 and player 2: "+ this.getDisctance(this.player1, this.player2));
+            
+            if (Math.Truncate(this.player1.transform.position.z * -1) == Math.Truncate(gameObject.transform.position.z)) {
+                this.GetComponent<CharacterControl>().UseChip(1);
+            }
             if (this.getDisctance(this.player1, this.player2) > 11)
             {
                 if (this.probability >= 40) {
