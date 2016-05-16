@@ -41,14 +41,14 @@ public class David : MonoBehaviour
         walkToTheFront();
     }
 
-    void canIAttack()
+    Boolean canIAttack()
     {
-        if (this.canIAttackFlag)
+        if (this.attaking)
         {
-            this.canIAttackFlag = false;
+            return false;
         }
         else {
-            this.canIAttackFlag = true;
+            return true;
         }
     }
 
@@ -59,7 +59,7 @@ public class David : MonoBehaviour
         this.GetComponent<CharacterControl>().setChip("GrenadeChip", 1);
         this.GetComponent<CharacterControl>().setChip("GrenadeChip", 2);
         this.GetComponent<CharacterControl>().setChip("Cannon", 3);
-        this.GetComponent<CharacterControl>().setChip("Cannon", 4);
+        this.GetComponent<CharacterControl>().setChip("SkyBoxAttkChip", 4);
     }
 
     void initXSteps()
@@ -174,12 +174,12 @@ public class David : MonoBehaviour
             {
                 minusPlus();
             }
-            this.wallking = false;
+            this.wallking = true;
             return false;
         }
         else {
             this.stop();
-            //this.wallking = true;
+            this.wallking = false;
                 return true;
             }
     }
@@ -193,17 +193,29 @@ public class David : MonoBehaviour
 
     void walkToTheFront()
     {
-        //Debug.Log("Position x: "+ gameObject.transform.position.x+" Position z: "+ gameObject.transform.position.z);
-        
         if (weAreInBatlle())
         {
-            if ((!this.wallking) &&(!this.attaking)) {
+            if ((!this.wallking) && (!this.attaking)) {
                 this.probability=this.calculateProbability();
             }
-            //Debug.Log("Distance between player 1 and player 2: "+ this.getDisctance(this.player1, this.player2));
-            
-            if (Math.Truncate(this.player1.transform.position.z * -1) == Math.Truncate(gameObject.transform.position.z)) {
-                this.GetComponent<CharacterControl>().UseChip(1);
+            if ((this.player1.transform.position.z * -1) == gameObject.transform.position.z) {
+                if (this.canIAttack()) {
+                    this.GetComponent<CharacterControl>().UseChip(1);
+                    this.attaking = true;
+                }
+            }
+            else {
+                if (this.probability >= 50)
+                {
+                    if (Math.Truncate(this.player1.transform.position.z * -1) == Math.Truncate(gameObject.transform.position.z))
+                    {
+                        if (this.canIAttack())
+                        {
+                            this.GetComponent<CharacterControl>().UseChip(4);
+                            this.attaking = true;
+                        }
+                    }
+                }
             }
             if (this.getDisctance(this.player1, this.player2) > 11)
             {
@@ -212,16 +224,23 @@ public class David : MonoBehaviour
                 }
                 else if (this.probability >= 1) {
                     if (goToPosition(9, this.player1.transform.position.z, gameObject.transform.position.x, gameObject.transform.position.z)) {
-                        this.GetComponent<CharacterControl>().UseChip(1);
+                        if (this.canIAttack())
+                        {
+                            this.GetComponent<CharacterControl>().UseChip(2);
+                            this.attaking = true;
+                        }
                     }
-                    
                 }
             }
             else {
                 if (this.probability >= 70)
                 {
                     if (goToPosition(9, this.player1.transform.position.z, gameObject.transform.position.x, gameObject.transform.position.z)) {
-                        this.GetComponent<CharacterControl>().UseChip(1);
+                        if (this.canIAttack())
+                        {
+                            this.GetComponent<CharacterControl>().UseChip(4);
+                            this.attaking = true;
+                        }
                     }
                 }
                 else if (this.probability >= 40)
@@ -231,61 +250,15 @@ public class David : MonoBehaviour
                 else if (this.probability >= 1)
                 {
                     if (goToPosition(this.player1.transform.position.x * -1, this.player1.transform.position.z, gameObject.transform.position.x, gameObject.transform.position.z)) {
-                        this.GetComponent<CharacterControl>().UseChip(2);
+                        if (this.canIAttack())
+                        {
+                            this.GetComponent<CharacterControl>().UseChip(3);
+                            this.attaking = true;
+                        }
                     }
-
                 }
             }
-            
-            
-            /*if (!this.wallking)
-            {*/
-            //Debug.Log(this.ySteps);
-            //InvokeRepeating("canIAttack()", 1, 0.3F);
-            //   if (this.canIAttackFlag) {
-            //Debug.Log(this.canIAttackFlag);
-            //this.GetComponent<CharacterControl>().UseChip(1);
-            // }
-            // Debug.Log(this.getDisctance(this.player1,this.player2));
-            //this.GetComponent<CharacterControl>().UseChip(1);
-            //this.wallking = true;
-            //while(this.xSteps>=0)
-            /*if (this.xSteps > 0)
-            {
-                gameObject.GetComponent<CharacterControl>().Move(0.0f, 1.0f);
-                this.xSteps--;
-
-            }
-            else if (this.xSteps == 0)
-            {
-                this.xSteps = -43;
-            }
-            else if (this.xSteps < 0)
-            {
-                gameObject.GetComponent<CharacterControl>().Move(1.0f, -1.0f);
-                this.xSteps++;
-            }
-            if (this.ySteps > 0)
-            {
-                gameObject.GetComponent<CharacterControl>().Move(-1.0f, 0.0f);
-                this.ySteps--;
-            }
-            else if (this.ySteps == 0)
-            {
-                this.ySteps = -83;
-            }
-            else if (this.ySteps < -2)
-            {
-                gameObject.GetComponent<CharacterControl>().Move(1.0f, 1.0f);
-                this.ySteps++;
-            }
-            else if (this.ySteps == -2)
-            {
-                this.ySteps = 83;
-            }
-            this.wallking = false;
-        }*/
+            this.attaking = false;
         }
     }
-    
 }
