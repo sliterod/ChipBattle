@@ -22,7 +22,7 @@ public class Character : MonoBehaviour {
         }
     }
 
-    private int startingLife = 100; //The starting and maximum amount of HP of the character
+    private int startingLife = 1000; //The starting and maximum amount of HP of the character
     public int StartingLife
     {
         get
@@ -86,16 +86,12 @@ public class Character : MonoBehaviour {
         {
             currentState = PlayerStates.dead;
         }
-        else
-        {
-            currentState = PlayerStates.takingDamage;
-        }
 
         //Report damage to the UI
         SendMessage("UpdateHpValue", lifePoint);
 
 
-        if(currentState != PlayerStates.usingChip && currentState != PlayerStates.takingDamage)
+        if(currentState != PlayerStates.usingChip && currentState != PlayerStates.takingDamage && currentState != PlayerStates.dead)
         {
             //Chip use and Damage are unstapable animation
             //The damage is still recieved but no animation is played to prevent loose ends in the chip activation process
@@ -107,6 +103,7 @@ public class Character : MonoBehaviour {
                     Debug.Log("Animation Controller found");
                     //we select the one inside our hierchy
                     element.GetComponent<CharacterAnimationController>().PlayDamageAnimation();
+                    currentState = PlayerStates.takingDamage;
                     //and tell it to play the corresponding animation 
                 }
             }
@@ -150,6 +147,7 @@ public class Character : MonoBehaviour {
     /// </summary>
     void OnChipAnimationFinish()
     {
+        Debug.LogWarning("Chip anim finished");
         currentState = PlayerStates.idle;
     }
 
