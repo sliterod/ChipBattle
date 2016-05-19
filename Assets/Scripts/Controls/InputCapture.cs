@@ -25,6 +25,7 @@ public class InputCapture : MonoBehaviour {
             {
                 Debug.Log("Input captured. Using Chip 1");
                 characterControl.UseChip(1);
+                gamestate.DestroyChipBattleScreen(1);
             }
 
             if (gamestate.CurrentBattleState == BattleState.standby)
@@ -35,6 +36,7 @@ public class InputCapture : MonoBehaviour {
             if (gamestate.CurrentBattleState == BattleState.selectionScreen)
             {
                 Debug.Log("Input captured. Current highlighted card assigned to Chip 1 button");
+                gamestate.SetChipSelectionScreen(1);
             }
 
             if (gamestate.CurrentBattleState == BattleState.results)
@@ -46,22 +48,52 @@ public class InputCapture : MonoBehaviour {
         //Chip 2
         if (Input.GetButtonDown("B") || Input.GetKeyDown(KeyCode.W))
         {
-            Debug.Log("Input captured. Using Chip 2");
-            characterControl.UseChip(2);
+            if (gamestate.CurrentBattleState == BattleState.battle)
+            {
+                Debug.Log("Input captured. Using Chip 2");
+                characterControl.UseChip(2);
+                gamestate.DestroyChipBattleScreen(2);
+            }
+
+            if (gamestate.CurrentBattleState == BattleState.selectionScreen)
+            {
+                Debug.Log("Input captured. Current highlighted card assigned to Chip 1 button");
+                gamestate.SetChipSelectionScreen(2);
+            }
         }
 
         //Chip 3
         if (Input.GetButtonDown("X") || Input.GetKeyDown(KeyCode.E))
         {
-            Debug.Log("Input captured. Using Chip 3");
-            characterControl.UseChip(3);
+            if (gamestate.CurrentBattleState == BattleState.battle)
+            {
+                Debug.Log("Input captured. Using Chip 3");
+                characterControl.UseChip(3);
+                gamestate.DestroyChipBattleScreen(3);
+            }
+
+            if (gamestate.CurrentBattleState == BattleState.selectionScreen)
+            {
+                Debug.Log("Input captured. Current highlighted card assigned to Chip 1 button");
+                gamestate.SetChipSelectionScreen(3);
+            }
         }
 
         //Chip 4
         if (Input.GetButtonDown("Y") || Input.GetKeyDown(KeyCode.R))
         {
-            Debug.Log("Input captured. Using Chip 4");
-            characterControl.UseChip(4);
+            if (gamestate.CurrentBattleState == BattleState.battle)
+            {
+                Debug.Log("Input captured. Using Chip 4");
+                characterControl.UseChip(4);
+                gamestate.DestroyChipBattleScreen(4);
+            }
+
+            if (gamestate.CurrentBattleState == BattleState.selectionScreen)
+            {
+                Debug.Log("Input captured. Current highlighted card assigned to Chip 1 button");
+                gamestate.SetChipSelectionScreen(4);
+            }
         }
 
         //Fixed 1

@@ -174,7 +174,35 @@ public class Gamestate : MonoBehaviour {
             Debug.Log("Changing state");
             isOkButtonHighlighted = false;
             currentBattleState = BattleState.standby;
+
+            battleHud.BattleGuidePosition();
         }
+    }
+
+    /// <summary>
+    /// Sets selected chip on the selection guide slot
+    /// </summary>
+    /// <param name="chipSlot">Button pressed:
+    /// 1: A - key Q
+    /// 2: B - key W
+    /// 3: X - key E
+    /// 4: Y - key R
+    /// </param>
+    public void SetChipSelectionScreen(int chipSlot) {
+        battleHud.SelectionGuideSetChipSlot(chipSlot);
+    }
+
+    /// <summary>
+    /// Destroys used chip miniature on battle guide slot
+    /// </summary>
+    /// <param name="chipSlot">Chip used:
+    /// 1: A - key Q
+    /// 2: B - key W
+    /// 3: X - key E
+    /// 4: Y - key R
+    /// </param>
+    public void DestroyChipBattleScreen(int chipSlot) {
+        battleHud.BattleChipDestroyGuide(chipSlot);
     }
 
     /// <summary>
@@ -182,8 +210,16 @@ public class Gamestate : MonoBehaviour {
     /// </summary>
     void ChangeToStandBy() {
 
+        //Stand by and selection screens
         battleHud.ShowSelectionScreen(false);
         battleHud.ShowStandBy(true);
+
+        //Delete chips from selection screen
+        battleHud.DestroySelectionBattleChips();
+
+        //Set selected battle chips to guide
+
+        //Send message to character controller
     }
 
     /// <summary>
@@ -241,6 +277,15 @@ public class Gamestate : MonoBehaviour {
                 battleHud.ShowCustomBar(false);
                 battleHud.ShowBattleChipHelp(false);
                 battleHud.ShowSelectionScreen(true);
+
+                //Destroying chip guides
+                DestroyChipBattleScreen(1);
+                DestroyChipBattleScreen(2);
+                DestroyChipBattleScreen(3);
+                DestroyChipBattleScreen(4);
+
+                //Refreshing chip list
+                GameObject.Find("Folder").SendMessage("SetSelectionScreenChips");
 
                 //Setting time to zero
                 Time.timeScale = 0.0f;
