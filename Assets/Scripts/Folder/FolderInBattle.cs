@@ -101,6 +101,9 @@ public class FolderInBattle : MonoBehaviour {
 
             battleHud.SetChipList(selectionChips);
         }
+        else {
+            battleHud.SetChipList();
+        }
     }
 
 

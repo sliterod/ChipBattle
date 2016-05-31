@@ -85,8 +85,8 @@ public class BattleHud : MonoBehaviour {
 
             //Selection screen
             selectionScreen.gameObject.SetActive(true);
-            InitializeSelectionScreenCursor();                
-            
+            InitializeSelectionScreenCursor();
+
             iTweenEvent.GetEvent(selectionScreen.gameObject, "Show").Play();
         }
         else {
@@ -163,7 +163,7 @@ public class BattleHud : MonoBehaviour {
     /// Initializes the object and the positions of selection screen cursor
     /// </summary>
     void InitializeSelectionScreenCursor() {
-       
+
         if (!isScreenInitialized)
         {
             cursorPositionsArray = new float[] { 18.0f, 118.0f, 218.0f, 318.0f, 418.0f, 518.0f };
@@ -181,9 +181,9 @@ public class BattleHud : MonoBehaviour {
         selectionCursor.gameObject.SetActive(true);
 
         //Cursor position
-        selectionCursor.anchoredPosition = new Vector2( cursorPositionsArray[selCursorIndex],
+        selectionCursor.anchoredPosition = new Vector2(cursorPositionsArray[selCursorIndex],
                                                         selectionCursor.anchoredPosition.y);
-        
+
     }
 
     /// <summary>
@@ -357,7 +357,7 @@ public class BattleHud : MonoBehaviour {
         selScreenChipNames = chipArray;
         selScreenMiniatures = new List<Transform>();
         selScreenChips = new List<Transform>();
-        selScreenGuides = new Transform[4,2];
+        selScreenGuides = new Transform[4, 2];
 
         Debug.Log("Current random selection set. Now instantiating chips");
         for (int i = 0; i < selScreenChipNames.Length; i++)
@@ -365,11 +365,54 @@ public class BattleHud : MonoBehaviour {
             InstantiateBattleChip(selScreenChipNames[i]);
         }
 
+        //Filling empty spaces (if any)
+        FillEmptyChipSlot(selScreenChipNames.Length);
+
         Debug.Log("Setting miniature positions");
         SelectionMiniaturePosition();
 
         Debug.Log("Deactivating other chip instances");
         ShowCurrentChip(0);
+    }
+
+    /// <summary>
+    /// Sets the first six chips on list and shows their images.
+    /// Override, only works if list is already empty
+    /// </summary>
+    public void SetChipList() {
+        selScreenMiniatures = new List<Transform>();
+        selScreenChips = new List<Transform>();
+        selScreenGuides = new Transform[4, 2];
+
+        Debug.Log("Random selection empty. Now instantiating chips");
+        FillEmptyChipSlot(0);
+
+        Debug.Log("Setting miniature positions");
+        SelectionMiniaturePosition();
+
+        Debug.Log("Deactivating other chip instances");
+        ShowCurrentChip(0);
+    }
+
+    /// <summary>
+    /// Fills with a No Data image every empty slot
+    /// </summary>
+    /// <param name="chipListLength">Current amount of chips on folder</param>
+    void FillEmptyChipSlot(int chipListLength) {
+
+        int emptySlots; //How many slots are empty
+
+        //Filling empty spaces
+        if (chipListLength < 6)
+        {
+            Debug.Log("Current chips on folder: "+ chipListLength + ". Filling empty spaces...");
+            emptySlots = 6 - chipListLength;
+
+            for (int i = 0; i < emptySlots; i++)
+            {
+                InstantiateBattleChip("NoData");
+            }
+        }
     }
 
     /// <summary>
@@ -551,7 +594,7 @@ public class BattleHud : MonoBehaviour {
 
             //Setting guide
             chipGuideTransform = selScreenGuides[chipGuideIndex, 0];
-
+            
             //Returning current chip to its original parent
             Debug.Log("Returning chip to original parent");
            
