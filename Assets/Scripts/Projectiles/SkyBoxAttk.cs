@@ -1,30 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Grenade : Projectile {
+public class SkyBoxAttk : Projectile
+{
 
     static float MAX_COLLIDER_RADIUS = 3.5f;
     static float COLLIDER_GROW_SPEED = 3.5f;
 
-    private float yForce = 25f;
-    private float xForce = 19f;
+    private float yForce = 50f;
+    private float xForce = 9f;
 
     public GameObject explosion;
 
     float colliderRadius;
 
-    
+
     bool explosionActivated = false;
 
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         colliderRadius = transform.localScale.x;
-        damage = 40;
+        damage = 60;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
         if (explosionActivated)
         {
             colliderRadius = Mathf.Clamp(colliderRadius + (COLLIDER_GROW_SPEED * Time.deltaTime), 0.0f, MAX_COLLIDER_RADIUS);
@@ -34,7 +37,7 @@ public class Grenade : Projectile {
                 KillSelf();
             }
         }
-	}
+    }
 
     /// <summary>
     /// Tells the projectile to start moving at the default speed
@@ -43,17 +46,18 @@ public class Grenade : Projectile {
     public void Launch(StageSide side)
     {
         SetLayerOfEffect(side);
-        if(side == StageSide.red)
+        if (side == StageSide.red)
         {
             xForce *= -1;
         }
         Vector3 force = new Vector3(xForce, yForce, 0);
-        GetComponent<Rigidbody>().AddForce(force,ForceMode.Impulse);
+        GetComponent<Rigidbody>().AddForce(force, ForceMode.Impulse);
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (!explosionActivated) {
+        if (!explosionActivated)
+        {
             if (other.tag == "Stage")
             {
                 explosionActivated = true;
@@ -62,8 +66,9 @@ public class Grenade : Projectile {
                 GetComponent<Rigidbody>().isKinematic = true;
                 GetComponent<MeshRenderer>().enabled = false;
             }
-            if (other.tag == "Player")
-            {
+            //if ((other.tag == "Player")&&(other.gameObject.layer == layerOfEffect))
+              if (other.tag == "Player")
+                {
                 explosionActivated = true;
                 explosion.SetActive(true);
                 explosion.transform.position = this.transform.position;
@@ -78,7 +83,7 @@ public class Grenade : Projectile {
                 other.SendMessage("OnHit", damage);
             }
         }
-        
+
     }
 
     /// <summary>

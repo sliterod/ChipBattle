@@ -21,6 +21,7 @@ public class DoubleShot : Chip {
         _chipName = "#DoubleShot";
         _chipPrefabName = "DoubleShot";
         _animation = (int)ChipAnimations.DoubleShot;
+        isFixed = true;
     }
 
     // Use this for initialization
@@ -58,7 +59,6 @@ public class DoubleShot : Chip {
         {
 
             Debug.Log("Double Shot Activated");
-            projectilePoint = GameObject.Find("Hand_R").transform;
             isActive = true;
             foreach (GameObject element in GameObject.FindGameObjectsWithTag("AnimationController"))
             //We search for every "animationController" objects in the scene
@@ -83,15 +83,31 @@ public class DoubleShot : Chip {
             if (shootsCount == 0) //First shot
             {
                 //We take the projectile form the resources
+                projectilePoint = transform.root.Find(RIGHT_HAND_PATH);
                 projectile.transform.position = projectilePoint.position; //Put it into position
-                projectile.GetComponent<StraightShot>().Launch(StageSide.blue); //And we shoot it
+                if(transform.root.gameObject.layer == 8)
+                {
+                    projectile.GetComponent<StraightShot>().Launch(StageSide.blue); //And we shoot it
+                }
+                else
+                {
+                    projectile.GetComponent<StraightShot>().Launch(StageSide.red); //And we shoot it
+                }
+                
                 shootsCount ++;
             }
             else
             {
-                projectilePoint = GameObject.Find("Hand_L").transform;
+                projectilePoint = transform.root.Find(LEFT_HAND_PATH);
                 projectile.transform.position = projectilePoint.position; //Put it into position
-                projectile.GetComponent<StraightShot>().Launch(StageSide.blue); //And we shoot it
+                if (transform.root.gameObject.layer == 8)
+                {
+                    projectile.GetComponent<StraightShot>().Launch(StageSide.blue); //And we shoot it
+                }
+                else
+                {
+                    projectile.GetComponent<StraightShot>().Launch(StageSide.red); //And we shoot it
+                }
             }
             
         }
