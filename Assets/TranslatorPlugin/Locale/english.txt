@@ -1,0 +1,6 @@
+key_content.;
+example_Use tags followed by an underscore to identify a localization key and its content.;
+cannon_CANNON;
+grenadechip_GRENADE;
+cannoninfo_A SIMPLE YET\nPOWERFUL SHOT.;
+grenadechipinfo_CAMOUFLAGED BALL.\nEXPLODES ON CONTACT.;

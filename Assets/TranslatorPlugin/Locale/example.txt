@@ -1,0 +1,8 @@
+key_Content of the localization key written on the script.;
+effects_Text can have effects like <b>BOLD</b> \nor a color like <color=yellow>YELLOW.</color>;
+disclaimer_For effects to work properly,\nRICH TEXT must be enabled.;
+extraline_For extra lines, Vertical Overflow\nmust be on OVERFLOW.;
+effectinfo_For more information on effects,\nvisit http://docs.unity3d.com/Manual/StyledText.html;cannon_Lorem ipsum dolor sit amet, consectetur;
+grenadechip_Lorem ipsum dolor sit amet, consectetur;
+cannoninfo_Lorem ipsum dolor sit amet, consectetur;
+grenadechipinfo_Lorem ipsum dolor sit amet, consectetur;

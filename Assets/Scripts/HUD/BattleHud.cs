@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
+using System;
 
 public class BattleHud : MonoBehaviour {
 
@@ -10,42 +12,50 @@ public class BattleHud : MonoBehaviour {
     public GameObject battleAreaDescription;
     public GameObject battlePause;
     public GameObject battleStandBy;
+    public GameObject resultsScreen;
     Text battleStandByText;
 
+    /******************** SELECTION SCREEN **********************/
     public RectTransform selectionScreen;
-    public GameObject selectionEnemies;
+    public GameObject selectionChipInfo;
+    public GameObject selectionOpponent;
+    public Transform selectionScreenMiniatures;
+    public Transform selectionScreenGuide;
     RectTransform selectionCursor;
     RectTransform selectionOk;
     int selCursorIndex;
 
-    public GameObject resultsScreen;
-
-    //Control booleans
+    /******************** CONTROL BOOLEANS **********************/
     bool isScreenInitialized;
     bool isCursorMoved;
     bool isStandbyTimerOffline;
     bool isResultsTimerOffline;
 
-    //General variables
+    /******************** GENERAL VARIABLES **********************/
     float[] cursorPositionsArray;
     float standByTimer;
     float realTimeStamp;
+
+    /************************ FOLDER ****************************/
+    List<Transform> selScreenChips;                     //Chip images. Toggled on/off according to cursor position
+    List<Transform> selScreenMiniatures;                //Chip images as miniatures. Shows current available chips
+    Transform[,] selScreenGuides;                       //Chip images as miniatures. Indicates a chip is selected and former parent
+    string[] selScreenChipNames;                        //Random selected chips from current equipped folder
+    int selScreenChipIndex;
+
+    float[] selMiniaturePositions;
+    float[] selGuidePositions;
+    float[] battleGuidePositions;
+
+    /************************************************************/
 
     void Update() {
         if (isStandbyTimerOffline)
             StandByMessageTimer();
 
-        if (Input.GetKeyDown(KeyCode.M)) {
-            GameObject cannon = Instantiate(Resources.Load("Cannon", typeof(GameObject))) as GameObject;
-            
-            cannon.transform.parent = selectionScreen.transform;
-
-            //Scale
-            cannon.transform.localScale = Vector3.one;
-
-            //Position
-            cannon.transform.localPosition = Vector3.zero;
-        }
+        /*if (Input.GetKeyDown(KeyCode.G)) {
+            SelectionGuideSetChipSlot(1);
+        }*/
     }
 
 
@@ -64,7 +74,7 @@ public class BattleHud : MonoBehaviour {
     }
 
     /// <summary>
-    /// Shows Chip selection screen UI
+    /// Shows chip selection screen UI
     /// </summary>
     /// <param name="state">State to indicate if the bar should be shown or not</param>
     public void ShowSelectionScreen(bool state) {
@@ -77,8 +87,8 @@ public class BattleHud : MonoBehaviour {
 
             //Selection screen
             selectionScreen.gameObject.SetActive(true);
-            InitializeSelectionScreenCursor();                
-            
+            InitializeSelectionScreenCursor();
+
             iTweenEvent.GetEvent(selectionScreen.gameObject, "Show").Play();
         }
         else {
@@ -146,6 +156,8 @@ public class BattleHud : MonoBehaviour {
         selectionCursor.anchoredPosition = new Vector2(cursorPositionsArray[selCursorIndex],
                                                         selectionCursor.anchoredPosition.y);
 
+        ShowCurrentChip(selCursorIndex);
+
         isCursorMoved = false;
     }
 
@@ -153,7 +165,7 @@ public class BattleHud : MonoBehaviour {
     /// Initializes the object and the positions of selection screen cursor
     /// </summary>
     void InitializeSelectionScreenCursor() {
-       
+
         if (!isScreenInitialized)
         {
             cursorPositionsArray = new float[] { 18.0f, 118.0f, 218.0f, 318.0f, 418.0f, 518.0f };
@@ -171,9 +183,9 @@ public class BattleHud : MonoBehaviour {
         selectionCursor.gameObject.SetActive(true);
 
         //Cursor position
-        selectionCursor.anchoredPosition = new Vector2( cursorPositionsArray[selCursorIndex],
+        selectionCursor.anchoredPosition = new Vector2(cursorPositionsArray[selCursorIndex],
                                                         selectionCursor.anchoredPosition.y);
-        
+
     }
 
     /// <summary>
@@ -331,6 +343,478 @@ public class BattleHud : MonoBehaviour {
         }
         else {
             iTweenEvent.GetEvent(resultsScreen.gameObject, "Hide").Play();
+        }
+    }
+
+    /**********************************************************
+                            BATTLE CHIPS
+    **********************************************************/
+
+    /// <summary>
+    /// Sets the first six chips on list
+    /// and shows their images
+    /// </summary>
+    /// <param name="chipArray">String array with selected chips after random</param>
+    public void SetChipList(string[] chipArray) {
+        selScreenChipNames = chipArray;
+        selScreenMiniatures = new List<Transform>();
+        selScreenChips = new List<Transform>();
+        selScreenGuides = new Transform[4, 2];
+
+        Debug.Log("Current random selection set. Now instantiating chips");
+        for (int i = 0; i < selScreenChipNames.Length; i++)
+        {
+            InstantiateBattleChip(selScreenChipNames[i]);
+        }
+
+        //Filling empty spaces (if any)
+        FillEmptyChipSlot(selScreenChipNames.Length);
+
+        Debug.Log("Setting miniature positions");
+        SelectionMiniaturePosition();
+
+        Debug.Log("Deactivating other chip instances");
+        ShowCurrentChip(0);
+    }
+
+    /// <summary>
+    /// Sets the first six chips on list and shows their images.
+    /// Override, only works if list is already empty
+    /// </summary>
+    public void SetChipList() {
+        selScreenMiniatures = new List<Transform>();
+        selScreenChips = new List<Transform>();
+        selScreenGuides = new Transform[4, 2];
+
+        Debug.Log("Random selection empty. Now instantiating chips");
+        FillEmptyChipSlot(0);
+
+        Debug.Log("Setting miniature positions");
+        SelectionMiniaturePosition();
+
+        Debug.Log("Deactivating other chip instances");
+        ShowCurrentChip(0);
+    }
+
+    /// <summary>
+    /// Fills with a No Data image every empty slot
+    /// </summary>
+    /// <param name="chipListLength">Current amount of chips on folder</param>
+    void FillEmptyChipSlot(int chipListLength) {
+
+        int emptySlots; //How many slots are empty
+
+        //Filling empty spaces
+        if (chipListLength < 6)
+        {
+            Debug.Log("Current chips on folder: "+ chipListLength + ". Filling empty spaces...");
+            emptySlots = 6 - chipListLength;
+
+            for (int i = 0; i < emptySlots; i++)
+            {
+                InstantiateBattleChip("NoData");
+            }
+        }
+    }
+
+    /// <summary>
+    /// Instantiates a battle chip to the selection screen
+    /// </summary>
+    /// <param name="chipName">Name of the prefab containing the chip</param>
+    void InstantiateBattleChip(string chipName)
+    {
+        string path = "ChipsUI/" + chipName;
+        Transform chip = Instantiate(Resources.Load(path, typeof(Transform))) as Transform;
+
+        chip.SetParent(selectionScreen.transform);
+
+        //Scale
+        chip.localScale = Vector3.one;
+
+        //Chip Position
+        chip.localPosition = Vector3.zero;
+
+        //Chip name
+        chip.name = chipName;
+        
+        //Saving chips
+        selScreenChips.Add(chip);
+
+        //Saving miniatures
+        if (chip.FindChild("chip_miniature"))
+        {
+            selScreenMiniatures.Add(chip.transform.FindChild("chip_miniature"));
+        }
+    }
+
+    /// <summary>
+    /// Destroy selection screen battle chips
+    /// </summary>
+    public void DestroySelectionBattleChips() {
+        Debug.Log("Chips on selScreenChips list: " + selScreenChips.Count);
+        //Destroying selection screen battle chip list
+        foreach (Transform chip in selScreenChips) {
+            Destroy(chip.gameObject);
+        }
+
+        selScreenChips.RemoveRange(0, selScreenChips.Count);
+        Debug.Log("Chips on selScreenChips list: " + selScreenChips.Count);
+
+        //Destroying selection screen miniatures
+        foreach (Transform miniature in selScreenMiniatures)
+        {
+            Destroy(miniature.gameObject);
+        }
+
+        selScreenMiniatures.RemoveRange(0, selScreenMiniatures.Count);
+    }
+
+    /// <summary>
+    /// Shows chip image according to cursor's current position
+    /// </summary>
+    /// <param name="position">Current cursor position (index)</param>
+    void ShowCurrentChip(int position) {
+
+        //Turning off chips
+        foreach (Transform chip in selScreenChips) {
+            chip.localScale = Vector3.zero;
+        }
+
+        //Turning on current chip
+        if (position < selScreenChips.Count)
+        {
+            selScreenChips[position].localScale = Vector3.one;
+        }
+    }
+
+    /// <summary>
+    /// Sets the position of the miniatures on the selection screen
+    /// </summary>
+    void SelectionMiniaturePosition() {
+
+        for (int i = 0; i < selScreenMiniatures.Count; i++) {
+
+            //Parent
+            selScreenMiniatures[i].SetParent(selectionScreenMiniatures);
+
+            //Position
+            selScreenMiniatures[i].localPosition = selectionScreenMiniatures
+                                                        .Find("cards_" + (i+1))
+                                                        .localPosition;
+
+            //Scale
+            selScreenMiniatures[i].localScale = Vector3.one;
+        }
+    }
+
+    /// <summary>
+    /// Sets the chip guide on a button slot
+    /// </summary>
+    /// <param name="button">Integer to indicate current button pressed:
+    /// 1: Button A - Key Q
+    /// 2: Button B - Key W
+    /// 3: Button X - Key E
+    /// 4: Button Y - Key R
+    /// </param>
+    public void SelectionGuideSetChipSlot(int button) {
+
+        string buttonGuide = "guide_button";
+        int guideIndex = 0;
+
+        //Current button
+        switch (button) {
+            case 1:
+                buttonGuide = buttonGuide + "A";
+                guideIndex = 0;
+                break;
+
+            case 2:
+                buttonGuide = buttonGuide + "B";
+                guideIndex = 1;
+                break;
+
+            case 3:
+                buttonGuide = buttonGuide + "X";
+                guideIndex = 2;
+                break;
+
+            case 4:
+                buttonGuide = buttonGuide + "Y";
+                guideIndex = 3;
+                break;
+        }
+        
+        //Changing parent
+        SelectionGuideChangeChipParent(buttonGuide, guideIndex);
+    }
+
+    /// <summary>
+    /// Fills the chip guide slot
+    /// </summary>
+    /// <param name="chipGuide">Chip guide transform to be relocated</param>
+    /// <param name="parentName">New parent for the chip guide</param>
+    /// <param name="chipGuideIndex">Index to save chip guide on array (to be used on battle)</param>
+    void SelectionGuideFillSlot(Transform chipGuide,
+                                    string parentName,
+                                    int chipGuideIndex)
+    {
+        //Setting current chip to selected guide position
+        Debug.Log("Setting chip guide to " + parentName);
+
+        if (chipGuide)
+        {
+            //Saving on array
+            Debug.Log("Saving chip guide to array");
+            selScreenGuides[chipGuideIndex, 0] = chipGuide; //Chip
+            Debug.Log("ChipGuideIndex: " + chipGuideIndex);
+            selScreenGuides[chipGuideIndex, 1] = chipGuide.parent; //Original Parent
+
+            //New Parent
+            chipGuide.SetParent(selectionScreenGuide.FindChild(parentName));
+
+            //New Position
+            chipGuide.localPosition = new Vector3(61.0f, 0.0f);
+
+            //New Scale
+            chipGuide.localScale = Vector3.one;
+        }
+    }
+
+    /// <summary>
+    /// Changes the parent of the chip guide if:
+    /// *There is no chip on current position
+    /// *There is a chip on current position
+    /// </summary>
+    /// <param name="parentName">New parent for the chip guide</param>
+    /// <param name="chipGuideIndex">Index to save chip guide on array (to be used on battle)</param>
+    void SelectionGuideChangeChipParent(string parentName, int chipGuideIndex)
+    {
+        Transform chipGuideTransform;
+        string chipGuideName = "chip_guide";
+
+        if (selScreenGuides[chipGuideIndex, 0]) {
+
+            //Setting guide
+            chipGuideTransform = selScreenGuides[chipGuideIndex, 0];
+            
+            //Returning current chip to its original parent
+            Debug.Log("Returning chip to original parent");
+           
+            //Parent
+            chipGuideTransform.SetParent(selScreenGuides[chipGuideIndex, 1]);
+
+            //Position
+            chipGuideTransform.localPosition = Vector3.zero;
+
+            //Scale
+            chipGuideTransform.localScale = Vector3.zero;
+
+            //Checking if selected chip guide is the same
+            if (selCursorIndex < selScreenChips.Count)
+            {
+                if (selScreenGuides[chipGuideIndex, 1].transform.GetInstanceID() ==
+                selScreenChips[selCursorIndex].transform.GetInstanceID())
+                {
+                    //Setting slot empty
+                    Debug.Log("Same chip, setting slot empty");
+                    selScreenGuides[chipGuideIndex, 0] = null; //Chip
+                    selScreenGuides[chipGuideIndex, 1] = null; //Original Parent
+                }
+                else if (selScreenGuides[chipGuideIndex, 1].transform.GetInstanceID() !=
+                    selScreenChips[selCursorIndex].transform.GetInstanceID())
+                {
+                    Debug.Log("Different chip, changing guide transform");
+                    chipGuideTransform = selScreenChips[selCursorIndex]
+                                        .transform
+                                        .FindChild(chipGuideName);
+
+                    if (chipGuideTransform)
+                    {
+                        Debug.Log("selScreenChips: " + selScreenChips[selCursorIndex].name);
+                        Debug.Log("chipGuideIndex: " + chipGuideIndex);
+                        Debug.Log("chipGuideTransform: " + chipGuideTransform.name);
+                        SelectionGuideFillSlot(chipGuideTransform, parentName, chipGuideIndex);
+                    }
+
+                }
+            }
+        }
+        else
+        {
+            Debug.Log("Guide slot empty, setting chip");
+
+            if (selCursorIndex < selScreenChips.Count)
+            {
+                chipGuideTransform = selScreenChips[selCursorIndex]
+                                    .transform
+                                    .FindChild(chipGuideName);
+
+                SelectionGuideFillSlot(chipGuideTransform, parentName, chipGuideIndex);
+            }
+        }
+
+    }
+
+    /// <summary>
+    /// Shows chip info screen
+    /// </summary>
+    public void ShowChipInfo(bool state) {
+
+        if (state)
+        {
+            selectionChipInfo
+                .transform
+                .localScale = Vector2.one;
+        }
+        else
+        {
+            selectionChipInfo
+                .transform
+                .localScale = Vector2.zero;
+        }
+
+        //Change info content
+        ChangeChipInformationText();
+    }
+    
+    /// <summary>
+    /// Changes text information according to current selected chip
+    /// </summary>
+    void ChangeChipInformationText() {
+
+        Debug.Log("Changing chip information text...");
+
+        string chipName;
+        Text chipInformation;
+
+        chipName = selScreenChips[selCursorIndex].name.ToLower();
+        chipInformation = selectionChipInfo
+                            .transform
+                            .FindChild("info_text")
+                            .GetComponent<Text>();
+
+        //Getting information from localize file
+        try {            
+            //Defining string for localization
+            string localeKey = chipName + "info";
+
+            //Finding localization component
+            LocalizeText localizeText;
+
+            localizeText = selectionChipInfo
+                                .transform
+                                .FindChild("info_text")
+                                .GetComponent<LocalizeText>();
+
+            //Setting localized text
+            localizeText.SetKeyAndLocalize(localeKey);
+            
+            //chipInformation.text = "Localize function";
+            //chipInformation.text = "Localized\ninformation";
+        }
+        catch (NullReferenceException nrex) {
+            //If no localize object is found, setting a placeholder information
+            Debug.Log("Exception occured: " + nrex.Message);
+            chipInformation.text = chipName.ToUpper() + "\ndescription.";
+        }
+    }
+
+    /// <summary>
+    /// Sets the position of the chip guides on the battle screen
+    /// </summary>
+    public void BattleGuidePosition() {
+
+        Transform chipTransform;
+        Transform chipParent;
+
+        string[] chipsInUse = new string[4];
+        string chipName = "";
+
+
+        for (int i = 0; i < selScreenGuides.GetLength(0); i++)
+        {
+            if (selScreenGuides[i, 0]) { 
+
+                //Chip object
+                chipTransform = selScreenGuides[i, 0];
+
+                //Parent
+                chipParent = battleChipHelp
+                                .transform
+                                .FindChild(BattleChipSlot(i));
+
+                chipTransform.SetParent(chipParent);
+
+                //Position
+                chipTransform.localPosition = new Vector3(2.0f, chipTransform.localPosition.y);
+
+                //Scale
+                chipTransform.localScale = Vector3.one;
+
+                //Chip Name
+                chipName = selScreenGuides[i, 1].transform.name;
+
+                chipParent.FindChild("button_name")
+                            .GetComponent<Text>()
+                            .text = chipName;
+
+                //Array of chips in use
+                chipsInUse[i] = chipName;
+                Debug.Log("Chip Name: " + selScreenGuides[i, 1] + ", Position: " + i);
+            }
+        }
+
+        //Sending chips to folder script
+        GameObject.Find("Folder").SendMessage("SetChipOnSlot", chipsInUse);
+    }
+
+    /// <summary>
+    /// Returns the slot where the battle chip should be set
+    /// </summary>
+    /// <param name="slot">Slot number</param>
+    /// <returns>Name of the battle chip slot</returns>
+    string BattleChipSlot(int slot) {
+
+        string chipSlot = "";
+
+        switch (slot)
+        {
+            case 0: chipSlot = "button_a"; break;
+            case 1: chipSlot = "button_b"; break;
+            case 2: chipSlot = "button_x"; break;
+            case 3: chipSlot = "button_y"; break;
+        }
+
+        return chipSlot;
+    }
+
+    /// <summary>
+    /// Destroys current guide chip
+    /// </summary>
+    /// <param name="slot"></param>
+    public void BattleChipDestroyGuide(int slot) {
+
+        string chipToDestroy = "";
+        string chipA = "button_a/chip_guide";
+        string chipB = "button_b/chip_guide";
+        string chipX = "button_x/chip_guide";
+        string chipY = "button_y/chip_guide";
+
+        switch (slot) {
+            case 1: chipToDestroy = chipA; break;
+
+            case 2: chipToDestroy = chipB; break;
+
+            case 3: chipToDestroy = chipX; break;
+
+            case 4: chipToDestroy = chipY; break;
+        }
+
+        //Checks if guide exists before deleting it
+        if (battleChipHelp.transform.FindChild(chipToDestroy))
+        {
+            Destroy(battleChipHelp.transform.FindChild(chipToDestroy).gameObject);
+            Debug.Log("Chip guide destroyed");
         }
     }
 }
