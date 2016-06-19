@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System;
 
 public class BattleHud : MonoBehaviour {
 
@@ -16,7 +17,8 @@ public class BattleHud : MonoBehaviour {
 
     /******************** SELECTION SCREEN **********************/
     public RectTransform selectionScreen;
-    public GameObject selectionEnemies;
+    public GameObject selectionChipInfo;
+    public GameObject selectionOpponent;
     public Transform selectionScreenMiniatures;
     public Transform selectionScreenGuide;
     RectTransform selectionCursor;
@@ -651,6 +653,70 @@ public class BattleHud : MonoBehaviour {
             }
         }
 
+    }
+
+    /// <summary>
+    /// Shows chip info screen
+    /// </summary>
+    public void ShowChipInfo(bool state) {
+
+        if (state)
+        {
+            selectionChipInfo
+                .transform
+                .localScale = Vector2.one;
+        }
+        else
+        {
+            selectionChipInfo
+                .transform
+                .localScale = Vector2.zero;
+        }
+
+        //Change info content
+        ChangeChipInformationText();
+    }
+    
+    /// <summary>
+    /// Changes text information according to current selected chip
+    /// </summary>
+    void ChangeChipInformationText() {
+
+        Debug.Log("Changing chip information text...");
+
+        string chipName;
+        Text chipInformation;
+
+        chipName = selScreenChips[selCursorIndex].name.ToLower();
+        chipInformation = selectionChipInfo
+                            .transform
+                            .FindChild("info_text")
+                            .GetComponent<Text>();
+
+        //Getting information from localize file
+        try {            
+            //Defining string for localization
+            string localeKey = chipName + "info";
+
+            //Finding localization component
+            LocalizeText localizeText;
+
+            localizeText = selectionChipInfo
+                                .transform
+                                .FindChild("info_text")
+                                .GetComponent<LocalizeText>();
+
+            //Setting localized text
+            localizeText.SetKeyAndLocalize(localeKey);
+            
+            //chipInformation.text = "Localize function";
+            //chipInformation.text = "Localized\ninformation";
+        }
+        catch (NullReferenceException nrex) {
+            //If no localize object is found, setting a placeholder information
+            Debug.Log("Exception occured: " + nrex.Message);
+            chipInformation.text = chipName.ToUpper() + "\ndescription.";
+        }
     }
 
     /// <summary>

@@ -97,16 +97,16 @@ public class InputCapture : MonoBehaviour {
         }
 
         //Fixed 1
-        if (Mathf.Round(Input.GetAxis("LT")) == 1.0f || Input.GetKeyDown(KeyCode.LeftShift))
+        /*if (Mathf.Round(Input.GetAxis("LT")) == 1.0f || Input.GetKeyDown(KeyCode.LeftShift))
         {
             Debug.Log("Input captured. Using Fixed 1");
         }
 
         //Fixed 2
-        if (Mathf.Round(Input.GetAxis("RT")) == -1.0f || Input.GetKeyDown(KeyCode.Space))
+        if (Mathf.Round(Input.GetAxis("RT")) == -1.0f || Input.GetKeyDown(KeyCode.RightShift))
         {
             Debug.Log("Input captured. Using Fixed 2");
-        }
+        }*/
         
     }
 
@@ -156,18 +156,36 @@ public class InputCapture : MonoBehaviour {
         //
         if (Input.GetButtonDown("LB") || Input.GetKeyDown(KeyCode.Tab))
         {
-            Debug.Log("Input captured. Custom bar full, entering selection screen");
-            characterControl.FlushChips();
-            characterControl.setChip("GrenadeChip", 1);
-            characterControl.setChip("GrenadeChip", 2);
-            characterControl.setChip("Cannon", 3);
-            characterControl.setChip("Cannon", 4);
+            if (gamestate.CurrentBattleState == BattleState.selectionScreen)
+            {
+                Debug.Log("Input captured. Showing info");
+                gamestate.DisplayChipInformation();
+            }
+
+            if (gamestate.CurrentBattleState == BattleState.battle)
+            {
+                Debug.Log("Input captured. Skill 1 fired");
+                /*Debug.Log("Input captured. Custom bar full, entering selection screen");
+                characterControl.FlushChips();
+                characterControl.setChip("GrenadeChip", 1);
+                characterControl.setChip("GrenadeChip", 2);
+                characterControl.setChip("Cannon", 3);
+                characterControl.setChip("Cannon", 4);*/
+            }
         }
 
         //
-        if (Input.GetButtonDown("RB") || Input.GetKeyDown(KeyCode.RightShift))
+        if (Input.GetButtonDown("RB") || Input.GetKeyDown(KeyCode.Space))
         {
-            
+            if (gamestate.CurrentBattleState == BattleState.selectionScreen)
+            {
+                Debug.Log("Input captured. Shuffling folder");
+            }
+
+            if (gamestate.CurrentBattleState == BattleState.battle)
+            {
+                Debug.Log("Input captured. Skill 2 fired");
+            }
         }
     }
 
@@ -269,6 +287,6 @@ public class InputCapture : MonoBehaviour {
            /* Debug.Log("Input captured. Moving character to click position");
             Transform cube = GameObject.Find("testchar").transform;
             cube.GetComponent<CharacterControl>().MoveCharacterMouse(); */
+            }
         }
-    }
 }

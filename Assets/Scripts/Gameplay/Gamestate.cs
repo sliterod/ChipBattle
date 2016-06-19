@@ -13,6 +13,7 @@ public class Gamestate : MonoBehaviour {
     //Control variables
     bool isGamePaused;                          //Game is paused/running
     bool isOkButtonHighlighted;                 //OK button is Highlighted on selection screen
+    bool isChipInfoActivated;
 
     public BattleState CurrentBattleState
     {
@@ -151,14 +152,19 @@ public class Gamestate : MonoBehaviour {
     /// <param name="cursorMovement"></param>
     public void MoveSelectionScreenCursor(Movement cursorMovement) {
 
-        if (cursorMovement == Movement.up) {
-            isOkButtonHighlighted = false;
-        }
-        else if (cursorMovement == Movement.down) {
-            isOkButtonHighlighted = true;
-        }
+        if (!isChipInfoActivated)
+        {
+            if (cursorMovement == Movement.up)
+            {
+                isOkButtonHighlighted = false;
+            }
+            else if (cursorMovement == Movement.down)
+            {
+                isOkButtonHighlighted = true;
+            }
 
-        battleHud.MoveSelectionScreenCursor(cursorMovement);
+            battleHud.MoveSelectionScreenCursor(cursorMovement);
+        }
     }
 
     /// <summary>
@@ -166,16 +172,20 @@ public class Gamestate : MonoBehaviour {
     /// a state change will occur.
     /// </summary>
     public void SetSelectionScreenCursorOK() {
-        if (!isOkButtonHighlighted) {
-            isOkButtonHighlighted = true;
-            battleHud.MoveSelectionScreenCursor(Movement.down);
-        }
-        else if (isOkButtonHighlighted) {
-            Debug.Log("Changing state");
-            isOkButtonHighlighted = false;
-            currentBattleState = BattleState.standby;
 
-            battleHud.BattleGuidePosition();
+        if (!isChipInfoActivated)
+        {
+            if (!isOkButtonHighlighted) {
+                isOkButtonHighlighted = true;
+                battleHud.MoveSelectionScreenCursor(Movement.down);
+            }
+            else if (isOkButtonHighlighted) {
+                Debug.Log("Changing state");
+                isOkButtonHighlighted = false;
+                currentBattleState = BattleState.standby;
+
+                battleHud.BattleGuidePosition();
+            }
         }
     }
 
@@ -203,6 +213,22 @@ public class Gamestate : MonoBehaviour {
     /// </param>
     public void DestroyChipBattleScreen(int chipSlot) {
         battleHud.BattleChipDestroyGuide(chipSlot);
+    }
+
+    /// <summary>
+    /// Shows battle chip information
+    /// </summary>
+    public void DisplayChipInformation() {
+        if (!isChipInfoActivated)
+        {
+            battleHud.ShowChipInfo(true);
+        }
+        else
+        {
+            battleHud.ShowChipInfo(false);
+        }
+
+        isChipInfoActivated = !isChipInfoActivated;
     }
 
     /// <summary>
