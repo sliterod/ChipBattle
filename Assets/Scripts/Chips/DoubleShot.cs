@@ -59,7 +59,6 @@ public class DoubleShot : Chip {
         {
 
             Debug.Log("Double Shot Activated");
-            projectilePoint = GameObject.Find("Hand_R").transform;
             isActive = true;
             foreach (GameObject element in GameObject.FindGameObjectsWithTag("AnimationController"))
             //We search for every "animationController" objects in the scene
@@ -84,6 +83,7 @@ public class DoubleShot : Chip {
             if (shootsCount == 0) //First shot
             {
                 //We take the projectile form the resources
+                projectilePoint = transform.root.Find(RIGHT_HAND_PATH);
                 projectile.transform.position = projectilePoint.position; //Put it into position
                 if(transform.root.gameObject.layer == 8)
                 {
@@ -98,7 +98,7 @@ public class DoubleShot : Chip {
             }
             else
             {
-                projectilePoint = GameObject.Find("Hand_L").transform;
+                projectilePoint = transform.root.Find(LEFT_HAND_PATH);
                 projectile.transform.position = projectilePoint.position; //Put it into position
                 if (transform.root.gameObject.layer == 8)
                 {

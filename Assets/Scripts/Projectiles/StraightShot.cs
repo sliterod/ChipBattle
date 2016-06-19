@@ -30,28 +30,6 @@ public class StraightShot : Projectile {
         //If the projectile was launched
         if (isActive)
         {
-            /*
-            //Head of the projectile and starting point of the line
-            float step = START_POINT_SPEED * Time.deltaTime * direcction;
-            lineRenderer.SetPosition(0, transform.position);
-
-
-            //Tail of the projectile and final point of the line
-            if(endPointDelay <= 0)
-            {
-                step = END_POINT_SPEED * Time.deltaTime * direcction;
-                endPoint.x += step;
-                lineRenderer.SetPosition(1, endPoint);
-                if (Vector3.Distance(endPoint, transform.position) < step)
-                {
-                    KillSelf();
-                }
-            }
-            else
-            {
-                endPointDelay -= Time.deltaTime;
-            }
-            */
             lineScale = Mathf.Clamp01(lineScale - (Time.deltaTime * SCALE_SPEED));
             lineRenderer.SetWidth(lineScale, lineScale);
             if(lineScale == 0)

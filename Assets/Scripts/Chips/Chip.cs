@@ -3,6 +3,9 @@ using System.Collections;
 
 public class Chip : MonoBehaviour {
 
+    protected static string RIGHT_HAND_PATH = "Mesh/Dummy/Armature/Torso/UpperArm_R/LowerArm_R/Hand_R"; //Heirachy path to find the right hand object form the root.
+    protected static string LEFT_HAND_PATH = "Mesh/Dummy/Armature/Torso/UpperArm_L/LowerArm_L/Hand_L"; //Heirachy path to find the left hand object form the root.
+
     protected bool isActive = false; //Flag to know if the chip had been activated
     protected bool isFixed = false; //Flag to know if the chip shuouldn't be destroyed because is a fixed ability 
 
