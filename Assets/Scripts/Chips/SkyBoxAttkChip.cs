@@ -1,29 +1,32 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GrenadeChip : Chip {
+public class SkyBoxAttkChip : Chip
+{
 
     Transform projectilePoint;
 
     /// <summary>
     /// Class constructor
     /// </summary>
-    public GrenadeChip()
+    public SkyBoxAttkChip()
     {
-        _chipName = "#Grenade";
-        _chipPrefabName = "GrenadeChip";
+        _chipName = "#SkyBoxAttkChip";
+        _chipPrefabName = "SkyBoxAttk";
         _animation = (int)ChipAnimations.Launch;
     }
 
     // Use this for initialization
-    void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 
     /// <summary>
     /// Override of the Chip's Activate function
@@ -32,16 +35,16 @@ public class GrenadeChip : Chip {
     {
         if (!isActive) //To prevent using the chip multiple times
         {
-
-            Debug.Log("Grenade Activated");
-            projectilePoint = transform.root.Find(RIGHT_HAND_PATH);
+            GameObject player1 = GameObject.Find("Player1");
+            projectilePoint = new GameObject().transform;
+            projectilePoint.position = new Vector3(player1.transform.position.x, player1.transform.position.y + 10, player1.transform.position.z); ;
             isActive = true;
             foreach (GameObject element in GameObject.FindGameObjectsWithTag("AnimationController"))
             //We search for every "animationController" objects in the scene
             {
                 if (element.transform.root == this.transform.root)
                 {
-                    Debug.Log("Animation Controller found");
+                    //Debug.Log("Animation Controller found");
                     //we select the one inside our hierchy
                     element.GetComponent<CharacterAnimationController>().PlayChipAnimation(Animation);
                     //and tell it to play the corresponding animation 
@@ -55,11 +58,11 @@ public class GrenadeChip : Chip {
     {
         if (isActive)
         {
-            GameObject projectile = Instantiate(Resources.Load("Projectiles/Grenade", typeof(GameObject))) as GameObject;
+            GameObject projectile = Instantiate(Resources.Load("Projectiles/SkyBoxAttk", typeof(GameObject))) as GameObject;
             //We take the projectile form the resources
             projectile.transform.position = projectilePoint.position; //Put it into position
             Debug.Log(projectilePoint.position);
-            if(transform.root.gameObject.layer == 8)
+            if (transform.root.gameObject.layer == 8)
             {
                 projectile.transform.GetChild(0).GetComponent<Grenade>().Launch(StageSide.blue); //And we shoot it
             }
@@ -67,7 +70,7 @@ public class GrenadeChip : Chip {
             {
                 projectile.transform.GetChild(0).GetComponent<Grenade>().Launch(StageSide.red); //And we shoot it
             }
-            
+
         }
     }
 
