@@ -64,11 +64,11 @@ public class SkyBoxAttkChip : Chip
             Debug.Log(projectilePoint.position);
             if (transform.root.gameObject.layer == 8)
             {
-                projectile.transform.GetChild(0).GetComponent<Grenade>().Launch(StageSide.blue); //And we shoot it
+                projectile.transform.GetChild(0).GetComponent<SkyBoxAttk>().Launch(StageSide.blue); //And we shoot it
             }
             else
             {
-                projectile.transform.GetChild(0).GetComponent<Grenade>().Launch(StageSide.red); //And we shoot it
+                projectile.transform.GetChild(0).GetComponent<SkyBoxAttk>().Launch(StageSide.red); //And we shoot it
             }
 
         }
