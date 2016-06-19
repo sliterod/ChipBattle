@@ -13,6 +13,7 @@ public class Gamestate : MonoBehaviour {
     //Control variables
     bool isGamePaused;                          //Game is paused/running
     bool isOkButtonHighlighted;                 //OK button is Highlighted on selection screen
+    bool isChipInfoActivated;
 
     public BattleState CurrentBattleState
     {
@@ -151,14 +152,19 @@ public class Gamestate : MonoBehaviour {
     /// <param name="cursorMovement"></param>
     public void MoveSelectionScreenCursor(Movement cursorMovement) {
 
-        if (cursorMovement == Movement.up) {
-            isOkButtonHighlighted = false;
-        }
-        else if (cursorMovement == Movement.down) {
-            isOkButtonHighlighted = true;
-        }
+        if (!isChipInfoActivated)
+        {
+            if (cursorMovement == Movement.up)
+            {
+                isOkButtonHighlighted = false;
+            }
+            else if (cursorMovement == Movement.down)
+            {
+                isOkButtonHighlighted = true;
+            }
 
-        battleHud.MoveSelectionScreenCursor(cursorMovement);
+            battleHud.MoveSelectionScreenCursor(cursorMovement);
+        }
     }
 
     /// <summary>
@@ -166,15 +172,63 @@ public class Gamestate : MonoBehaviour {
     /// a state change will occur.
     /// </summary>
     public void SetSelectionScreenCursorOK() {
-        if (!isOkButtonHighlighted) {
-            isOkButtonHighlighted = true;
-            battleHud.MoveSelectionScreenCursor(Movement.down);
+
+        if (!isChipInfoActivated)
+        {
+            if (!isOkButtonHighlighted) {
+                isOkButtonHighlighted = true;
+                battleHud.MoveSelectionScreenCursor(Movement.down);
+            }
+            else if (isOkButtonHighlighted) {
+                Debug.Log("Changing state");
+                isOkButtonHighlighted = false;
+                currentBattleState = BattleState.standby;
+
+                battleHud.BattleGuidePosition();
+            }
         }
-        else if (isOkButtonHighlighted) {
-            Debug.Log("Changing state");
-            isOkButtonHighlighted = false;
-            currentBattleState = BattleState.standby;
+    }
+
+    /// <summary>
+    /// Sets selected chip on the selection guide slot
+    /// </summary>
+    /// <param name="chipSlot">Button pressed:
+    /// 1: A - key Q
+    /// 2: B - key W
+    /// 3: X - key E
+    /// 4: Y - key R
+    /// </param>
+    public void SetChipSelectionScreen(int chipSlot) {
+        battleHud.SelectionGuideSetChipSlot(chipSlot);
+    }
+
+    /// <summary>
+    /// Destroys used chip miniature on battle guide slot
+    /// </summary>
+    /// <param name="chipSlot">Chip used:
+    /// 1: A - key Q
+    /// 2: B - key W
+    /// 3: X - key E
+    /// 4: Y - key R
+    /// </param>
+    public void DestroyChipBattleScreen(int chipSlot) {
+        battleHud.BattleChipDestroyGuide(chipSlot);
+    }
+
+    /// <summary>
+    /// Shows battle chip information
+    /// </summary>
+    public void DisplayChipInformation() {
+        if (!isChipInfoActivated)
+        {
+            battleHud.ShowChipInfo(true);
         }
+        else
+        {
+            battleHud.ShowChipInfo(false);
+        }
+
+        isChipInfoActivated = !isChipInfoActivated;
     }
 
     /// <summary>
@@ -182,8 +236,16 @@ public class Gamestate : MonoBehaviour {
     /// </summary>
     void ChangeToStandBy() {
 
+        //Stand by and selection screens
         battleHud.ShowSelectionScreen(false);
         battleHud.ShowStandBy(true);
+
+        //Delete chips from selection screen
+        battleHud.DestroySelectionBattleChips();
+
+        //Set selected battle chips to guide
+
+        //Send message to character controller
     }
 
     /// <summary>
@@ -241,6 +303,15 @@ public class Gamestate : MonoBehaviour {
                 battleHud.ShowCustomBar(false);
                 battleHud.ShowBattleChipHelp(false);
                 battleHud.ShowSelectionScreen(true);
+
+                //Destroying chip guides
+                DestroyChipBattleScreen(1);
+                DestroyChipBattleScreen(2);
+                DestroyChipBattleScreen(3);
+                DestroyChipBattleScreen(4);
+
+                //Refreshing chip list
+                GameObject.Find("Folder").SendMessage("SetSelectionScreenChips");
 
                 //Setting time to zero
                 Time.timeScale = 0.0f;
