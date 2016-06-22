@@ -84,7 +84,7 @@ public class Character : MonoBehaviour {
         Debug.Log("Damage recieved, Life:" + lifePoint);
         if(lifePoint == 0)
         {
-            currentState = PlayerStates.dead;
+            onLethalDamage();
         }
 
         //Report damage to the UI
@@ -160,12 +160,13 @@ public class Character : MonoBehaviour {
         {
             currentState = PlayerStates.idle;
         }
-        else
-        {
-            SendMessage("OnDeath", SendMessageOptions.DontRequireReceiver);
-            GameObject.Find("Gamestate").SendMessage("ChangeToBattleEnd");
-        }
         
     }
 
+    void onLethalDamage()
+    {
+        currentState = PlayerStates.dead;
+        SendMessage("OnDeath", SendMessageOptions.DontRequireReceiver);
+        GameObject.Find("Gamestate").SendMessage("ChangeToBattleEnd");
+    }
 }
