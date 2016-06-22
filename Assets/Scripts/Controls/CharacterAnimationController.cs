@@ -73,6 +73,7 @@ public class CharacterAnimationController : MonoBehaviour {
             {
                 //we select the one inside our hierchy
                 element.SendMessage("OnChipAnimationFinish");
+                ChangeAnimState(PlayerStates.idle);
                 //and tell it to play the corresponding animation 
             }
         }
