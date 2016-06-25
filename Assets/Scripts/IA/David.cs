@@ -61,6 +61,7 @@ public class David : MonoBehaviour
             this.GetComponent<CharacterControl>().setChip("GrenadeChip", 1);
             this.GetComponent<CharacterControl>().setChip("GrenadeChip", 2);
             this.GetComponent<CharacterControl>().setChip("Cannon", 3);
+            //this.GetComponent<CharacterControl>().setChip("Heal150Chip", 4);
             this.GetComponent<CharacterControl>().setChip("SkyBoxAttkChip", 4);
             this.reloadChips = false;
         }
@@ -73,6 +74,7 @@ public class David : MonoBehaviour
             this.GetComponent<CharacterControl>().setChip("GrenadeChip", 1);
             this.GetComponent<CharacterControl>().setChip("GrenadeChip", 2);
             this.GetComponent<CharacterControl>().setChip("Cannon", 3);
+            //this.GetComponent<CharacterControl>().setChip("Heal300Chip", 4);
             this.GetComponent<CharacterControl>().setChip("SkyBoxAttkChip", 4);
             this.reloadChips = false;
         }
