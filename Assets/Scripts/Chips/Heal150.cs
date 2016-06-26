@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Heal150Chip : Chip
+public class Heal150 : Chip
 {
 
     Transform projectilePoint;
@@ -9,9 +9,9 @@ public class Heal150Chip : Chip
     /// <summary>
     /// Class constructor
     /// </summary>
-    public Heal150Chip()
+    public Heal150()
     {
-        _chipName = "#Heal150Chip";
+        _chipName = "#Heal150";
         _chipPrefabName = "Heal150";
         _animation = (int)ChipAnimations.Launch;
     }
