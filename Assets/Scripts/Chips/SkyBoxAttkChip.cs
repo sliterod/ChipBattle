@@ -12,7 +12,7 @@ public class SkyBoxAttkChip : Chip
     public SkyBoxAttkChip()
     {
         _chipName = "#SkyBoxAttkChip";
-        _chipPrefabName = "SkyBoxAttk";
+        _chipPrefabName = "SkyBoxAttkChip";
         _animation = (int)ChipAnimations.Launch;
     }
 

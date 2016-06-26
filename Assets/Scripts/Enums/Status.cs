@@ -1,7 +1,8 @@
 ﻿public enum Status {
+    none,
     burned,
-    wet,
     paralyzed,
     frozen,
     poisoned,
+    drenched
 }
