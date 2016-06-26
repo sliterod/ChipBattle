@@ -6,7 +6,10 @@ using System;
 
 public class BattleHud : MonoBehaviour {
 
-    //General objects
+    /******************** CHIP VALUES **********************/
+    ChipDictionary chipDictionary;
+
+    /******************** GENERAL OBJECT **********************/
     public GameObject battleCustomBar;
     public GameObject battleChipHelp;
     public GameObject battleAreaDescription;
@@ -49,6 +52,12 @@ public class BattleHud : MonoBehaviour {
 
     /************************************************************/
 
+    void Awake() {
+        chipDictionary = GameObject
+                    .Find("Dictionary")
+                    .GetComponent<ChipDictionary>();
+    }
+
     void Update() {
         if (isStandbyTimerOffline)
             StandByMessageTimer();
@@ -84,6 +93,9 @@ public class BattleHud : MonoBehaviour {
 
             //Player HP
             GameObject.Find("Player1").SendMessage("RenderHpCanvas", false);
+
+            //Selection checkmarks
+            ResetCheckmarkScale();
 
             //Selection screen
             selectionScreen.gameObject.SetActive(true);
@@ -224,7 +236,7 @@ public class BattleHud : MonoBehaviour {
                 .FindChild("standby_text")
                 .GetComponent<Text>();
 
-            standByTimer = 3.0f;
+            standByTimer = 1.0f;
             realTimeStamp = Time.realtimeSinceStartup;
             isStandbyTimerOffline = true;
         }
@@ -245,11 +257,11 @@ public class BattleHud : MonoBehaviour {
         }
         else if (standByTimer < difference)
         {
-            if (difference < 4.0f)
+            if (difference < 2.0f)
             {
                 SetStandByMessage("BATTLE START");
             }
-            else if (difference > 4.0f) {
+            else if (difference > 2.0f) {
 
                 standByTimer = 0.0f;
                 realTimeStamp = 0.0f;
@@ -407,7 +419,7 @@ public class BattleHud : MonoBehaviour {
         //Filling empty spaces
         if (chipListLength < 6)
         {
-            Debug.Log("Current chips on folder: "+ chipListLength + ". Filling empty spaces...");
+            Debug.Log("Current chips on folder: " + chipListLength + ". Filling empty spaces...");
             emptySlots = 6 - chipListLength;
 
             for (int i = 0; i < emptySlots; i++)
@@ -436,7 +448,12 @@ public class BattleHud : MonoBehaviour {
 
         //Chip name
         chip.name = chipName;
-        
+
+        //Chip data
+        if (chipName != "NoData") {
+            SetChipData(chip);
+        }
+
         //Saving chips
         selScreenChips.Add(chip);
 
@@ -445,6 +462,36 @@ public class BattleHud : MonoBehaviour {
         {
             selScreenMiniatures.Add(chip.transform.FindChild("chip_miniature"));
         }
+    }
+
+    /// <summary>
+    /// Sets atk and effect data on chip according to the dictionary
+    /// </summary>
+    /// <param name="chip"></param>
+    void SetChipData(Transform chip) {
+
+        Text chipDamageText;
+        ChipData chipData;
+
+        //Text 
+        chipDamageText = chip.FindChild("stats_atk/atk_value")
+                         .GetComponent<Text>();
+
+        //Dictionary values
+        chipData = chipDictionary.GetChipAttributes(chip.name);
+
+        //Setting text on UI
+        //Damage
+        if (chipData.Damage > 0)
+        {
+            chipDamageText.text = chipData.Damage.ToString();
+        }
+        {
+            chipDamageText.text = "- - -";
+        }
+        
+        //Element or effect
+
     }
 
     /// <summary>
@@ -499,7 +546,7 @@ public class BattleHud : MonoBehaviour {
 
             //Position
             selScreenMiniatures[i].localPosition = selectionScreenMiniatures
-                                                        .Find("cards_" + (i+1))
+                                                        .Find("cards_" + (i + 1))
                                                         .localPosition;
 
             //Scale
@@ -543,7 +590,7 @@ public class BattleHud : MonoBehaviour {
                 guideIndex = 3;
                 break;
         }
-        
+
         //Changing parent
         SelectionGuideChangeChipParent(buttonGuide, guideIndex);
     }
@@ -596,11 +643,9 @@ public class BattleHud : MonoBehaviour {
 
             //Setting guide
             chipGuideTransform = selScreenGuides[chipGuideIndex, 0];
-            
+
             //Returning current chip to its original parent
             Debug.Log("Returning chip to original parent");
-           
-            //Parent
             chipGuideTransform.SetParent(selScreenGuides[chipGuideIndex, 1]);
 
             //Position
@@ -615,14 +660,17 @@ public class BattleHud : MonoBehaviour {
                 if (selScreenGuides[chipGuideIndex, 1].transform.GetInstanceID() ==
                 selScreenChips[selCursorIndex].transform.GetInstanceID())
                 {
-                    //Setting slot empty
+                    //Same chip, setting slot empty
                     Debug.Log("Same chip, setting slot empty");
                     selScreenGuides[chipGuideIndex, 0] = null; //Chip
                     selScreenGuides[chipGuideIndex, 1] = null; //Original Parent
+
+                    SetMiniatureCheckmark(chipGuideIndex + 1, false);
                 }
                 else if (selScreenGuides[chipGuideIndex, 1].transform.GetInstanceID() !=
                     selScreenChips[selCursorIndex].transform.GetInstanceID())
                 {
+                    //Different chip, setting another chip on slot
                     Debug.Log("Different chip, changing guide transform");
                     chipGuideTransform = selScreenChips[selCursorIndex]
                                         .transform
@@ -633,14 +681,15 @@ public class BattleHud : MonoBehaviour {
                         Debug.Log("selScreenChips: " + selScreenChips[selCursorIndex].name);
                         Debug.Log("chipGuideIndex: " + chipGuideIndex);
                         Debug.Log("chipGuideTransform: " + chipGuideTransform.name);
-                        SelectionGuideFillSlot(chipGuideTransform, parentName, chipGuideIndex);
-                    }
 
+                        SelectionGuideFillSlot(chipGuideTransform, parentName, chipGuideIndex);
+                        SetMiniatureCheckmark(chipGuideIndex + 1, true);
+                    }
                 }
             }
         }
         else
-        {
+        {   //Empty slot, setting chip
             Debug.Log("Guide slot empty, setting chip");
 
             if (selCursorIndex < selScreenChips.Count)
@@ -650,14 +699,73 @@ public class BattleHud : MonoBehaviour {
                                     .FindChild(chipGuideName);
 
                 SelectionGuideFillSlot(chipGuideTransform, parentName, chipGuideIndex);
+                SetMiniatureCheckmark(chipGuideIndex + 1, true);
             }
         }
 
     }
 
     /// <summary>
+    /// Sets a checkmark on the current selected chip miniature
+    /// </summary>
+    /// <param name="index">Selection cursor index</param>
+    /// <param name="isChipSelected">Indicates if chip was selected or deselected</param>
+    void SetMiniatureCheckmark(int index, bool isChipSelected) {
+
+        string buttonName = "selection_mark_";
+        RectTransform checkmark;
+
+        //Setting object name
+        switch (index) {
+            case 1:
+                buttonName = buttonName + "A";
+                break;
+
+            case 2:
+                buttonName = buttonName + "B";
+                break;
+
+            case 3:
+                buttonName = buttonName + "X";
+                break;
+
+            case 4:
+                buttonName = buttonName + "Y";
+                break;
+        }
+
+        Debug.Log("Current checkmark: " + buttonName + ", current index: " + index);
+
+        //Changing object position and scale
+        Debug.Log(selectionScreen.FindChild(buttonName).name);
+
+        checkmark = (RectTransform)selectionScreen.FindChild(buttonName);
+
+        if (isChipSelected)
+        {
+            checkmark.localScale = Vector3.one;
+            checkmark.anchoredPosition = selectionCursor.anchoredPosition;
+        }
+        else {
+            checkmark.localScale = Vector3.zero;
+        }
+
+    }
+
+    /// <summary>
+    /// Resets the scale of all checkmarks to zero
+    /// </summary>
+    void ResetCheckmarkScale() {
+        selectionScreen.FindChild("selection_mark_A").localScale = Vector3.zero;
+        selectionScreen.FindChild("selection_mark_B").localScale = Vector3.zero;
+        selectionScreen.FindChild("selection_mark_X").localScale = Vector3.zero;
+        selectionScreen.FindChild("selection_mark_Y").localScale = Vector3.zero;
+    }
+
+    /// <summary>
     /// Shows chip info screen
     /// </summary>
+    /// <param name="state">Indicates if the info screen should be shown or not</param>
     public void ShowChipInfo(bool state) {
 
         if (state)
@@ -708,9 +816,6 @@ public class BattleHud : MonoBehaviour {
 
             //Setting localized text
             localizeText.SetKeyAndLocalize(localeKey);
-            
-            //chipInformation.text = "Localize function";
-            //chipInformation.text = "Localized\ninformation";
         }
         catch (NullReferenceException nrex) {
             //If no localize object is found, setting a placeholder information
@@ -752,11 +857,32 @@ public class BattleHud : MonoBehaviour {
                 chipTransform.localScale = Vector3.one;
 
                 //Chip Name
-                chipName = selScreenGuides[i, 1].transform.name;
+                chipName = selScreenGuides[i, 1].transform.name;                
 
-                chipParent.FindChild("button_name")
+                try
+                {
+                    //Defining string for localization
+                    string localeKey = selScreenGuides[i, 1].transform.name.ToLower();
+
+                    //Finding localization component
+                    LocalizeText localizeText;
+
+                    localizeText = chipParent
+                                    .FindChild("button_name")
+                                    .GetComponent<LocalizeText>();
+
+                    //Setting localized text
+                    localizeText.SetKeyAndLocalize(localeKey);
+                }
+                catch (NullReferenceException nrex)
+                {
+                    //If no localize object is found, setting prefab name on guide
+                    Debug.Log("Exception occured: " + nrex.Message);
+
+                    chipParent.FindChild("button_name")
                             .GetComponent<Text>()
-                            .text = chipName;
+                            .text = chipName.ToUpper();
+                }
 
                 //Array of chips in use
                 chipsInUse[i] = chipName;
