@@ -8,7 +8,8 @@ public class Character : MonoBehaviour {
                                      //also a charater could move faster or slower if is affected by a buff or debuff
                                      //and inputs via keyboard or Dpad always result in moving at maximum speed
 
-      
+    float speedModifier = 0; //this will be changing if the player get a buff or debuff
+
     private PlayerStates currentState;
     public PlayerStates CurrentState
     {
@@ -56,7 +57,7 @@ public class Character : MonoBehaviour {
         get
         {
             float currentSpeed;
-            currentSpeed = BASIC_SPEED;
+            currentSpeed = BASIC_SPEED + speedModifier;
             //Here we should check if there're any speed restriction affecting the characater (a half speed debuf for example)
             return currentSpeed;
         }
@@ -134,6 +135,9 @@ public class Character : MonoBehaviour {
                 }
             }
         }
+    }
+    void setSpeedModifier(float speedModifire) {
+        this.speedModifier = speedModifire;
     }
     /// <summary>
     /// Function that should be called every time that the character stop moving

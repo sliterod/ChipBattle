@@ -60,12 +60,11 @@ public class FolderInBattle : MonoBehaviour {
     void LoadCurrentEquippedFolder() {
         equippedFolder = new List<string>()
         {   "Cannon",
-            "Cannon",
+            "StunGrenade",
             "Heal50",
             "Heal100",
             "Heal150",
             "Heal300",
-            "Cannon",
             "GrenadeChip"/*,
             "GrenadeChip",
             "GrenadeChip",
