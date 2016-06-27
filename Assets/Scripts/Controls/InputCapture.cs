@@ -3,11 +3,16 @@ using System.Collections;
 
 public class InputCapture : MonoBehaviour {
 
+    /******************** SCRIPT OBJECTS **********************/
     public CharacterControl characterControl;
     public Gamestate gamestate;
 
-	// Update is called once per frame
-	void Update () {
+    /******************** CONTROL BOOLS **********************/
+    bool isDpadInUse;
+    bool isStickInUse;
+
+    // Update is called once per frame
+    void Update () {
         CardModuleInputs();
         EventInputs();
         MovementInputsController();
@@ -251,19 +256,22 @@ public class InputCapture : MonoBehaviour {
     void MoveChipSelector() {
         
         //Dpad, Sticks, Keyboard
-        if (Input.GetAxis("Horizontal") <= -0.8f ||
-            Input.GetAxis("DpadHorizontal") == -1.0f || 
+        if (/*Input.GetAxis("Horizontal") <= -0.8f ||
+            Input.GetAxis("DpadHorizontal") == -1.0f || */
             Input.GetKeyDown(KeyCode.LeftArrow))
         {
             gamestate.MoveSelectionScreenCursor(Movement.left);
         }
 
-        if (Input.GetAxis("Horizontal") >= 0.8f ||
-            Input.GetAxis("DpadHorizontal") == 1.0f || 
+        if (/*Input.GetAxis("Horizontal") >= 0.8f ||
+            Input.GetAxis("DpadHorizontal") == 1.0f || */
             Input.GetKeyDown(KeyCode.RightArrow))
         {
             gamestate.MoveSelectionScreenCursor(Movement.right);
         }
+
+        //Moving cursor with controller
+        MoveCursorWithController();
 
         if (Input.GetAxis("Vertical") >= 0.8f ||
             Input.GetAxis("DpadVertical") == -1.0f || 
@@ -277,6 +285,66 @@ public class InputCapture : MonoBehaviour {
             Input.GetKey(KeyCode.UpArrow))
         {
             gamestate.MoveSelectionScreenCursor(Movement.up);
+        }
+    }
+
+    /// <summary>
+    /// Moves cursor with controller. Avoids infinite loop when moving the cursor
+    /// with either the stick or the dpad
+    /// </summary>
+    void MoveCursorWithController()
+    {
+        //Dpad
+        if (Input.GetAxis("DpadHorizontal") != 0.0f)
+        {
+            if (!isDpadInUse)
+            {
+                if (Input.GetAxis("DpadHorizontal") == 1.0f)
+                {
+                    gamestate.MoveSelectionScreenCursor(Movement.right);
+                }
+
+                if (Input.GetAxis("DpadHorizontal") == -1.0f)
+                {
+                    gamestate.MoveSelectionScreenCursor(Movement.left);
+                }
+
+                isDpadInUse = true;
+            }
+        }
+
+        //Sticks
+        if (Input.GetAxis("Horizontal") != 0.0f)
+        {
+            if (!isStickInUse)
+            {
+                if (Input.GetAxis("Horizontal") >= 0.55f)
+                {
+                    Debug.Log("Horiz right: " + Input.GetAxis("Horizontal"));
+                    gamestate.MoveSelectionScreenCursor(Movement.right);
+                }
+
+                if (Input.GetAxis("Horizontal") <= -0.55f)
+                {
+                    Debug.Log("Horiz left: " + Input.GetAxis("Horizontal"));
+                    gamestate.MoveSelectionScreenCursor(Movement.left);
+                }
+
+                isStickInUse = true;
+            }
+        }
+
+        //Reset bool
+        if (Input.GetAxis("DpadHorizontal") == 0)
+        {
+            isDpadInUse = false;
+        }
+
+        if (Input.GetAxis("Horizontal") >= -0.5f &&
+            Input.GetAxis("Horizontal") <= 0.5f)
+        {
+            Debug.Log("Horizontal false;");
+            isStickInUse = false;
         }
     }
 

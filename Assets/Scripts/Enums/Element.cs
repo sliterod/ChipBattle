@@ -1,7 +1,8 @@
 ﻿public enum Element {
+    none,
     fire,
-    water,
     thunder,
     ice,
-    venom
+    poison,
+    water
 }
