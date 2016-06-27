@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MegaCannonBall : Projectile {
+public class MegaCannonBallThree : Projectile {
     
     float speed = 18;
     float angle = 1;
@@ -18,12 +18,7 @@ public class MegaCannonBall : Projectile {
         if (isActive)
         {
             float step = speed * Time.deltaTime;
-            //this.transform.Translate(Vector3.right * step);
-            angle += 0.1f;
-            right = right* step;
-            float y = ((float) Mathf.Sin(angle * Mathf.PI) * 3*Time.deltaTime) ;
-            float x = ((float)Mathf.Sin(angle * Mathf.PI) * 1.5f * Time.deltaTime);
-            this.transform.Translate(new Vector3(step, y, x) );
+            this.transform.Translate(Vector3.right * step);
             
 
 

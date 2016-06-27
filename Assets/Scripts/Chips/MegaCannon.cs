@@ -66,8 +66,8 @@ public class MegaCannon : Chip {
         if (isActive)
         {
             GameObject projectile = Instantiate(Resources.Load("Projectiles/MegaCannonBall", typeof(GameObject))) as GameObject;
-            GameObject projectileTwo = Instantiate(Resources.Load("Projectiles/MegaCannonBall", typeof(GameObject))) as GameObject;
-            GameObject projectileThree = Instantiate(Resources.Load("Projectiles/MegaCannonBall", typeof(GameObject))) as GameObject;
+            GameObject projectileTwo = Instantiate(Resources.Load("Projectiles/MegaCannonBallSecond", typeof(GameObject))) as GameObject;
+            GameObject projectileThree = Instantiate(Resources.Load("Projectiles/MegaCannonBallThree", typeof(GameObject))) as GameObject;
             //We take the projectile form the resources
             projectile.transform.position = projectilePoint.position; //Put it into position
             projectileTwo.transform.position = projectilePoint.position; //Put it into position
@@ -89,14 +89,14 @@ public class MegaCannon : Chip {
             if (transform.root.gameObject.layer == 8)
             {
                 projectile.GetComponent<MegaCannonBall>().Launch(StageSide.blue); //And we shoot it
-                projectileTwo.GetComponent<MegaCannonBall>().Launch(StageSide.blue); //And we shoot it
-                projectileThree.GetComponent<MegaCannonBall>().Launch(StageSide.blue); //And we shoot it
+                projectileTwo.GetComponent<MegaCannonBallSecond>().Launch(StageSide.blue); //And we shoot it
+                projectileThree.GetComponent<MegaCannonBallThree>().Launch(StageSide.blue); //And we shoot it
             }
             else
             {
                 projectile.GetComponent<MegaCannonBall>().Launch(StageSide.red); //And we shoot it
-                projectileTwo.GetComponent<MegaCannonBall>().Launch(StageSide.red); //And we shoot it
-                projectileThree.GetComponent<MegaCannonBall>().Launch(StageSide.red); //And we shoot it
+                projectileTwo.GetComponent<MegaCannonBallSecond>().Launch(StageSide.red); //And we shoot it
+                projectileThree.GetComponent<MegaCannonBallThree>().Launch(StageSide.red); //And we shoot it
             }
                 
         } 
