@@ -13,7 +13,7 @@ public class Heal150 : Chip
     {
         _chipName = "#Heal150";
         _chipPrefabName = "Heal150";
-        _animation = (int)ChipAnimations.Launch;
+        _animation = (int)ChipAnimations.Buff;
     }
 
     // Use this for initialization

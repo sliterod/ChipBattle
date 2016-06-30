@@ -147,7 +147,23 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.8517975
+        functionName: OnHitFrame
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 7ac1ccd0416f5ad4d85b969315c9f0cb,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.99002934
+        functionName: OnChipAnimationFinish
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 7ac1ccd0416f5ad4d85b969315c9f0cb,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1
@@ -347,7 +363,23 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.88098145
+        functionName: OnHitFrame
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 7ac1ccd0416f5ad4d85b969315c9f0cb,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.99831134
+        functionName: OnChipAnimationFinish
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 7ac1ccd0416f5ad4d85b969315c9f0cb,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1
@@ -639,7 +671,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Sword
       takeName: Sword
-      firstFrame: 126
+      firstFrame: 133
       lastFrame: 140
       wrapMode: 0
       orientationOffsetY: 0
@@ -659,7 +691,23 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.8560088
+        functionName: OnHitFrame
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 7ac1ccd0416f5ad4d85b969315c9f0cb,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.9945608
+        functionName: OnChipAnimationFinish
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 7ac1ccd0416f5ad4d85b969315c9f0cb,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1
