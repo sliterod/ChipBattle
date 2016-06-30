@@ -8,7 +8,8 @@ public class Character : MonoBehaviour {
                                      //also a charater could move faster or slower if is affected by a buff or debuff
                                      //and inputs via keyboard or Dpad always result in moving at maximum speed
 
-      
+    float speedModifier = 0; //this will be changing if the player get a buff or debuff
+
     private PlayerStates currentState;
     public PlayerStates CurrentState
     {
@@ -56,7 +57,7 @@ public class Character : MonoBehaviour {
         get
         {
             float currentSpeed;
-            currentSpeed = BASIC_SPEED;
+            currentSpeed = BASIC_SPEED + speedModifier;
             //Here we should check if there're any speed restriction affecting the characater (a half speed debuf for example)
             return currentSpeed;
         }
@@ -109,7 +110,35 @@ public class Character : MonoBehaviour {
             }
         }
     }
+    void heal(int amount)
+    {
+        lifePoint = LifePoints + amount;
 
+        //Report damage to the UI
+        SendMessage("UpdateHpValue", lifePoint);
+
+
+        if (currentState != PlayerStates.usingChip && currentState != PlayerStates.takingDamage && currentState != PlayerStates.dead)
+        {
+            //Chip use and Damage are unstapable animation
+            //The damage is still recieved but no animation is played to prevent loose ends in the chip activation process
+            foreach (GameObject element in GameObject.FindGameObjectsWithTag("AnimationController"))
+            //We search for every "animationController" objects in the scene
+            {
+                if (element.transform.root == this.transform.root)
+                {
+                    Debug.Log("Animation Controller found");
+                    //we select the one inside our hierchy
+                    element.GetComponent<CharacterAnimationController>().PlayDamageAnimation();
+                    currentState = PlayerStates.usingChip;
+                    //and tell it to play the corresponding animation 
+                }
+            }
+        }
+    }
+    void setSpeedModifier(float speedModifire) {
+        this.speedModifier = speedModifire;
+    }
     /// <summary>
     /// Function that should be called every time that the character stop moving
     /// </summary>

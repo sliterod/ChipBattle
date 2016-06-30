@@ -22,6 +22,7 @@ public class David : MonoBehaviour
     private bool minusPlusFlag;
     private bool plusMinusFlag;
     private bool canIAttackFlag;
+    private bool reloadChips;
     BattleState battleState;
     private GameObject player1;
     private GameObject player2;
@@ -55,13 +56,29 @@ public class David : MonoBehaviour
     void initControl()
     {
         gamestate = (Gamestate)GameObject.Find("Gamestate").GetComponent("Gamestate");
-        this.GetComponent<CharacterControl>().FlushChips();
-        this.GetComponent<CharacterControl>().setChip("GrenadeChip", 1);
-        this.GetComponent<CharacterControl>().setChip("GrenadeChip", 2);
-        this.GetComponent<CharacterControl>().setChip("Cannon", 3);
-        this.GetComponent<CharacterControl>().setChip("SkyBoxAttkChip", 4);
+        if (this.reloadChips) {
+            this.GetComponent<CharacterControl>().FlushChips();
+            this.GetComponent<CharacterControl>().setChip("GrenadeChip", 1);
+            this.GetComponent<CharacterControl>().setChip("GrenadeChip", 2);
+            this.GetComponent<CharacterControl>().setChip("Cannon", 3);
+            //this.GetComponent<CharacterControl>().setChip("Heal150Chip", 4);
+            this.GetComponent<CharacterControl>().setChip("SkyBoxAttkChip", 4);
+            this.reloadChips = false;
+        }
+        
     }
-
+    void reloadIaChips() {
+        if (this.reloadChips)
+        {
+            this.GetComponent<CharacterControl>().FlushChips();
+            this.GetComponent<CharacterControl>().setChip("GrenadeChip", 1);
+            this.GetComponent<CharacterControl>().setChip("GrenadeChip", 2);
+            this.GetComponent<CharacterControl>().setChip("Cannon", 3);
+            //this.GetComponent<CharacterControl>().setChip("Heal300Chip", 4);
+            this.GetComponent<CharacterControl>().setChip("SkyBoxAttkChip", 4);
+            this.reloadChips = false;
+        }
+    }
     void initXSteps()
     {
         this.xSteps = 43;
@@ -83,6 +100,7 @@ public class David : MonoBehaviour
         this.plusPlusFlag = true;
         this.minusPlusFlag = true;
         this.plusMinusFlag = true;
+        this.reloadChips = true;
         initXSteps();
         initYSteps();
         player1 = GameObject.Find("Player1");
@@ -193,20 +211,19 @@ public class David : MonoBehaviour
 
     void walkToTheFront()
     {
+        int bigDesition = 0;
+
         if (weAreInBatlle())
         {
-            if ((!this.wallking) && (!this.attaking)) {
-                this.probability=this.calculateProbability();
+            this.reloadChips = true;
+            if ((!this.wallking) && (!this.attaking))
+            {
+                this.probability = this.calculateProbability();
+                bigDesition = this.calculateProbability();
             }
-            if ((this.player1.transform.position.z * -1) == gameObject.transform.position.z) {
-                if (this.canIAttack()) {
-                    this.GetComponent<CharacterControl>().UseChip(1);
-                    this.attaking = true;
-                }
-            }
-            else {
-                if (this.probability >= 50)
-                {
+            if (bigDesition > 50)
+            {
+                if (this.probability <= 50) {
                     if (Math.Truncate(this.player1.transform.position.z * -1) == Math.Truncate(gameObject.transform.position.z))
                     {
                         if (this.canIAttack())
@@ -216,49 +233,47 @@ public class David : MonoBehaviour
                         }
                     }
                 }
+                else if (this.probability <= 100)
+                {
+                        if (Math.Truncate(this.player1.transform.position.z * -1) == Math.Truncate(gameObject.transform.position.z))
+                        {
+                            if (this.canIAttack())
+                            {
+                                this.GetComponent<CharacterControl>().UseChip(4);
+                                this.attaking = true;
+                            }
+                        }
+                    
+                }
             }
-            if (this.getDisctance(this.player1, this.player2) > 11)
+            else
             {
-                if (this.probability >= 40) {
-                    goToPosition(1, this.player1.transform.position.z*-1, gameObject.transform.position.x, gameObject.transform.position.z);
-                }
-                else if (this.probability >= 1) {
-                    if (goToPosition(9, this.player1.transform.position.z, gameObject.transform.position.x, gameObject.transform.position.z)) {
-                        if (this.canIAttack())
+                if (this.canIAttack())
+                {
+                    if (this.probability < 50)
+                    {
+                        if (this.getDisctance(this.player1, this.player2) > 5)
                         {
-                            this.GetComponent<CharacterControl>().UseChip(2);
-                            this.attaking = true;
+                            goToPosition(this.player1.transform.position.x * -1, this.player1.transform.position.z * 1, gameObject.transform.position.x, gameObject.transform.position.z);
+                        }
+                        else if (this.getDisctance(this.player1, this.player2) <= 5)
+                        {
+                            goToPosition(this.player1.transform.position.x * 1, this.player1.transform.position.z * -1, gameObject.transform.position.x, gameObject.transform.position.z);
                         }
                     }
-                }
-            }
-            else {
-                if (this.probability >= 70)
-                {
-                    if (goToPosition(9, this.player1.transform.position.z, gameObject.transform.position.x, gameObject.transform.position.z)) {
-                        if (this.canIAttack())
-                        {
-                            this.GetComponent<CharacterControl>().UseChip(4);
-                            this.attaking = true;
-                        }
+                    else if (this.probability <= 100)
+                    {
+                        goToPosition(this.player1.transform.position.x * -1, this.player1.transform.position.z * 1, gameObject.transform.position.x, gameObject.transform.position.z);
+
                     }
+
                 }
-                else if (this.probability >= 40)
-                {
-                    goToPosition(0, 9, gameObject.transform.position.x, gameObject.transform.position.z);
-                }
-                else if (this.probability >= 1)
-                {
-                    if (goToPosition(this.player1.transform.position.x * -1, this.player1.transform.position.z, gameObject.transform.position.x, gameObject.transform.position.z)) {
-                        if (this.canIAttack())
-                        {
-                            this.GetComponent<CharacterControl>().UseChip(3);
-                            this.attaking = true;
-                        }
-                    }
-                }
+
             }
             this.attaking = false;
+        }
+        else {
+            reloadIaChips();
         }
     }
 }
