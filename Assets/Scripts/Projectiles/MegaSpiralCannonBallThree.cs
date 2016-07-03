@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MegaCannonBallThree : Projectile {
+public class MegaSpiralCannonBallThree : Projectile {
     
     float speed = 18;
     float angle = 1;

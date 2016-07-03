@@ -1,16 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MegaCannonBallSecond : Projectile {
+public class MegaSpiralCannonBallOne : Projectile {
     
     float speed = 18;
+    float distance = 0;
     float angle = 1;
     float radius = 1;
     float right = 1;
+
     // Use this for initialization
     void Start () {
         damage = 80;
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -18,17 +20,22 @@ public class MegaCannonBallSecond : Projectile {
         if (isActive)
         {
             float step = speed * Time.deltaTime;
-            //this.transform.Translate(Vector3.right * step);
-            angle += 0.1f;
-            right = right* step;
-            float y = ((float) Mathf.Sin(angle * Mathf.PI) * 3*Time.deltaTime) *-1;
-            float x = ((float)Mathf.Sin(angle * Mathf.PI) * 1.5f * Time.deltaTime) * -1;
-            this.transform.Translate(new Vector3(step, y, x) );
-            
-
+            this.distance = this.distance + step;
+            if (this.distance < 3)
+            {
+                angle += 0.1f;
+                right = right * step;
+                float y = ((float)Mathf.Sin(angle * Mathf.PI) * 3 * Time.deltaTime);
+                float x = ((float)Mathf.Sin(angle * Mathf.PI) * 1.5f * Time.deltaTime);
+                this.transform.Translate(new Vector3(step, y, x));
+            }
+            else {
+                this.transform.Translate(new Vector3(step, (-1 * step)/8, (-1*step)/4));
+            }
+            Debug.LogWarning("this.distance: " + this.distance);
 
         }
-	}
+    }
 
     /// <summary>
     /// Tells the projectile to start moving at the default speed
@@ -61,5 +68,6 @@ public class MegaCannonBallSecond : Projectile {
             other.SendMessage("OnHit", damage);
         }
         Destroy(gameObject);
+
     }
 }

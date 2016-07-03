@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MegaCannon : Chip {
+public class MegaSpiralCannonBall : Chip {
 
     
     Transform projectilePoint;
@@ -9,10 +9,10 @@ public class MegaCannon : Chip {
     /// <summary>
     /// Class constructor
     /// </summary>
-    public MegaCannon()
+    public MegaSpiralCannonBall()
     {
-        _chipName = "#MegaCannon";
-        _chipPrefabName = "MegaCannon";
+        _chipName = "#MegaSpiralCannonBall";
+        _chipPrefabName = "MegaSpiralCannonBall";
         _animation = (int)ChipAnimations.SingleShot;
     }
 
@@ -65,9 +65,9 @@ public class MegaCannon : Chip {
     {
         if (isActive)
         {
-            GameObject projectile = Instantiate(Resources.Load("Projectiles/MegaCannonBall", typeof(GameObject))) as GameObject;
-            GameObject projectileTwo = Instantiate(Resources.Load("Projectiles/MegaCannonBallSecond", typeof(GameObject))) as GameObject;
-            GameObject projectileThree = Instantiate(Resources.Load("Projectiles/MegaCannonBallThree", typeof(GameObject))) as GameObject;
+            GameObject projectile = Instantiate(Resources.Load("Projectiles/MegaSpiralCannonBallOne", typeof(GameObject))) as GameObject;
+            GameObject projectileTwo = Instantiate(Resources.Load("Projectiles/MegaSpiralCannonBallTwo", typeof(GameObject))) as GameObject;
+            GameObject projectileThree = Instantiate(Resources.Load("Projectiles/MegaSpiralCannonBallThree", typeof(GameObject))) as GameObject;
             //We take the projectile form the resources
             projectile.transform.position = projectilePoint.position; //Put it into position
             projectileTwo.transform.position = projectilePoint.position; //Put it into position
@@ -88,15 +88,15 @@ public class MegaCannon : Chip {
 
             if (transform.root.gameObject.layer == 8)
             {
-                projectile.GetComponent<MegaCannonBall>().Launch(StageSide.blue); //And we shoot it
-                projectileTwo.GetComponent<MegaCannonBallSecond>().Launch(StageSide.blue); //And we shoot it
-                projectileThree.GetComponent<MegaCannonBallThree>().Launch(StageSide.blue); //And we shoot it
+                projectile.GetComponent<MegaSpiralCannonBallOne>().Launch(StageSide.blue); //And we shoot it
+                projectileTwo.GetComponent<MegaSpiralCannonBallTwo>().Launch(StageSide.blue); //And we shoot it
+                projectileThree.GetComponent<MegaSpiralCannonBallThree>().Launch(StageSide.blue); //And we shoot it
             }
             else
             {
-                projectile.GetComponent<MegaCannonBall>().Launch(StageSide.red); //And we shoot it
-                projectileTwo.GetComponent<MegaCannonBallSecond>().Launch(StageSide.red); //And we shoot it
-                projectileThree.GetComponent<MegaCannonBallThree>().Launch(StageSide.red); //And we shoot it
+                projectile.GetComponent<MegaSpiralCannonBallOne>().Launch(StageSide.red); //And we shoot it
+                projectileTwo.GetComponent<MegaSpiralCannonBallTwo>().Launch(StageSide.red); //And we shoot it
+                projectileThree.GetComponent<MegaSpiralCannonBallThree>().Launch(StageSide.red); //And we shoot it
             }
                 
         } 
