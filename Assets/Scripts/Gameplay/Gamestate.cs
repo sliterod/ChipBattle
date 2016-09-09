@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class Gamestate : MonoBehaviour {
 
@@ -37,7 +38,7 @@ public class Gamestate : MonoBehaviour {
 
         SetupBattle();
     }
-	
+    
     /// <summary>
     /// Initializes listeners to capture changes on BattleState 
     /// </summary>
@@ -266,6 +267,38 @@ public class Gamestate : MonoBehaviour {
     }
 
     /// <summary>
+    /// Triggers the activation of battle exit message after a few seconds
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator ChangeToRestart() {
+        yield return new WaitForSeconds(3.0f);
+
+        currentBattleState = BattleState.restart;
+    }
+
+    /// <summary>
+    /// Reloads current scene
+    /// </summary>
+    public void ReloadScene() {
+        StartCoroutine(ReloadSceneCoroutine());
+    }
+
+    /// <summary>
+    /// Reloads current scene to restart battle
+    /// </summary>
+    /// <returns>Reloads scene</returns>
+    IEnumerator ReloadSceneCoroutine() {
+        yield return new WaitForSeconds(0.5f);
+
+        //string sceneName = SceneManager.GetActiveScene().name;
+        //string sceneName = "middle_load";
+        string sceneName = "alpha_endload";
+        Debug.Log(sceneName);
+
+        SceneManager.LoadScene(sceneName);
+    }
+
+    /// <summary>
     /// Executes a method after StateListener captures a change on currentBattleState variable
     /// </summary>
     /// <param name="newBattleState">The new BattleState value</param>
@@ -336,6 +369,9 @@ public class Gamestate : MonoBehaviour {
                 //Ending battle
                 Debug.Log("Battle has ended, showing results screen");
                 battleHud.ShowResultsScreen();
+
+                //Changing to restart 
+                StartCoroutine(ChangeToRestart());
                 break;
         }
     }

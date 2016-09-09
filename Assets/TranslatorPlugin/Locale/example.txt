@@ -16,3 +16,5 @@ heal150info_Lorem ipsum dolor sit amet, consectetur;
 heal300info_Lorem ipsum dolor sit amet, consectetur;
 skyboxattkchip_Lorem ipsum dolor sit amet, consectetur;
 skyboxattkchipinfo_Lorem ipsum dolor sit amet, consectetur;
+alphaDisclaimerExit_Lorem ipsum dolor sit amet, consectetur;
+alphaDisclaimerTimer_Lorem ipsum dolor sit amet, consectetur;

@@ -1,6 +1,6 @@
-key_content.;
+﻿key_content.;
 example_Use tags followed by an underscore to identify a localization key and its content.;
-cannon_CA�ON;
+cannon_CAÑON;
 grenadechip_GRANADA;
 cannoninfo_UN SIMPLE PERO\nPODEROSO DISPARO.;
 grenadechipinfo_PELOTA CAMUFLAGEADA.\nEXPLOTA AL CONTACTO.;
@@ -14,3 +14,5 @@ heal150info_RECUPERA 150 PV.;
 heal300info_RECUPERA 300 PV.;
 skyboxattkchip_CAJA DE DINAMITA;
 skyboxattkchipinfo_LA DINAMITA CAE\nDESDE EL CIELO.;
+alphaDisclaimerExit_Gracias por probar nuestro juego.\nPor favor, tan pronto pueda\nháganos saber su opinión.\nEsta será muy valiosa.;
+alphaDisclaimerTimer_Este juego se cerrará automáticamente.;
