@@ -4,7 +4,6 @@ using System.Collections;
 public class GrenadeChip : Chip {
 
     Transform projectilePoint;
-
     /// <summary>
     /// Class constructor
     /// </summary>
@@ -17,8 +16,7 @@ public class GrenadeChip : Chip {
 
     // Use this for initialization
     void Start () {
-	
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -32,7 +30,6 @@ public class GrenadeChip : Chip {
     {
         if (!isActive) //To prevent using the chip multiple times
         {
-
             Debug.Log("Grenade Activated");
             projectilePoint = transform.root.Find(RIGHT_HAND_PATH);
             isActive = true;
@@ -59,7 +56,7 @@ public class GrenadeChip : Chip {
             //We take the projectile form the resources
             projectile.transform.position = projectilePoint.position; //Put it into position
             Debug.Log(projectilePoint.position);
-            if(transform.root.gameObject.layer == 8)
+            if (transform.root.gameObject.layer == 8)
             {
                 projectile.transform.GetChild(0).GetComponent<Grenade>().Launch(StageSide.blue); //And we shoot it
             }
@@ -67,7 +64,7 @@ public class GrenadeChip : Chip {
             {
                 projectile.transform.GetChild(0).GetComponent<Grenade>().Launch(StageSide.red); //And we shoot it
             }
-            
+
         }
     }
 

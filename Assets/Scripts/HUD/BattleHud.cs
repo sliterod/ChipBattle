@@ -26,6 +26,8 @@ public class BattleHud : MonoBehaviour {
     public Transform selectionScreenGuide;
     RectTransform selectionCursor;
     RectTransform selectionOk;
+    AudioSource selectionCursorAutdio;
+    AudioSource selectionOkAutdio;
     int selCursorIndex;
 
     /******************** CONTROL BOOLEANS **********************/
@@ -52,7 +54,8 @@ public class BattleHud : MonoBehaviour {
 
     /************************************************************/
 
-    void Awake() {
+    void Awake()
+    {
         chipDictionary = GameObject
                     .Find("Dictionary")
                     .GetComponent<ChipDictionary>();
@@ -117,7 +120,6 @@ public class BattleHud : MonoBehaviour {
     /// </summary>
     /// <param name="cursorMovement">Direction where the cursor must be moved</param>
     public void MoveSelectionScreenCursor(Movement cursorMovement) {
-
         switch (cursorMovement) {
             case Movement.left:
                 if (!isCursorMoved)
@@ -125,6 +127,8 @@ public class BattleHud : MonoBehaviour {
                     isCursorMoved = true;
                     ChangeCursorPosition(-1);
                 }
+                selectionCursorAutdio.Play();
+                selectionCursorAutdio.PlayDelayed(0);
                 break;
 
             case Movement.right:
@@ -133,16 +137,28 @@ public class BattleHud : MonoBehaviour {
                     isCursorMoved = true;
                     ChangeCursorPosition(1);
                 }
+                selectionCursorAutdio.Play();
+                selectionCursorAutdio.PlayDelayed(0);
                 break;
 
             case Movement.down:
-                selectionCursor.gameObject.SetActive(false);
-                selectionOk.gameObject.SetActive(true);
+                if (!selectionOk.gameObject.active)
+                {
+                    selectionCursorAutdio.Play();
+                    selectionCursorAutdio.PlayDelayed(0);
+                    selectionCursor.gameObject.SetActive(false);
+                    selectionOk.gameObject.SetActive(true);
+                }
                 break;
 
             case Movement.up:
-                selectionCursor.gameObject.SetActive(true);
-                selectionOk.gameObject.SetActive(false);
+                if (selectionOk.gameObject.active)
+                {
+                    selectionCursor.gameObject.SetActive(true);
+                    selectionOk.gameObject.SetActive(false);
+                    selectionCursorAutdio.Play();
+                    selectionCursorAutdio.PlayDelayed(0);
+                }
                 break;
         }
 
@@ -183,7 +199,8 @@ public class BattleHud : MonoBehaviour {
             cursorPositionsArray = new float[] { 18.0f, 118.0f, 218.0f, 318.0f, 418.0f, 518.0f };
             selectionCursor = (RectTransform)selectionScreen.FindChild("selection_cursor");
             selectionOk = (RectTransform)selectionScreen.FindChild("selection_ok");
-
+            selectionCursorAutdio = selectionScreen.GetComponent<AudioSource>();
+            selectionOkAutdio = selectionScreen.FindChild("selection_ok").GetComponent<AudioSource>();
             isScreenInitialized = true;
         }
 
@@ -225,9 +242,11 @@ public class BattleHud : MonoBehaviour {
     /// <param name="state">State to indicate if the stanby bar should be shown or not</param>
     public void ShowStandBy(bool state) {
         battleStandBy.SetActive(state);
-
         if (state)
         {
+            selectionOkAutdio.gameObject.SetActive(true);
+            selectionOkAutdio.Play();
+            selectionOkAutdio.Play(44100);
             //Player HP
             GameObject.Find("Player1").SendMessage("RenderHpCanvas", true);
 

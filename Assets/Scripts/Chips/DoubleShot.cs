@@ -10,7 +10,7 @@ public class DoubleShot : Chip {
     int shootsCount = 0; //How many shots were fired since the activation
 
     bool isOnCooldown = false;
-
+    AudioSource electroSound;
     Transform projectilePoint;
 
     /// <summary>
@@ -26,8 +26,9 @@ public class DoubleShot : Chip {
 
     // Use this for initialization
     void Start () {
-	
-	}
+            electroSound = GameObject.Find("ChipsSounds/dobleshot").GetComponent<AudioSource>();
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -109,7 +110,9 @@ public class DoubleShot : Chip {
                     projectile.GetComponent<StraightShot>().Launch(StageSide.red); //And we shoot it
                 }
             }
-            
+            electroSound.PlayDelayed(0);
+
+
         }
     }
 

@@ -5,7 +5,6 @@ public class SkyBoxAttkChip : Chip
 {
 
     Transform projectilePoint;
-
     /// <summary>
     /// Class constructor
     /// </summary>
@@ -19,7 +18,6 @@ public class SkyBoxAttkChip : Chip
     // Use this for initialization
     void Start()
     {
-
     }
 
     // Update is called once per frame

@@ -9,7 +9,7 @@ public class SkyBoxAttk : Projectile
 
     private float yForce = 50f;
     private float xForce = 9f;
-
+    AudioSource explosionSound;
     public GameObject explosion;
 
     float colliderRadius;
@@ -23,6 +23,7 @@ public class SkyBoxAttk : Projectile
     {
         colliderRadius = transform.localScale.x;
         damage = 60;
+        explosionSound = GameObject.Find("ChipsSounds/granade").GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -75,6 +76,7 @@ public class SkyBoxAttk : Projectile
                 GetComponent<Rigidbody>().isKinematic = true;
                 GetComponent<MeshRenderer>().enabled = false;
             }
+            explosionSound.PlayDelayed(0);
         }
         else
         {

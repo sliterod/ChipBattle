@@ -5,7 +5,7 @@ public class Cannon : Chip {
 
     
     Transform projectilePoint;
-
+    AudioSource shotSound;
     /// <summary>
     /// Class constructor
     /// </summary>
@@ -18,8 +18,9 @@ public class Cannon : Chip {
 
     // Use this for initialization
     void Start () {
-        
-	}
+        shotSound=GameObject.Find("ChipsSounds/shot").GetComponent<AudioSource>();
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -46,6 +47,7 @@ public class Cannon : Chip {
                     //we select the one inside our hierchy
                     element.GetComponent<CharacterAnimationController>().PlayChipAnimation(Animation);
                     //and tell it to play the corresponding animation 
+                    shotSound.PlayDelayed(0);
                 }
             }
 
