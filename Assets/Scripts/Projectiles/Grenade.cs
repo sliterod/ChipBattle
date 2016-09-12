@@ -11,6 +11,8 @@ public class Grenade : Projectile {
 
     public GameObject explosion;
 
+    AudioSource explosionSound;
+
     float colliderRadius;
 
     
@@ -21,6 +23,7 @@ public class Grenade : Projectile {
     void Start () {
         colliderRadius = transform.localScale.x;
         damage = 40;
+        explosionSound = GameObject.Find("ChipsSounds/granade").GetComponent<AudioSource>();
     }
 	
 	// Update is called once per frame
@@ -61,6 +64,7 @@ public class Grenade : Projectile {
                 explosion.transform.position = this.transform.position;
                 GetComponent<Rigidbody>().isKinematic = true;
                 GetComponent<MeshRenderer>().enabled = false;
+                explosionSound.PlayDelayed(0);
             }
             if (other.tag == "Player")
             {
@@ -69,7 +73,9 @@ public class Grenade : Projectile {
                 explosion.transform.position = this.transform.position;
                 GetComponent<Rigidbody>().isKinematic = true;
                 GetComponent<MeshRenderer>().enabled = false;
+                explosionSound.PlayDelayed(0);
             }
+
         }
         else
         {

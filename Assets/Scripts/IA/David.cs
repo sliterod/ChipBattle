@@ -32,7 +32,7 @@ public class David : MonoBehaviour
         initControl();
         initIa();
         this.canIAttackFlag = true;
-        
+
     }
 
     // Update is called once per frame
@@ -47,7 +47,8 @@ public class David : MonoBehaviour
         {
             return false;
         }
-        else {
+        else
+        {
             return true;
         }
     }
@@ -89,9 +90,11 @@ public class David : MonoBehaviour
         player2 = GameObject.Find("Player2");
 
     }
-    void attack() {
+    void attack()
+    {
     }
-    void Dodge() {
+    void Dodge()
+    {
     }
     bool weAreInBatlle()
     {
@@ -104,15 +107,17 @@ public class David : MonoBehaviour
         return false;
     }
 
-    double getDisctance(GameObject object1, GameObject object2) {
+    double getDisctance(GameObject object1, GameObject object2)
+    {
         double distance = Vector3.Distance(object1.transform.position, object2.transform.position);
         return distance;
 
     }
 
-    int calculateProbability() {
+    int calculateProbability()
+    {
         System.Random rand = new System.Random();
-        int value=rand.Next(1, 101);
+        int value = rand.Next(1, 101);
         return value;
     }
 
@@ -135,7 +140,8 @@ public class David : MonoBehaviour
         return false;
     }
 
-    void minusMinus() {
+    void minusMinus()
+    {
         gameObject.GetComponent<CharacterControl>().Move(-1.0f, -1.0f);
     }
     void plusPlus()
@@ -150,7 +156,8 @@ public class David : MonoBehaviour
     {
         gameObject.GetComponent<CharacterControl>().Move(-1.0f, 1.0f);
     }
-    void stop() {
+    void stop()
+    {
         gameObject.GetComponent<CharacterControl>().Move(0.0f, 0.0f);
     }
 
@@ -177,15 +184,18 @@ public class David : MonoBehaviour
             this.wallking = true;
             return false;
         }
-        else {
+        else
+        {
             this.stop();
             this.wallking = false;
-                return true;
-            }
+            return true;
+        }
     }
-    
-    void goToTop() {
-        if (!this.wallking) {
+
+    void goToTop()
+    {
+        if (!this.wallking)
+        {
             //this.wallking = true;
             //goToPosition(4, 4, gameObject.transform.position.x, gameObject.transform.position.z);
         }
@@ -195,16 +205,20 @@ public class David : MonoBehaviour
     {
         if (weAreInBatlle())
         {
-            if ((!this.wallking) && (!this.attaking)) {
-                this.probability=this.calculateProbability();
+            if ((!this.wallking) && (!this.attaking))
+            {
+                this.probability = this.calculateProbability();
             }
-            if ((this.player1.transform.position.z * -1) == gameObject.transform.position.z) {
-                if (this.canIAttack()) {
+            if ((this.player1.transform.position.z * -1) == gameObject.transform.position.z)
+            {
+                if (this.canIAttack())
+                {
                     this.GetComponent<CharacterControl>().UseChip(1);
                     this.attaking = true;
                 }
             }
-            else {
+            else
+            {
                 if (this.probability >= 50)
                 {
                     if (Math.Truncate(this.player1.transform.position.z * -1) == Math.Truncate(gameObject.transform.position.z))
@@ -219,11 +233,14 @@ public class David : MonoBehaviour
             }
             if (this.getDisctance(this.player1, this.player2) > 11)
             {
-                if (this.probability >= 40) {
-                    goToPosition(1, this.player1.transform.position.z*-1, gameObject.transform.position.x, gameObject.transform.position.z);
+                if (this.probability >= 40)
+                {
+                    goToPosition(1, this.player1.transform.position.z * -1, gameObject.transform.position.x, gameObject.transform.position.z);
                 }
-                else if (this.probability >= 1) {
-                    if (goToPosition(9, this.player1.transform.position.z, gameObject.transform.position.x, gameObject.transform.position.z)) {
+                else if (this.probability >= 1)
+                {
+                    if (goToPosition(9, this.player1.transform.position.z, gameObject.transform.position.x, gameObject.transform.position.z))
+                    {
                         if (this.canIAttack())
                         {
                             this.GetComponent<CharacterControl>().UseChip(2);
@@ -232,10 +249,12 @@ public class David : MonoBehaviour
                     }
                 }
             }
-            else {
+            else
+            {
                 if (this.probability >= 70)
                 {
-                    if (goToPosition(9, this.player1.transform.position.z, gameObject.transform.position.x, gameObject.transform.position.z)) {
+                    if (goToPosition(9, this.player1.transform.position.z, gameObject.transform.position.x, gameObject.transform.position.z))
+                    {
                         if (this.canIAttack())
                         {
                             this.GetComponent<CharacterControl>().UseChip(4);
@@ -249,7 +268,8 @@ public class David : MonoBehaviour
                 }
                 else if (this.probability >= 1)
                 {
-                    if (goToPosition(this.player1.transform.position.x * -1, this.player1.transform.position.z, gameObject.transform.position.x, gameObject.transform.position.z)) {
+                    if (goToPosition(this.player1.transform.position.x * -1, this.player1.transform.position.z, gameObject.transform.position.x, gameObject.transform.position.z))
+                    {
                         if (this.canIAttack())
                         {
                             this.GetComponent<CharacterControl>().UseChip(3);

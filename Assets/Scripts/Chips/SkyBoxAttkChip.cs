@@ -5,7 +5,6 @@ public class SkyBoxAttkChip : Chip
 {
 
     Transform projectilePoint;
-
     /// <summary>
     /// Class constructor
     /// </summary>
@@ -19,7 +18,6 @@ public class SkyBoxAttkChip : Chip
     // Use this for initialization
     void Start()
     {
-
     }
 
     // Update is called once per frame
@@ -37,7 +35,7 @@ public class SkyBoxAttkChip : Chip
         {
             GameObject player1 = GameObject.Find("Player1");
             projectilePoint = new GameObject().transform;
-            projectilePoint.position = new Vector3(player1.transform.position.x, player1.transform.position.y + 10, player1.transform.position.z); ;
+            projectilePoint.position = new Vector3(player1.transform.position.x, player1.transform.position.y +10, player1.transform.position.z);
             isActive = true;
             foreach (GameObject element in GameObject.FindGameObjectsWithTag("AnimationController"))
             //We search for every "animationController" objects in the scene
@@ -58,17 +56,18 @@ public class SkyBoxAttkChip : Chip
     {
         if (isActive)
         {
+            GameObject player1 = GameObject.Find("Player1");
             GameObject projectile = Instantiate(Resources.Load("Projectiles/SkyBoxAttk", typeof(GameObject))) as GameObject;
             //We take the projectile form the resources
             projectile.transform.position = projectilePoint.position; //Put it into position
-            Debug.Log(projectilePoint.position);
+            projectilePoint.position = new Vector3(player1.transform.position.x, player1.transform.position.y + 10, player1.transform.position.z);
             if (transform.root.gameObject.layer == 8)
             {
-                projectile.transform.GetChild(0).GetComponent<SkyBoxAttk>().Launch(StageSide.blue); //And we shoot it
+                projectile.transform.GetChild(1).GetComponent<SkyBoxAttk>().Launch(StageSide.blue); //And we shoot it
             }
             else
             {
-                projectile.transform.GetChild(0).GetComponent<SkyBoxAttk>().Launch(StageSide.red); //And we shoot it
+                projectile.transform.GetChild(1).GetComponent<SkyBoxAttk>().Launch(StageSide.red); //And we shoot it
             }
 
         }
