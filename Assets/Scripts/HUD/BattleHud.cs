@@ -64,12 +64,7 @@ public class BattleHud : MonoBehaviour {
     void Update() {
         if (isStandbyTimerOffline)
             StandByMessageTimer();
-
-        /*if (Input.GetKeyDown(KeyCode.G)) {
-            SelectionGuideSetChipSlot(1);
-        }*/
     }
-
 
     /// <summary>
     /// Shows current position of chips on controller
@@ -360,6 +355,10 @@ public class BattleHud : MonoBehaviour {
         battleStandBy.SetActive(false);
 
         ResultsScreenTween(true);
+
+        yield return new WaitForSeconds(3.0f);
+
+        ResultScreenExitMessage();
     }
 
     /// <summary>
@@ -375,6 +374,19 @@ public class BattleHud : MonoBehaviour {
         else {
             iTweenEvent.GetEvent(resultsScreen.gameObject, "Hide").Play();
         }
+    }
+
+    /// <summary>
+    /// Displays result screen exit message
+    /// </summary>
+    public void ResultScreenExitMessage() {
+        RectTransform exitMessage;
+
+        exitMessage = (RectTransform) resultsScreen
+                        .transform
+                        .FindChild("exit");
+
+        exitMessage.localScale = Vector3.one;
     }
 
     /**********************************************************

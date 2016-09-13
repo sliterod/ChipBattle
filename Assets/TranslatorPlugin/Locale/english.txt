@@ -14,3 +14,5 @@ heal150info_RESTORES 150 HP.;
 heal300info_RESTORES 300 HP.;
 skyboxattkchip_TNT DROP;
 skyboxattkchipinfo_A FLYING TNT BOX.;
+alphaDisclaimerExit_Thank you for testing our game.\nPlease, give us your feedback\nwhen you have time.\nIt will be appreciated.;
+alphaDisclaimerTimer_This game will quit automatically.;

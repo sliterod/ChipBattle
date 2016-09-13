@@ -34,7 +34,7 @@ public class CreateFile {
             //File creation
             if (!File.Exists(filePath))
             {
-                File.Create(filePath).Dispose();
+                File.CreateText(filePath).Dispose();
                 Debug.Log("File created!");
                 FillTxtFile();
             }

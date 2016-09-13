@@ -48,6 +48,11 @@ public class InputCapture : MonoBehaviour {
             {
                 Debug.Log("Input captured. Result screen, skiping results");
             }
+
+            if (gamestate.CurrentBattleState == BattleState.restart)
+            {
+                gamestate.ReloadScene();
+            }
         }
 
         //Chip 2
@@ -64,6 +69,11 @@ public class InputCapture : MonoBehaviour {
             {
                 Debug.Log("Input captured. Current highlighted card assigned to Chip 1 button");
                 gamestate.SetChipSelectionScreen(2);
+            }
+
+            if (gamestate.CurrentBattleState == BattleState.restart)
+            {
+                gamestate.ReloadScene();
             }
         }
 
@@ -82,6 +92,11 @@ public class InputCapture : MonoBehaviour {
                 Debug.Log("Input captured. Current highlighted card assigned to Chip 1 button");
                 gamestate.SetChipSelectionScreen(3);
             }
+
+            if (gamestate.CurrentBattleState == BattleState.restart)
+            {
+                gamestate.ReloadScene();
+            }
         }
 
         //Chip 4
@@ -98,6 +113,10 @@ public class InputCapture : MonoBehaviour {
             {
                 Debug.Log("Input captured. Current highlighted card assigned to Chip 1 button");
                 gamestate.SetChipSelectionScreen(4);
+            }
+
+            if (gamestate.CurrentBattleState == BattleState.restart) {
+                gamestate.ReloadScene();
             }
         }
 
@@ -139,6 +158,11 @@ public class InputCapture : MonoBehaviour {
             {
                 Debug.Log("Input captured. Setting cursor on OK button");
                 gamestate.SetSelectionScreenCursorOK();
+            }
+
+            if (gamestate.CurrentBattleState == BattleState.restart)
+            {
+                gamestate.ReloadScene();
             }
         }
 

@@ -5,5 +5,6 @@
     pause,              //Game paused
     standby,            //Enemy appereance, waiting for opponent
     battleStart,        //One time use, battle is being setup
-    chipInfo            //Chip information
+    chipInfo,           //Chip information
+    restart             //Set the game to reload scene after results
 }

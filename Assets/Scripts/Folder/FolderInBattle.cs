@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using System;
 
 public class FolderInBattle : MonoBehaviour {
 
@@ -45,6 +46,7 @@ public class FolderInBattle : MonoBehaviour {
         inUseChips = new string[4];
 
         LoadCurrentEquippedFolder();
+        RandomizeFolder();
         //SetSelectionScreenChips();
 	}
 	
@@ -59,20 +61,34 @@ public class FolderInBattle : MonoBehaviour {
     /// </summary>
     void LoadCurrentEquippedFolder() {
         equippedFolder = new List<string>()
-        {   "MegaCannon",
-            "StunGrenade",
-            "Heal50",
-            "Heal100",
-            "Heal150",
-            "Heal300",
-            "GrenadeChip"/*,
-            "GrenadeChip",
-            "GrenadeChip",
+        {   "Cannon",
+            "Cannon",
+            "Cannon",
             "Cannon",
             "Cannon",
             "GrenadeChip",
-            "GrenadeChip"*/
+            "GrenadeChip",
+            "GrenadeChip",
+            "GrenadeChip",
+            "GrenadeChip"
         };
+    }
+
+    /// <summary>
+    /// Randomizes chips on folder to have a different setup on every battle
+    /// </summary>
+    void RandomizeFolder() {
+        int n = equippedFolder.Count;
+        System.Random range = new System.Random();
+        
+        while (n > 1) {
+            n -= 1;
+
+            int k = range.Next(n + 1);
+            var value = equippedFolder[k];
+            equippedFolder[k] = equippedFolder[n];
+            equippedFolder[n] = value;
+        }
     }
 
     /// <summary>
