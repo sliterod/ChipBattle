@@ -10,6 +10,7 @@ public class SplashAlpha : MonoBehaviour {
     public GameObject logo;
     public GameObject text;
     public GameObject press;
+    public GameObject howToPlay;
 
     // Use this for initialization
     void Start () {
@@ -56,6 +57,12 @@ public class SplashAlpha : MonoBehaviour {
         iTweenEvent.GetEvent(text, "show").Play();
         yield return new WaitForSeconds(10.0f);
 
+        iTweenEvent.GetEvent(text, "hide").Play();
+        yield return new WaitForSeconds(0.5f);
+
+        howToPlay.SetActive(true);
+        yield return new WaitForSeconds(2.0f);
+
         iTweenEvent.GetEvent(press, "show").Play();
         yield return new WaitForSeconds(0.1f);
 
@@ -65,7 +72,10 @@ public class SplashAlpha : MonoBehaviour {
     IEnumerator Splash() {
 
         iTweenEvent.GetEvent(logo, "show").Play();
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.5f);
+
+        howToPlay.SetActive(true);
+        yield return new WaitForSeconds(2.0f);
 
         iTweenEvent.GetEvent(press, "show").Play();
         yield return new WaitForSeconds(0.1f);
