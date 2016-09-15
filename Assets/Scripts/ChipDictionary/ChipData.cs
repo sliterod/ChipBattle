@@ -6,7 +6,7 @@ using System.Collections;
 /// on a dictionary. This way, critical data can be modified while
 /// creating the object for each chip and not on each script.
 /// </summary>
-public class ChipData : MonoBehaviour {
+public class ChipData{
 
     private int _damage;        //Chip total damage
     private Status _effect;     //Chip effect after impact

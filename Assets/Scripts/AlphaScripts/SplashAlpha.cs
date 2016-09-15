@@ -28,7 +28,8 @@ public class SplashAlpha : MonoBehaviour {
     void Update()
     {
         if (isInputCaptureEnabled) {
-            if (Input.GetKeyDown(KeyCode.Q)) {
+            if (Input.GetButtonDown("A") || Input.GetKeyDown(KeyCode.Q))
+            {
                 isInputCaptureEnabled = false;
                 LoadDemoScene();
             }
@@ -82,4 +83,5 @@ public class SplashAlpha : MonoBehaviour {
 
         EnableInputCapture();
     }
+
 }
