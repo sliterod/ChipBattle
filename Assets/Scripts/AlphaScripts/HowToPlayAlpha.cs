@@ -26,7 +26,7 @@ public class HowToPlayAlpha : MonoBehaviour {
             howToKeyboard.SetActive(false);
             howToXbox.SetActive(true);
         }
-        else
+        else 
         {
             //Keyboard help
             howToKeyboard.SetActive(true);
@@ -45,10 +45,6 @@ public class HowToPlayAlpha : MonoBehaviour {
             if (currentState == BattleState.pause) {
                 resumeText.text = "BACK/START";
             }
-        }
-        else if (Application.loadedLevelName == "splash_alpha")
-        {
-
         }
     }
 }
