@@ -510,13 +510,14 @@ public class BattleHud : MonoBehaviour {
 
         //Dictionary values
         chipData = chipDictionary.GetChipAttributes(chip.name);
-
+        
         //Setting text on UI
         //Damage
         if (chipData.Damage > 0)
         {
             chipDamageText.text = chipData.Damage.ToString();
         }
+        else
         {
             chipDamageText.text = "- - -";
         }
