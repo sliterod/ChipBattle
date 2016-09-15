@@ -21,6 +21,7 @@ public class TimeModifiers : MonoBehaviour {
 	}
 
     void Update() {
+        /*
         if (Input.GetKeyDown(KeyCode.Z))
         {
             FastGaugeTimer();
@@ -30,6 +31,7 @@ public class TimeModifiers : MonoBehaviour {
         {
             SlowGaugeTimer();
         }
+        */
     }
 
 	void FixedUpdate () {
