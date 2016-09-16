@@ -209,74 +209,65 @@ public class David : MonoBehaviour
             {
                 this.probability = this.calculateProbability();
             }
-            if ((this.player1.transform.position.z * -1) == gameObject.transform.position.z)
+            Debug.LogWarning(this.player1.transform.position.z);
+            Debug.LogWarning(this.player2.transform.position.z);
+            if ((Math.Truncate(this.player1.transform.position.z) ) == Math.Truncate(this.player2.transform.position.z))
             {
                 if (this.canIAttack())
                 {
-                    this.GetComponent<CharacterControl>().UseChip(1);
-                    this.attaking = true;
+                    if (this.probability >= 15)
+                    {
+                        System.Random rand = new System.Random();
+                        int value = rand.Next(1, 3);
+
+                        this.GetComponent<CharacterControl>().UseChip(value);
+                        this.attaking = true;
+                    }
+                    else {
+                        if ((this.player2.transform.position.x * -1)>-3) {
+                            goToPosition((this.player2.transform.position.x * -1) - 4, this.player1.transform.position.z * 1, this.player2.transform.position.x, this.player2.transform.position.z);
+                        }
+                        else if((this.player2.transform.position.x * -1)> -7) {
+                            goToPosition((this.player2.transform.position.x * -1) + 1, this.player1.transform.position.z * 1, this.player2.transform.position.x, this.player2.transform.position.z);
+                        }
+                        
+                    }
                 }
-            }
-            else
+            }else
             {
-                if (this.probability >= 50)
+                if (this.probability >= 35)
                 {
-                    if (Math.Truncate(this.player1.transform.position.z * -1) == Math.Truncate(gameObject.transform.position.z))
+                    if (this.player1.transform.position.x < 7)
                     {
-                        if (this.canIAttack())
+                        if (this.probability >= 85)
                         {
-                            this.GetComponent<CharacterControl>().UseChip(4);
-                            this.attaking = true;
+                            if (this.player2.transform.position.x<-7) {
+                                goToPosition(this.player2.transform.position.x + 4, this.player1.transform.position.z, this.player2.transform.position.x, this.player2.transform.position.z);
+                            } else {
+                                goToPosition(this.player2.transform.position.x - 1, this.player1.transform.position.z, this.player2.transform.position.x, this.player2.transform.position.z);
+                            }
+                            
                         }
+                        else {
+                            if (this.player1.transform.position.z<1) {
+                                goToPosition((this.player1.transform.position.x * -1) + 4, this.player1.transform.position.z + 3, this.player2.transform.position.x, this.player2.transform.position.z);
+                            }
+                            else {
+                                goToPosition((this.player1.transform.position.x * -1) + 4, this.player1.transform.position.z + 5, this.player2.transform.position.x, this.player2.transform.position.z);
+                            }
+                            
+                        }
+                            
                     }
+                    else {
+                        goToPosition(this.player1.transform.position.x * -1, this.player1.transform.position.z * 1, this.player2.transform.position.x, this.player2.transform.position.z);
+                    }
+                        
                 }
-            }
-            if (this.getDisctance(this.player1, this.player2) > 11)
-            {
-                if (this.probability >= 40)
-                {
-                    goToPosition(1, this.player1.transform.position.z * -1, gameObject.transform.position.x, gameObject.transform.position.z);
-                }
-                else if (this.probability >= 1)
-                {
-                    if (goToPosition(9, this.player1.transform.position.z, gameObject.transform.position.x, gameObject.transform.position.z))
+                    else if (this.probability < 35)
                     {
-                        if (this.canIAttack())
-                        {
-                            this.GetComponent<CharacterControl>().UseChip(2);
-                            this.attaking = true;
-                        }
+                        goToPosition(this.player1.transform.position.x*-1, (this.player1.transform.position.z * -1), this.player2.transform.position.x, this.player2.transform.position.z);
                     }
-                }
-            }
-            else
-            {
-                if (this.probability >= 70)
-                {
-                    if (goToPosition(9, this.player1.transform.position.z, gameObject.transform.position.x, gameObject.transform.position.z))
-                    {
-                        if (this.canIAttack())
-                        {
-                            this.GetComponent<CharacterControl>().UseChip(4);
-                            this.attaking = true;
-                        }
-                    }
-                }
-                else if (this.probability >= 40)
-                {
-                    goToPosition(0, 9, gameObject.transform.position.x, gameObject.transform.position.z);
-                }
-                else if (this.probability >= 1)
-                {
-                    if (goToPosition(this.player1.transform.position.x * -1, this.player1.transform.position.z, gameObject.transform.position.x, gameObject.transform.position.z))
-                    {
-                        if (this.canIAttack())
-                        {
-                            this.GetComponent<CharacterControl>().UseChip(3);
-                            this.attaking = true;
-                        }
-                    }
-                }
             }
             this.attaking = false;
         }
