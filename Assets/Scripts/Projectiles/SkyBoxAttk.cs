@@ -7,8 +7,8 @@ public class SkyBoxAttk : Projectile
     static float MAX_COLLIDER_RADIUS = 3.5f;
     static float COLLIDER_GROW_SPEED = 3.5f;
 
-    private float yForce = 50f;
-    private float xForce = 9f;
+    private float yForce = -50f;
+    private float xForce = 0f;
     AudioSource explosionSound;
     public GameObject explosion;
 
