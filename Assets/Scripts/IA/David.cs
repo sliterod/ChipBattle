@@ -209,8 +209,6 @@ public class David : MonoBehaviour
             {
                 this.probability = this.calculateProbability();
             }
-            Debug.LogWarning(this.player1.transform.position.z);
-            Debug.LogWarning(this.player2.transform.position.z);
             if ((Math.Truncate(this.player1.transform.position.z) ) == Math.Truncate(this.player2.transform.position.z))
             {
                 if (this.canIAttack())

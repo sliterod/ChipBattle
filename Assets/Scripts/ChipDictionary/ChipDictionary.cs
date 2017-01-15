@@ -58,10 +58,10 @@ public class ChipDictionary : MonoBehaviour {
 
         if (chipAttributes.TryGetValue(chipName, out chipData))
         {
-            Debug.Log("Key found: Chip Prefab " + chipName);
+//            Debug.Log("Key found: Chip Prefab " + chipName);
         }
         else {
-            Debug.Log("Key not found, please set the correct Chip Name.");
+//            Debug.Log("Key not found, please set the correct Chip Name.");
             chipData = new ChipData(0, Status.none, Element.none);
         }
         
@@ -75,6 +75,8 @@ public class ChipDictionary : MonoBehaviour {
 
         //Attack chips
         AddEntryToDictionary("Cannon", 40, Status.none, Element.none);
+		AddEntryToDictionary("Rocket", 40, Status.none, Element.none);
+		AddEntryToDictionary("Meteor", 50, Status.none, Element.none);
         AddEntryToDictionary("GrenadeChip", 40, Status.none, Element.none);
         AddEntryToDictionary("SkyBoxAttkChip", 60, Status.none, Element.none);
 

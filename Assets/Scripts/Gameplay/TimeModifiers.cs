@@ -65,7 +65,7 @@ public class TimeModifiers : MonoBehaviour {
     void UpdateGaugeTimer() {
         if (currentCustomGaugeTime > 0.0f) {
             currentCustomGaugeTime -= Time.fixedDeltaTime;
-            Debug.Log("Custom gauge, remaining time: " + currentCustomGaugeTime);
+//            Debug.Log("Custom gauge, remaining time: " + currentCustomGaugeTime);
         }
         else if (currentCustomGaugeTime <= 0.0f) {
             //Reseting values
@@ -140,7 +140,7 @@ public class TimeModifiers : MonoBehaviour {
     /// </summary>
     /// <param name="state">State of activation of the gauge</param>
     void ActivateCustomGauge(bool state) {
-        Debug.Log("Setting gauge activation to: " + state.ToString());
+//        Debug.Log("Setting gauge activation to: " + state.ToString());
         canGaugeTimerDecrease = state;
     }
 

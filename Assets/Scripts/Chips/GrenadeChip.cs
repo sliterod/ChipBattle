@@ -30,7 +30,7 @@ public class GrenadeChip : Chip {
     {
         if (!isActive) //To prevent using the chip multiple times
         {
-            Debug.Log("Grenade Activated");
+//            Debug.Log("Grenade Activated");
             projectilePoint = transform.root.Find(RIGHT_HAND_PATH);
             isActive = true;
             foreach (GameObject element in GameObject.FindGameObjectsWithTag("AnimationController"))
@@ -38,7 +38,7 @@ public class GrenadeChip : Chip {
             {
                 if (element.transform.root == this.transform.root)
                 {
-                    Debug.Log("Animation Controller found");
+//                    Debug.Log("Animation Controller found");
                     //we select the one inside our hierchy
                     element.GetComponent<CharacterAnimationController>().PlayChipAnimation(Animation);
                     //and tell it to play the corresponding animation 
@@ -55,7 +55,7 @@ public class GrenadeChip : Chip {
             GameObject projectile = Instantiate(Resources.Load("Projectiles/Grenade", typeof(GameObject))) as GameObject;
             //We take the projectile form the resources
             projectile.transform.position = projectilePoint.position; //Put it into position
-            Debug.Log(projectilePoint.position);
+//            Debug.Log(projectilePoint.position);
             if (transform.root.gameObject.layer == 8)
             {
                 projectile.transform.GetChild(0).GetComponent<Grenade>().Launch(StageSide.blue); //And we shoot it

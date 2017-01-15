@@ -88,13 +88,13 @@ public class StraightShot : Projectile {
         }
         if (raycastHit)
         {
-            Debug.Log("Hit Something");
+//            Debug.Log("Hit Something");
             endPoint = hitInfo.point;
             hitInfo.collider.gameObject.SendMessage("OnHit", damage);
         }
         else
         {
-            Debug.Log("Hit Nothing =(");
+//            Debug.Log("Hit Nothing =(");
             if(side == StageSide.blue)
             {
                 endPoint =new Vector3(80, this.transform.position.y, this.transform.position.z);

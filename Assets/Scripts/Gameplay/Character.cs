@@ -82,7 +82,7 @@ public class Character : MonoBehaviour {
     void OnHit(int damage)
     {
         lifePoint = Mathf.Clamp(LifePoints - damage, 0, startingLife);
-        Debug.Log("Damage recieved, Life:" + lifePoint);
+//        Debug.Log("Damage recieved, Life:" + lifePoint);
         if(lifePoint == 0)
         {
             onLethalDamage();
@@ -101,7 +101,7 @@ public class Character : MonoBehaviour {
             {
                 if (element.transform.root == this.transform.root)
                 {
-                    Debug.Log("Animation Controller found");
+//                    Debug.Log("Animation Controller found");
                     //we select the one inside our hierchy
                     element.GetComponent<CharacterAnimationController>().PlayDamageAnimation();
                     currentState = PlayerStates.takingDamage;
@@ -176,7 +176,7 @@ public class Character : MonoBehaviour {
     /// </summary>
     void OnChipAnimationFinish()
     {
-        Debug.LogWarning("Chip anim finished");
+//        Debug.LogWarning("Chip anim finished");
         currentState = PlayerStates.idle;
     }
 

@@ -62,6 +62,12 @@ public class FolderInBattle : MonoBehaviour {
     void LoadCurrentEquippedFolder() {
         equippedFolder = new List<string>()
         {   "Cannon",
+			"Meteor",
+			"Meteor",
+			"Meteor",
+			"Meteor",
+			"Meteor",
+			/*"Rocket",
             "Cannon",
             "Cannon",
             "Cannon",
@@ -70,7 +76,7 @@ public class FolderInBattle : MonoBehaviour {
             "GrenadeChip",
             "GrenadeChip",
             "GrenadeChip",
-            "GrenadeChip"
+            "GrenadeChip"*/
         };
     }
 
