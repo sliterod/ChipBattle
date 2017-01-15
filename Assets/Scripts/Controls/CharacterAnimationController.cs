@@ -5,9 +5,16 @@ public class CharacterAnimationController : MonoBehaviour {
 
     private Animator animator;
 
+    public PlayerStates CurrentState
+    {
+        get
+        {
+            return (PlayerStates)animator.GetInteger("AnimState");
+        }
+    }
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         animator = GetComponent<Animator>();
 
 	}

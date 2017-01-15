@@ -31,34 +31,8 @@ public class MegaCannon : Chip {
     /// </summary>
     public override void Activate()
     {
-        if(!isActive) //To prevent using the chip multiple times
-        {
-
-            projectilePoint = transform.root.Find(RIGHT_HAND_PATH);
-            isActive = true;
-            foreach (GameObject element in GameObject.FindGameObjectsWithTag("AnimationController"))
-                //We search for every "animationController" objects in the scene
-            {
-                if(element.transform.root == this.transform.root)
-                {
-                    Debug.Log("Animation Controller found");
-                    //we select the one inside our hierchy
-                    element.GetComponent<CharacterAnimationController>().PlayChipAnimation(Animation);
-                    //and tell it to play the corresponding animation 
-                }
-            }
-
-        }
-        
-        /*
-        GameObject projectile = Instantiate(Resources.Load("Projectiles/CannonBall", typeof(GameObject))) as GameObject;
-        //We take the projectile form the resources
-        projectile.transform.position = this.transform.position; //Put it into position
-        projectile.GetComponent<CannonBall>().Launch(StageSide.blue); //And we shoot it
-
-        // This is a temporal solution, the chip shouldn't be destroyed before the amimation ends
-        KillSelf();
-        */
+        projectilePoint = transform.root.Find(RIGHT_HAND_PATH);
+        base.Activate();
     }
 
     void OnHitFrame()

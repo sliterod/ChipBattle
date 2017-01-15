@@ -61,7 +61,23 @@ public class Chip : MonoBehaviour {
     /// </summary>
     virtual public void Activate()
     {
+        if (!isActive) //To prevent using the chip multiple times and spaming
+        {
 
+            Debug.Log("Double Shot Activated");
+            isActive = true;
+            foreach (GameObject element in GameObject.FindGameObjectsWithTag("Player"))
+            //We search for every "animationController" objects in the scene
+            {
+                if (element.transform.root == this.transform.root)
+                {
+                    Debug.Log("Animation Controller found");
+                    //we select the one inside our hierchy
+                    element.GetComponent<Character>().eventReportChipActivation(_animation);
+                    //and tell it to play the corresponding animation 
+                }
+            }
+        }
     }
 
     /// <summary>

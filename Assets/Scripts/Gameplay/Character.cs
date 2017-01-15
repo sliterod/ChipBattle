@@ -10,16 +10,13 @@ public class Character : MonoBehaviour {
 
     float speedModifier = 0; //this will be changing if the player get a buff or debuff
 
-    private PlayerStates currentState;
+    public CharacterAnimationController animationController;
+
     public PlayerStates CurrentState
     {
         get
         {
-            return currentState;
-        }
-        private set
-        {
-            currentState = value;
+            return animationController.CurrentState;
         }
     }
 
@@ -64,7 +61,7 @@ public class Character : MonoBehaviour {
     }
     // Use this for initialization
     void Start () {
-        currentState = PlayerStates.idle;
+        animationController.PlayIdleAnim();
         lifePoint = startingLife;
         SendMessage("UpdateHpValue", lifePoint);
 
@@ -92,22 +89,11 @@ public class Character : MonoBehaviour {
         SendMessage("UpdateHpValue", lifePoint);
 
 
-        if(currentState != PlayerStates.usingChip && currentState != PlayerStates.takingDamage && currentState != PlayerStates.dead)
+        if(CurrentState != PlayerStates.usingChip && CurrentState != PlayerStates.takingDamage && CurrentState != PlayerStates.dead)
         {
             //Chip use and Damage are unstapable animation
-            //The damage is still recieved but no animation is played to prevent loose ends in the chip activation process
-            foreach (GameObject element in GameObject.FindGameObjectsWithTag("AnimationController"))
-            //We search for every "animationController" objects in the scene
-            {
-                if (element.transform.root == this.transform.root)
-                {
-                    Debug.Log("Animation Controller found");
-                    //we select the one inside our hierchy
-                    element.GetComponent<CharacterAnimationController>().PlayDamageAnimation();
-                    currentState = PlayerStates.takingDamage;
-                    //and tell it to play the corresponding animation 
-                }
-            }
+            animationController.PlayDamageAnimation();
+            //and tell it to play the corresponding animation 
         }
     }
     void heal(int amount)
@@ -118,36 +104,25 @@ public class Character : MonoBehaviour {
         SendMessage("UpdateHpValue", lifePoint);
 
 
-        if (currentState != PlayerStates.usingChip && currentState != PlayerStates.takingDamage && currentState != PlayerStates.dead)
+        if (CurrentState != PlayerStates.usingChip && CurrentState != PlayerStates.takingDamage && CurrentState != PlayerStates.dead)
         {
             //Chip use and Damage are unstapable animation
-            //The damage is still recieved but no animation is played to prevent loose ends in the chip activation process
-            foreach (GameObject element in GameObject.FindGameObjectsWithTag("AnimationController"))
-            //We search for every "animationController" objects in the scene
-            {
-                if (element.transform.root == this.transform.root)
-                {
-                    Debug.Log("Animation Controller found");
-                    //we select the one inside our hierchy
-                    element.GetComponent<CharacterAnimationController>().PlayDamageAnimation();
-                    currentState = PlayerStates.usingChip;
-                    //and tell it to play the corresponding animation 
-                }
-            }
+            animationController.PlayDamageAnimation();
         }
     }
+
     void setSpeedModifier(float speedModifire) {
         this.speedModifier = speedModifire;
     }
+
     /// <summary>
     /// Function that should be called every time that the character stop moving
     /// </summary>
     public void eventReportStopMovement()
     {
-        if (currentState == PlayerStates.moving)
+        if (CurrentState == PlayerStates.moving)
         {
-            currentState = PlayerStates.idle;
-            //here we should call the animator and tell it to start playing the idle animation
+            animationController.PlayIdleAnim();
         }
     }
 
@@ -155,20 +130,20 @@ public class Character : MonoBehaviour {
     /// Function that should be called every time that the character strat moving
     /// the X and Y value helps to decide what animation should be played (if the character is walking up or going back, etc)
     /// </summary>
-    public void eventReportMovement()
+    public void eventReportMovement(float x)
     {
-        if (currentState == PlayerStates.idle)
+        if (CurrentState == PlayerStates.idle)
         {
-            currentState = PlayerStates.moving;
+            animationController.PlayRunAnim(x);
         }
     }
 
     /// <summary>
     /// Function that should be called when a chip is activated
     /// </summary>
-    public void eventReportChipActivation()
+    public void eventReportChipActivation(int chipAnimation)
     {
-        currentState = PlayerStates.usingChip;
+        animationController.PlayChipAnimation(chipAnimation);
     }
 
     /// <summary>
@@ -176,8 +151,7 @@ public class Character : MonoBehaviour {
     /// </summary>
     void OnChipAnimationFinish()
     {
-        Debug.LogWarning("Chip anim finished");
-        currentState = PlayerStates.idle;
+        animationController.PlayIdleAnim();
     }
 
     /// <summary>
@@ -185,16 +159,15 @@ public class Character : MonoBehaviour {
     /// </summary>
     void OnDamageAnimationFisnish()
     {
-        if(currentState != PlayerStates.dead)
+        if(CurrentState != PlayerStates.dead)
         {
-            currentState = PlayerStates.idle;
+            animationController.PlayIdleAnim();
         }
         
     }
 
     void onLethalDamage()
     {
-        currentState = PlayerStates.dead;
         SendMessage("OnDeath", SendMessageOptions.DontRequireReceiver);
         GameObject.Find("Gamestate").SendMessage("ChangeToBattleEnd");
     }

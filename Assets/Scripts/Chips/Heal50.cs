@@ -28,30 +28,6 @@ public class Heal50 : Chip
 
     }
 
-    /// <summary>
-    /// Override of the Chip's Activate function
-    /// </summary>
-    public override void Activate()
-    {
-        if (!isActive) //To prevent using the chip multiple times
-        {
-            GameObject player = transform.root.gameObject;
-            isActive = true;
-            foreach (GameObject element in GameObject.FindGameObjectsWithTag("AnimationController"))
-            //We search for every "animationController" objects in the scene
-            {
-                if (element.transform.root == this.transform.root)
-                {
-                    //Debug.Log("Animation Controller found");
-                    //we select the one inside our hierchy
-                    element.GetComponent<CharacterAnimationController>().PlayChipAnimation(Animation);
-                    //and tell it to play the corresponding animation 
-                }
-            }
-
-        }
-    }
-
     void OnHitFrame()
     {
         if (isActive)

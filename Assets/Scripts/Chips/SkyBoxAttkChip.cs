@@ -35,21 +35,9 @@ public class SkyBoxAttkChip : Chip
         {
             GameObject player1 = GameObject.Find("Player1");
             projectilePoint = new GameObject().transform;
-            projectilePoint.position = new Vector3(player1.transform.position.x, player1.transform.position.y +10, player1.transform.position.z);
-            isActive = true;
-            foreach (GameObject element in GameObject.FindGameObjectsWithTag("AnimationController"))
-            //We search for every "animationController" objects in the scene
-            {
-                if (element.transform.root == this.transform.root)
-                {
-                    //Debug.Log("Animation Controller found");
-                    //we select the one inside our hierchy
-                    element.GetComponent<CharacterAnimationController>().PlayChipAnimation(Animation);
-                    //and tell it to play the corresponding animation 
-                }
-            }
-
-        }
+            projectilePoint.position = new Vector3(player1.transform.position.x, player1.transform.position.y + 10, player1.transform.position.z);
+            base.Activate();
+        }           
     }
 
     void OnHitFrame()
