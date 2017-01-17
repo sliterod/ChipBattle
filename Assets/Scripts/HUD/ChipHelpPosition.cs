@@ -28,13 +28,13 @@ public class ChipHelpPosition : MonoBehaviour {
 
         if (joysticksConnected > 0)
         {
-            Debug.Log("Setting helper position. Joystick");
+//            Debug.Log("Setting helper position. Joystick");
             ControllerPosition();
             ChangeButtonText(joysticksConnected);
         }
         else
         {
-            Debug.Log("Setting helper position. Keyboard");
+//            Debug.Log("Setting helper position. Keyboard");
             KeyboardPosition();
             ChangeButtonText(joysticksConnected);
         }

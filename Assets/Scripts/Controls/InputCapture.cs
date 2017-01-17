@@ -225,7 +225,7 @@ public class InputCapture : MonoBehaviour {
 
         if (gamestate.CurrentBattleState == BattleState.battle)
         {
-            Debug.Log("Input captured. Moving character");
+//            Debug.Log("Input captured. Moving character");
             MoveCharacter();
         }
 
@@ -367,7 +367,7 @@ public class InputCapture : MonoBehaviour {
         if (Input.GetAxis("Horizontal") >= -0.5f &&
             Input.GetAxis("Horizontal") <= 0.5f)
         {
-            Debug.Log("Horizontal false;");
+//            Debug.Log("Horizontal false;");
             isStickInUse = false;
         }
     }

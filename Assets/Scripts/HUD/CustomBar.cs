@@ -33,7 +33,7 @@ public class CustomBar : MonoBehaviour {
     /// Resets current gauge scale
     /// </summary>
     void ResetGaugeFilling() {
-        Debug.Log("Resetting gauge filling");
+//        Debug.Log("Resetting gauge filling");
         customBarFill.localScale = new Vector3(0.0f, customBarFill.localScale.y, customBarFill.localScale.z);
     }
 

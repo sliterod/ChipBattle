@@ -303,7 +303,7 @@ public class Gamestate : MonoBehaviour {
     /// </summary>
     /// <param name="newBattleState">The new BattleState value</param>
     void OnBattlestateChange(BattleState newBattleState) {
-        Debug.Log("Changing state to: " + newBattleState.ToString());
+//        Debug.Log("Changing state to: " + newBattleState.ToString());
 
         switch (newBattleState) {
 
@@ -332,7 +332,7 @@ public class Gamestate : MonoBehaviour {
                 break;
 
             case BattleState.selectionScreen:
-                Debug.Log("Displaying Selection screen");
+//                Debug.Log("Displaying Selection screen");
                 battleHud.ShowCustomBar(false);
                 battleHud.ShowBattleChipHelp(false);
                 battleHud.ShowSelectionScreen(true);

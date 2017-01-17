@@ -219,13 +219,13 @@ public class BattleHud : MonoBehaviour {
     public void ShowCustomBar(bool state) {
         if (state)
         {
-            Debug.Log("Showing custom bar");
+//            Debug.Log("Showing custom bar");
             iTweenEvent.GetEvent(battleCustomBar, "Show").Play();
             battleCustomBar.SendMessage("ActivateGaugeFilling", true);
         }
         else
         {
-            Debug.Log("Hiding custom bar");
+//            Debug.Log("Hiding custom bar");
             iTweenEvent.GetEvent(battleCustomBar, "Hide").Play();
             battleCustomBar.SendMessage("ResetGaugeFilling", true);
         }
@@ -766,10 +766,10 @@ public class BattleHud : MonoBehaviour {
                 break;
         }
 
-        Debug.Log("Current checkmark: " + buttonName + ", current index: " + index);
+//        Debug.Log("Current checkmark: " + buttonName + ", current index: " + index);
 
         //Changing object position and scale
-        Debug.Log(selectionScreen.FindChild(buttonName).name);
+//        Debug.Log(selectionScreen.FindChild(buttonName).name);
 
         checkmark = (RectTransform)selectionScreen.FindChild(buttonName);
 
@@ -971,8 +971,8 @@ public class BattleHud : MonoBehaviour {
         //Checks if guide exists before deleting it
         if (battleChipHelp.transform.FindChild(chipToDestroy))
         {
-            Destroy(battleChipHelp.transform.FindChild(chipToDestroy).gameObject);
-            Debug.Log("Chip guide destroyed");
+//            Destroy(battleChipHelp.transform.FindChild(chipToDestroy).gameObject);
+//            Debug.Log("Chip guide destroyed");
         }
     }
 }

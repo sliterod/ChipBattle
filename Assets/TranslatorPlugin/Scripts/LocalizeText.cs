@@ -22,11 +22,11 @@ public class LocalizeText : MonoBehaviour {
     void Localize(string key) {
         if (key != "")
         {
-            Debug.Log("Searching for key: " + key);
+//            Debug.Log("Searching for key: " + key);
             SearchKey(key);
         }
         else {
-            Debug.Log("Using text on component");
+//            Debug.Log("Using text on component");
         }
     }
 
@@ -56,11 +56,11 @@ public class LocalizeText : MonoBehaviour {
                             .GetComponent<SetLanguage>()
                             .LanguageFileContent;
 
-            Debug.Log("Splitting key and content");
+//            Debug.Log("Splitting key and content");
             for (int i = 0; i < localization.Length; i++) {
 
                 string result = Regex.Replace(localization[i], @"\r\n?|\n", "");
-                Debug.Log(i + ", " + result);
+//                Debug.Log(i + ", " + result);
                 if (result.StartsWith(key)) {
                     string[] keyAndContent = Regex.Split(result, "_");
 
@@ -84,7 +84,7 @@ public class LocalizeText : MonoBehaviour {
     void SetLocalizedText(string content) {
         Text labelText;
 
-        Debug.Log("Localizing text");
+//        Debug.Log("Localizing text");
 
         labelText = this.GetComponent<Text>();
         labelText.text = content;
