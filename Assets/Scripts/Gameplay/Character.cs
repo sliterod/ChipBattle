@@ -168,6 +168,7 @@ public class Character : MonoBehaviour {
 
     void onLethalDamage()
     {
+        animationController.PlayDeathAnimation();
         SendMessage("OnDeath", SendMessageOptions.DontRequireReceiver);
         GameObject.Find("Gamestate").SendMessage("ChangeToBattleEnd");
     }

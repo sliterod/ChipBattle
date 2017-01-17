@@ -56,6 +56,11 @@ public class CharacterAnimationController : MonoBehaviour {
         ChangeAnimState(PlayerStates.takingDamage);
     }
 
+    public void PlayDeathAnimation()
+    {
+        ChangeAnimState(PlayerStates.dead);
+    }
+
     void OnHitFrame()
     {
         foreach (GameObject element in GameObject.FindGameObjectsWithTag("Chip"))
