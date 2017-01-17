@@ -15,7 +15,7 @@ public class MeteorController : Projectile {
 	private int numberOfMeteor=3;
 
 	// Use this for initialization
-	Transform target;
+	Vector3 target;
 	Vector3 lastTargetPosition;
 	void Start () {
 		colliderRadius = transform.localScale.x;
@@ -39,7 +39,7 @@ public class MeteorController : Projectile {
 			}
 
             float step = speed * Time.deltaTime;
-			this.transform.position = Vector3.MoveTowards (this.transform.position,this.target.position,step);
+			this.transform.position = Vector3.MoveTowards (this.transform.position,this.target,step);
         }
 	}
 
@@ -47,7 +47,7 @@ public class MeteorController : Projectile {
     /// Tells the projectile to start moving at the default speed
     /// </summary>
     /// <param name="side">Indicates if the projectile is shot from the Blue o Red side of the stage</param>
-	public void Launch(StageSide side,Transform target)
+	public void Launch(StageSide side,Vector3 target)
     {
         SetLayerOfEffect(side);
 		this.target = target;
@@ -74,20 +74,17 @@ public class MeteorController : Projectile {
 			explosionActivated = true;
 			explosion.SetActive(true);
 			explosion.transform.position = this.transform.position;
-			//GetComponent<MeshRenderer>().enabled = false;
+			GetComponent<MeshRenderer>().enabled = false;
 			explosionSound.PlayDelayed(0);
 
 		}
-		if (other.name == this.target.transform.name)
-		{
-			explosionActivated = true;
-			explosion.SetActive(true);
-			explosion.transform.position = this.transform.position;
-			//GetComponent<MeshRenderer>().enabled = false;
-			explosionSound.PlayDelayed(0);
-		}
         if(other.gameObject.layer == layerOfEffect)
         {
+            explosionActivated = true;
+            explosion.SetActive(true);
+            explosion.transform.position = this.transform.position;
+            GetComponent<MeshRenderer>().enabled = false;
+            explosionSound.PlayDelayed(0);
             other.SendMessage("OnHit", damage);
         }
         //Destroy(gameObject);
