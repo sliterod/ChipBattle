@@ -61,10 +61,8 @@ public class Character : MonoBehaviour {
     }
     // Use this for initialization
     void Start () {
-        animationController.PlayIdleAnim();
         lifePoint = startingLife;
         SendMessage("UpdateHpValue", lifePoint);
-
     }
 	
 	// Update is called once per frame

@@ -16,7 +16,7 @@ public class CharacterAnimationController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         animator = GetComponent<Animator>();
-
+        this.PlayIdleAnim();
 	}
 	
 	// Update is called once per frame

@@ -66,9 +66,7 @@ public class Rocket : Chip {
 				else
 				{
 				projectile.GetComponent<RocketController>().Launch(StageSide.red,target.transform); //And we shoot it
-				}	
-			
-                
+				}             
         } 
     }
 }
