@@ -40,28 +40,12 @@ public class Rocket : Chip {
     /// </summary>
     public override void Activate()
     {
-        if(!isActive) //To prevent using the chip multiple times
-        {
-			
-			
-				Debug.Log("Rocket Activated");
-				projectilePoint = transform.root.Find(RIGHT_HAND_PATH);
-				isActive = true;
+        projectilePoint = transform.root.Find(RIGHT_HAND_PATH);
 
-				foreach (GameObject element in GameObject.FindGameObjectsWithTag("AnimationController"))
-					//We search for every "animationController" objects in the scene
-				{
-					if(element.transform.root == this.transform.root)
-					{
-					
-						Debug.Log("Animation Controller found");
-						//we select the one inside our hierchy
-						element.GetComponent<CharacterAnimationController>().PlayChipAnimation(Animation);
-						//and tell it to play the corresponding animation 
-						shotSound.PlayDelayed(0);
-					}
-				}
-            
+        if (!isActive) //To prevent using the chip multiple times
+        {
+            base.Activate();
+            shotSound.PlayDelayed(0);           
         }
         
     }
