@@ -3,10 +3,9 @@ using System.Collections;
 
 public class Meteor : Chip {
 
-    
     Transform projectilePoint;
     AudioSource shotSound;
-	int numberOfProjectils=3;
+	int numberOfProjectils=4;
 	private GameObject target;
     /// <summary>
     /// Class constructor
@@ -52,35 +51,8 @@ public class Meteor : Chip {
     {
         if (isActive)
         {
-            //DrawLine (projectilePoint.position, target.transform.position, Color.yellow, 1);
-            //for (int i = 0; i < numberOfProjectils; i++)
-            //{
 
             StartCoroutine(shotMeteors(.2f));
-
-/*
-            GameObject projectile = Instantiate(Resources.Load("Projectiles/Meteor", typeof(GameObject))) as GameObject;
-                //We take the projectile form the resources
-                projectile.transform.position = new Vector3(projectilePoint.position.x + i, 20+i, projectilePoint.position.z + i); ; //Put it into position
-                //blue side
-                int maxDistanceX = 20;
-                if (transform.root.gameObject.layer == 8) {
-                    maxDistanceX *= -1;
-                }
-                    
-                Vector3 meteorDestinetion = new Vector3(Random.Range(0, maxDistanceX), 1 ,Random.Range(-7, 7));
-                if (transform.root.gameObject.layer == 8)
-                {
-                    projectile.transform.GetChild(0).GetComponent<MeteorController>().Launch(StageSide.blue, meteorDestinetion); //And we shoot it
-                }
-                else
-                {
-                    projectile.transform.GetChild(0).GetComponent<MeteorController>().Launch(StageSide.red, meteorDestinetion); //And we shoot it
-                }
-                */
-            //}
-					
-			
                 
         } 
     }
@@ -88,8 +60,10 @@ public class Meteor : Chip {
     {
         
         GameObject projectile = Instantiate(Resources.Load("Projectiles/Meteor", typeof(GameObject))) as GameObject;
+        
         //We take the projectile form the resources
-        projectile.transform.position = new Vector3(projectilePoint.position.x, 20, projectilePoint.position.z); ; //Put it into position
+        Vector3 meteorPosition = new Vector3(projectilePoint.position.x, 20, projectilePoint.position.z);
+        projectile.transform.position = meteorPosition; //Put it into position
                                                                                                                                //blue side
         int maxDistanceX = 20;
         Vector3 meteorDestinetion;
@@ -103,7 +77,10 @@ public class Meteor : Chip {
             
         }
 
+        GameObject projectileTarget = Instantiate(Resources.Load("Micelaneos/Target/target", typeof(GameObject)),meteorDestinetion,Quaternion.identity) as GameObject;
         
+        projectile.transform.GetChild(0).GetComponent<MeteorController>().targetMark=projectileTarget;
+
         if (transform.root.gameObject.layer == 8)
         {
             projectile.transform.GetChild(0).GetComponent<MeteorController>().Launch(StageSide.blue, meteorDestinetion); //And we shoot it

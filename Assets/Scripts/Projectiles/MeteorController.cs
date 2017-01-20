@@ -5,7 +5,7 @@ public class MeteorController : Projectile {
     
 	float speed = 40;
 	bool iArrived = false;
-
+	public GameObject targetMark;
 	static float MAX_COLLIDER_RADIUS = 3.5f;
 	static float COLLIDER_GROW_SPEED = 3.5f;
 	public GameObject explosion;
@@ -75,8 +75,7 @@ public class MeteorController : Projectile {
 			explosion.SetActive(true);
 			explosion.transform.position = this.transform.position;
 			GetComponent<MeshRenderer>().enabled = false;
-			explosionSound.PlayDelayed(0);
-
+			Destroy(this.targetMark);
 		}
         if(other.gameObject.layer == layerOfEffect)
         {
@@ -84,9 +83,10 @@ public class MeteorController : Projectile {
             explosion.SetActive(true);
             explosion.transform.position = this.transform.position;
             GetComponent<MeshRenderer>().enabled = false;
-            explosionSound.PlayDelayed(0);
             other.SendMessage("OnHit", damage);
+			Destroy(this.targetMark);
         }
+		explosionSound.PlayDelayed(0);
         //Destroy(gameObject);
     }
 	void KillSelf()

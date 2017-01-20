@@ -5,11 +5,24 @@ public class Chip : MonoBehaviour {
 
     protected static string RIGHT_HAND_PATH = "Mesh/Dummy/Armature/Torso/UpperArm_R/LowerArm_R/Hand_R"; //Heirachy path to find the right hand object form the root.
     protected static string LEFT_HAND_PATH = "Mesh/Dummy/Armature/Torso/UpperArm_L/LowerArm_L/Hand_L"; //Heirachy path to find the left hand object form the root.
-
+    private float coolDown=40;//seconds
+    private float currentCoolDown=0; 
     protected bool isActive = false; //Flag to know if the chip had been activated
     protected bool isFixed = false; //Flag to know if the chip shuouldn't be destroyed because is a fixed ability 
 
     protected string _chipName = "Chip"; //Name or stringTag of the chip
+    public float getCoolDown(){
+        return this.coolDown;
+    }
+    public float getCurrentCoolDown(){
+        return this.currentCoolDown;
+    }
+    public void setCoolDown(float newCoolDown){
+        this.coolDown=newCoolDown;
+    }
+    public void setCurrentCoolDown(float newCoolDown){
+        this.coolDown=newCoolDown;
+    }
     public string ChipName //Property to be read from other scripts 
     {
         get
@@ -53,6 +66,14 @@ public class Chip : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if(isActive){
+            if(currentCoolDown>0){
+                currentCoolDown-=Time.deltaTime;
+            }
+            else if(currentCoolDown!=0){
+                currentCoolDown=0;
+            }
+        }
 	
 	}
 
@@ -61,10 +82,10 @@ public class Chip : MonoBehaviour {
     /// </summary>
     virtual public void Activate()
     {
-        if (!isActive) //To prevent using the chip multiple times and spaming
+        if (!isActive&&currentCoolDown==0) //To prevent using the chip multiple times and spaming
         {
-
-            Debug.Log("Double Shot Activated");
+            currentCoolDown=coolDown;
+            //Debug.Log("Double Shot Activated");
             isActive = true;
             foreach (GameObject element in GameObject.FindGameObjectsWithTag("Player"))
             //We search for every "animationController" objects in the scene
