@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class AreaSteal : MonoBehaviour {
 
-    public Transform centerLimit;
-    public Transform blueArea;
-    public Transform redArea;
-
 	// Use this for initialization
 	void Start () {
 		
