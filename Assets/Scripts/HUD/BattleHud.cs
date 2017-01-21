@@ -87,7 +87,7 @@ public class BattleHud : MonoBehaviour {
     public void ShowSelectionScreen(bool state) {
         if (state)
         {
-            Debug.Log("Showing selection screen, setting state to selectionScreen...");
+            //Debug.Log("Showing selection screen, setting state to selectionScreen...");
 
             //Player HP
             GameObject.Find("Player1").SendMessage("RenderHpCanvas", false);
@@ -102,7 +102,7 @@ public class BattleHud : MonoBehaviour {
             iTweenEvent.GetEvent(selectionScreen.gameObject, "Show").Play();
         }
         else {
-            Debug.Log("Hiding selection screen, setting state to standby...");
+            //Debug.Log("Hiding selection screen, setting state to standby...");
 
             //Selection screen
             isScreenInitialized = false;
@@ -404,7 +404,7 @@ public class BattleHud : MonoBehaviour {
         selScreenChips = new List<Transform>();
         selScreenGuides = new Transform[4, 2];
 
-        Debug.Log("Current random selection set. Now instantiating chips");
+        //Debug.Log("Current random selection set. Now instantiating chips");
         for (int i = 0; i < selScreenChipNames.Length; i++)
         {
             InstantiateBattleChip(selScreenChipNames[i]);
@@ -413,10 +413,10 @@ public class BattleHud : MonoBehaviour {
         //Filling empty spaces (if any)
         FillEmptyChipSlot(selScreenChipNames.Length);
 
-        Debug.Log("Setting miniature positions");
+        //Debug.Log("Setting miniature positions");
         SelectionMiniaturePosition();
 
-        Debug.Log("Deactivating other chip instances");
+        //Debug.Log("Deactivating other chip instances");
         ShowCurrentChip(0);
     }
 
@@ -450,7 +450,7 @@ public class BattleHud : MonoBehaviour {
         //Filling empty spaces
         if (chipListLength < 6)
         {
-            Debug.Log("Current chips on folder: " + chipListLength + ". Filling empty spaces...");
+            //Debug.Log("Current chips on folder: " + chipListLength + ". Filling empty spaces...");
             emptySlots = 6 - chipListLength;
 
             for (int i = 0; i < emptySlots; i++)
@@ -530,14 +530,14 @@ public class BattleHud : MonoBehaviour {
     /// Destroy selection screen battle chips
     /// </summary>
     public void DestroySelectionBattleChips() {
-        Debug.Log("Chips on selScreenChips list: " + selScreenChips.Count);
+        //Debug.Log("Chips on selScreenChips list: " + selScreenChips.Count);
         //Destroying selection screen battle chip list
         foreach (Transform chip in selScreenChips) {
             Destroy(chip.gameObject);
         }
 
         selScreenChips.RemoveRange(0, selScreenChips.Count);
-        Debug.Log("Chips on selScreenChips list: " + selScreenChips.Count);
+        //Debug.Log("Chips on selScreenChips list: " + selScreenChips.Count);
 
         //Destroying selection screen miniatures
         foreach (Transform miniature in selScreenMiniatures)
@@ -638,14 +638,14 @@ public class BattleHud : MonoBehaviour {
                                     int chipGuideIndex)
     {
         //Setting current chip to selected guide position
-        Debug.Log("Setting chip guide to " + parentName);
+        //Debug.Log("Setting chip guide to " + parentName);
 
         if (chipGuide)
         {
             //Saving on array
-            Debug.Log("Saving chip guide to array");
+            //Debug.Log("Saving chip guide to array");
             selScreenGuides[chipGuideIndex, 0] = chipGuide; //Chip
-            Debug.Log("ChipGuideIndex: " + chipGuideIndex);
+            //Debug.Log("ChipGuideIndex: " + chipGuideIndex);
             selScreenGuides[chipGuideIndex, 1] = chipGuide.parent; //Original Parent
 
             //New Parent
@@ -677,7 +677,7 @@ public class BattleHud : MonoBehaviour {
             chipGuideTransform = selScreenGuides[chipGuideIndex, 0];
 
             //Returning current chip to its original parent
-            Debug.Log("Returning chip to original parent");
+            //Debug.Log("Returning chip to original parent");
             chipGuideTransform.SetParent(selScreenGuides[chipGuideIndex, 1]);
 
             //Position
@@ -693,7 +693,7 @@ public class BattleHud : MonoBehaviour {
                 selScreenChips[selCursorIndex].transform.GetInstanceID())
                 {
                     //Same chip, setting slot empty
-                    Debug.Log("Same chip, setting slot empty");
+                    //Debug.Log("Same chip, setting slot empty");
                     selScreenGuides[chipGuideIndex, 0] = null; //Chip
                     selScreenGuides[chipGuideIndex, 1] = null; //Original Parent
 
@@ -703,16 +703,16 @@ public class BattleHud : MonoBehaviour {
                     selScreenChips[selCursorIndex].transform.GetInstanceID())
                 {
                     //Different chip, setting another chip on slot
-                    Debug.Log("Different chip, changing guide transform");
+                    //Debug.Log("Different chip, changing guide transform");
                     chipGuideTransform = selScreenChips[selCursorIndex]
                                         .transform
                                         .FindChild(chipGuideName);
 
                     if (chipGuideTransform)
                     {
-                        Debug.Log("selScreenChips: " + selScreenChips[selCursorIndex].name);
-                        Debug.Log("chipGuideIndex: " + chipGuideIndex);
-                        Debug.Log("chipGuideTransform: " + chipGuideTransform.name);
+                        //Debug.Log("selScreenChips: " + selScreenChips[selCursorIndex].name);
+                        //Debug.Log("chipGuideIndex: " + chipGuideIndex);
+                        //Debug.Log("chipGuideTransform: " + chipGuideTransform.name);
 
                         SelectionGuideFillSlot(chipGuideTransform, parentName, chipGuideIndex);
                         SetMiniatureCheckmark(chipGuideIndex + 1, true);
@@ -722,7 +722,7 @@ public class BattleHud : MonoBehaviour {
         }
         else
         {   //Empty slot, setting chip
-            Debug.Log("Guide slot empty, setting chip");
+            //Debug.Log("Guide slot empty, setting chip");
 
             if (selCursorIndex < selScreenChips.Count)
             {
@@ -909,7 +909,7 @@ public class BattleHud : MonoBehaviour {
                 catch (NullReferenceException nrex)
                 {
                     //If no localize object is found, setting prefab name on guide
-                    Debug.Log("Exception occured: " + nrex.Message);
+                    //Debug.Log("Exception occured: " + nrex.Message);
 
                     chipParent.FindChild("button_name")
                             .GetComponent<Text>()
@@ -918,7 +918,7 @@ public class BattleHud : MonoBehaviour {
 
                 //Array of chips in use
                 chipsInUse[i] = chipName;
-                Debug.Log("Chip Name: " + selScreenGuides[i, 1] + ", Position: " + i);
+                //Debug.Log("Chip Name: " + selScreenGuides[i, 1] + ", Position: " + i);
             }
         }
 

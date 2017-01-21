@@ -181,7 +181,7 @@ public class Gamestate : MonoBehaviour {
                 battleHud.MoveSelectionScreenCursor(Movement.down);
             }
             else if (isOkButtonHighlighted) {
-                Debug.Log("Changing state");
+                //Debug.Log("Changing state");
                 isOkButtonHighlighted = false;
                 currentBattleState = BattleState.standby;
 
@@ -308,12 +308,12 @@ public class Gamestate : MonoBehaviour {
         switch (newBattleState) {
 
             case BattleState.battleStart:
-                Debug.Log("Battle initial setup");
+                //Debug.Log("Battle initial setup");
                 //Showing enemy name and area
                 break;
 
             case BattleState.battle:
-                Debug.Log("Starting battle");
+                //Debug.Log("Starting battle");
 
                 //Unpauses the game
                 if (isGamePaused) {
@@ -351,12 +351,12 @@ public class Gamestate : MonoBehaviour {
                 break;
 
             case BattleState.standby:
-                Debug.Log("Standing by...");
+                //Debug.Log("Standing by...");
                 ChangeToStandBy();
                 break;
 
             case BattleState.pause:
-                Debug.Log("Game paused");
+                //Debug.Log("Game paused");
                 isGamePaused = true;
                 Pause(isGamePaused);
                 break;
@@ -367,7 +367,7 @@ public class Gamestate : MonoBehaviour {
                 battleHud.ShowSelectionScreen(false);
 
                 //Ending battle
-                Debug.Log("Battle has ended, showing results screen");
+                //Debug.Log("Battle has ended, showing results screen");
                 battleHud.ShowResultsScreen();
 
                 //Changing to restart 

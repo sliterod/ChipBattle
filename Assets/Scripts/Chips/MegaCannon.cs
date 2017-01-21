@@ -29,10 +29,10 @@ public class MegaCannon : Chip {
     /// <summary>
     /// Override of the Chip's Activate function
     /// </summary>
-    public override void Activate()
+    public override void Activate(int chipSlot)
     {
         projectilePoint = transform.root.Find(RIGHT_HAND_PATH);
-        base.Activate();
+        base.Activate(chipSlot);
     }
 
     void OnHitFrame()

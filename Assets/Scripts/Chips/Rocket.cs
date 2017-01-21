@@ -6,7 +6,8 @@ public class Rocket : Chip {
     
     Transform projectilePoint;
     AudioSource shotSound;
-	int numberOfProjectils=3;
+	int numberOfProjectils = 3;
+    int currentNumberProjectils=0;
 	private GameObject target;
     /// <summary>
     /// Class constructor
@@ -29,22 +30,17 @@ public class Rocket : Chip {
 		}
 
     }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
     /// <summary>
     /// Override of the Chip's Activate function
     /// </summary>
-    public override void Activate()
+    public override void Activate(int chipSlot)
     {
         projectilePoint = transform.root.Find(RIGHT_HAND_PATH);
-
+        currentNumberProjectils = numberOfProjectils;
         if (!isActive) //To prevent using the chip multiple times
         {
-            base.Activate();
+            base.Activate(chipSlot);
             shotSound.PlayDelayed(0);           
         }
         
@@ -55,17 +51,16 @@ public class Rocket : Chip {
         if (isActive)
         {
 			//DrawLine (projectilePoint.position, target.transform.position, Color.yellow, 1);
-
 				GameObject projectile = Instantiate(Resources.Load("Projectiles/Rocket", typeof(GameObject))) as GameObject;
 				//We take the projectile form the resources
 				projectile.transform.position = projectilePoint.position; //Put it into position
 				if (transform.root.gameObject.layer == 8)
 				{
-				projectile.GetComponent<RocketController>().Launch(StageSide.blue,target.transform); //And we shoot it
+				    projectile.GetComponent<RocketController>().Launch(StageSide.blue,target.transform); //And we shoot it
 				}
 				else
 				{
-				projectile.GetComponent<RocketController>().Launch(StageSide.red,target.transform); //And we shoot it
+				    projectile.GetComponent<RocketController>().Launch(StageSide.red,target.transform); //And we shoot it
 				}             
         } 
     }

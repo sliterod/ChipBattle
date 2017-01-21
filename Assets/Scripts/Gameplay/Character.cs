@@ -77,7 +77,7 @@ public class Character : MonoBehaviour {
     void OnHit(int damage)
     {
         lifePoint = Mathf.Clamp(LifePoints - damage, 0, startingLife);
-        Debug.Log("Damage recieved, Life:" + lifePoint);
+        //Debug.Log("Damage recieved, Life:" + lifePoint);
         if(lifePoint == 0)
         {
             onLethalDamage();

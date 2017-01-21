@@ -37,7 +37,7 @@ public class LocalizeText : MonoBehaviour {
     public void SetKeyAndLocalize(string newKey) {
         if (newKey != "")
         {
-            Debug.Log("Forcing localization");
+            //Debug.Log("Forcing localization");
             Localize(newKey);
         }
     }

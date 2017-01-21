@@ -6,6 +6,7 @@ public class Meteor : Chip {
     Transform projectilePoint;
     AudioSource shotSound;
 	int numberOfProjectils=4;
+    int currentNumberProjectils=0;
 	private GameObject target;
     /// <summary>
     /// Class constructor
@@ -29,20 +30,17 @@ public class Meteor : Chip {
 
     }
 	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
     /// <summary>
     /// Override of the Chip's Activate function
     /// </summary>
-    public override void Activate()
+    public override void Activate(int chipSlot)
     {
         projectilePoint = transform.root.Find(RIGHT_HAND_PATH);
+        currentNumberProjectils = numberOfProjectils;
         if (!isActive)
         {
-            base.Activate();
+            base.Activate(chipSlot);
             shotSound.PlayDelayed(0);
         }        
     }
@@ -89,8 +87,8 @@ public class Meteor : Chip {
         {
             projectile.transform.GetChild(0).GetComponent<MeteorController>().Launch(StageSide.red, meteorDestinetion); //And we shoot it
         }
-        numberOfProjectils--;
-        if (numberOfProjectils>0) {
+        currentNumberProjectils--;
+        if (currentNumberProjectils>0) {
             StartCoroutine(shotMeteors(.2f));
         }
         yield return new WaitForSeconds(waitTime);

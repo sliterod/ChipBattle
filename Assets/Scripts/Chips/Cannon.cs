@@ -21,23 +21,22 @@ public class Cannon : Chip {
         shotSound=GameObject.Find("ChipsSounds/shot").GetComponent<AudioSource>();
 
     }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
     /// <summary>
     /// Override of the Chip's Activate function
     /// </summary>
-    public override void Activate()
+    public override void Activate(int chipSlot)
     {
         if(!isActive) //To prevent using the chip multiple times
         {
 
+            projectilePoint = transform.root.Find(RIGHT_HAND_PATH);
+            base.Activate(chipSlot);
+/*
             Debug.Log("Cannon Activated");
             projectilePoint = transform.root.Find(RIGHT_HAND_PATH);
             isActive = true;
+
             foreach (GameObject element in GameObject.FindGameObjectsWithTag("AnimationController"))
                 //We search for every "animationController" objects in the scene
             {
@@ -50,7 +49,7 @@ public class Cannon : Chip {
                     shotSound.PlayDelayed(0);
                 }
             }
-
+            */
         }
         
         /*
@@ -71,7 +70,6 @@ public class Cannon : Chip {
             GameObject projectile = Instantiate(Resources.Load("Projectiles/CannonBall", typeof(GameObject))) as GameObject;
             //We take the projectile form the resources
             projectile.transform.position = projectilePoint.position; //Put it into position
-            Debug.Log(projectilePoint.position);
             if (transform.root.gameObject.layer == 8)
             {
                 projectile.GetComponent<CannonBall>().Launch(StageSide.blue); //And we shoot it

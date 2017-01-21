@@ -151,7 +151,7 @@ public class FolderInBattle : MonoBehaviour {
             string chipName = inUseChips[i];
 
             if (chipName != null) {
-                Debug.Log("Chip not empty, setting on slot");
+                //Debug.Log("Chip not empty, setting on slot");
                 characterControl.setChip(chipName, i + 1);
                 RemoveChipFromFolder(chipName);
             }
@@ -167,12 +167,12 @@ public class FolderInBattle : MonoBehaviour {
     /// </summary>
     /// <param name="chipToRemove">Name of the chip to remove</param>
     void RemoveChipFromFolder(string chipToRemove) {
-        Debug.Log("Removing chip from folder");
+        //Debug.Log("Removing chip from folder");
         equippedFolder.Remove(chipToRemove);
 
-        Debug.Log("Remaining chips: "+ equippedFolder.Count);
+        //Debug.Log("Remaining chips: "+ equippedFolder.Count);
         foreach (string chip in equippedFolder) {
-            Debug.Log(chip);
+            //Debug.Log(chip);
         }
     }
 }

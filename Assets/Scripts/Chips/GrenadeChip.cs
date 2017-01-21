@@ -26,11 +26,11 @@ public class GrenadeChip : Chip {
     /// <summary>
     /// Override of the Chip's Activate function
     /// </summary>
-    public override void Activate()
+    public override void Activate(int chipSlot)
     {
-        Debug.Log("Grenade Activated");
+        //Debug.Log("Grenade Activated");
         projectilePoint = transform.root.Find(RIGHT_HAND_PATH);
-        base.Activate();
+        base.Activate(chipSlot);
     }
 
     void OnHitFrame()
@@ -40,7 +40,7 @@ public class GrenadeChip : Chip {
             GameObject projectile = Instantiate(Resources.Load("Projectiles/Grenade", typeof(GameObject))) as GameObject;
             //We take the projectile form the resources
             projectile.transform.position = projectilePoint.position; //Put it into position
-            Debug.Log(projectilePoint.position);
+            //Debug.Log(projectilePoint.position);
             if (transform.root.gameObject.layer == 8)
             {
                 projectile.transform.GetChild(0).GetComponent<Grenade>().Launch(StageSide.blue); //And we shoot it

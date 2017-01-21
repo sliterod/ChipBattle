@@ -113,15 +113,27 @@ public class CharacterControl : MonoBehaviour {
         switch (slot)
         {
             case 1:
+                if(transform.FindChild("Chip1").transform.childCount > 0){
+                    Destroy(transform.FindChild("Chip1").transform.GetChild(0).gameObject);
+                }
                 newChip.transform.parent = transform.FindChild("Chip1"); 
                 break;
             case 2:
+                if(transform.FindChild("Chip2").transform.childCount > 0){
+                    Destroy(transform.FindChild("Chip2").transform.GetChild(0).gameObject);
+                }
                 newChip.transform.parent = transform.FindChild("Chip2");
                 break;
             case 3:
+                if(transform.FindChild("Chip3").transform.childCount > 0){
+                    Destroy(transform.FindChild("Chip3").transform.GetChild(0).gameObject);
+                }
                 newChip.transform.parent = transform.FindChild("Chip3");
                 break;
             case 4:
+                if(transform.FindChild("Chip4").transform.childCount > 0){
+                    Destroy(transform.FindChild("Chip4").transform.GetChild(0).gameObject);
+                }
                 newChip.transform.parent = transform.FindChild("Chip4");
                 break;
         }
@@ -147,7 +159,7 @@ public class CharacterControl : MonoBehaviour {
                     if(chipTransform.childCount > 0)
                     {
                         //If it has a chlid it means that the slot contains an usable chip
-                        chipTransform.GetChild(0).SendMessage("Activate"); //so we activate it
+                        chipTransform.GetChild(0).SendMessage("Activate", 1); //so we activate it
                     }
                     else
                     {
@@ -161,7 +173,7 @@ public class CharacterControl : MonoBehaviour {
                     if (chipTransform.childCount > 0)
                     {
                         //If it has a chlid it means that the slot contains an usable chip
-                        chipTransform.GetChild(0).SendMessage("Activate"); //so we activate it
+                        chipTransform.GetChild(0).SendMessage("Activate", 2); //so we activate it
                     }
                     else
                     {
@@ -175,7 +187,7 @@ public class CharacterControl : MonoBehaviour {
                     if (chipTransform.childCount > 0)
                     {
                         //If it has a chlid it means that the slot contains an usable chip
-                        chipTransform.GetChild(0).SendMessage("Activate"); //so we activate it
+                        chipTransform.GetChild(0).SendMessage("Activate", 3); //so we activate it
                     }
                     else
                     {
@@ -189,7 +201,7 @@ public class CharacterControl : MonoBehaviour {
                     if (chipTransform.childCount > 0)
                     {
                         //If it has a chlid it means that the slot contains an usable chip
-                        chipTransform.GetChild(0).SendMessage("Activate"); //so we activate it
+                        chipTransform.GetChild(0).SendMessage("Activate", 4); //so we activate it
                     }
                     else
                     {
@@ -204,7 +216,7 @@ public class CharacterControl : MonoBehaviour {
                     Chip currentChip = chipTransform.GetChild(0).GetComponent<Chip>();
                     if (currentChip.IsReady())
                     {
-                        currentChip.Activate();
+                        currentChip.Activate(-1);
                     }
                     break;
             }

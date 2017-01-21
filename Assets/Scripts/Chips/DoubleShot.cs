@@ -54,11 +54,11 @@ public class DoubleShot : Chip {
     /// <summary>
     /// Override of the Chip's Activate function
     /// </summary>
-    public override void Activate()
+    public override void Activate(int chipSlot)
     {
         if (!isOnCooldown)
         {
-            base.Activate();
+            base.Activate(chipSlot);
         }
     }
 

@@ -29,14 +29,14 @@ public class SkyBoxAttkChip : Chip
     /// <summary>
     /// Override of the Chip's Activate function
     /// </summary>
-    public override void Activate()
+    public override void Activate(int chipSlot)
     {
         if (!isActive) //To prevent using the chip multiple times
         {
             GameObject player1 = GameObject.Find("Player1");
             projectilePoint = new GameObject().transform;
             projectilePoint.position = new Vector3(player1.transform.position.x, player1.transform.position.y + 10, player1.transform.position.z);
-            base.Activate();
+            base.Activate(chipSlot);
         }           
     }
 

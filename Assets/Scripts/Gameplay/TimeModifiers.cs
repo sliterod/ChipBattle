@@ -73,7 +73,7 @@ public class TimeModifiers : MonoBehaviour {
             ActivateCustomGauge(false);
 
             //Send message to UI
-            Debug.Log("Sending message, indicates that custom gauge is full");
+            //Debug.Log("Sending message, indicates that custom gauge is full");
             this.GetComponent<Gamestate>().CurrentBattleState = BattleState.selectionScreen;
         }
     }
