@@ -217,15 +217,16 @@ public class BattleHud : MonoBehaviour {
     /// </summary>
     /// <param name="state">State to indicate if the bar should be shown or not</param>
     public void ShowCustomBar(bool state) {
+
         if (state)
         {
-//            Debug.Log("Showing custom bar");
+            //            Debug.Log("Showing custom bar");
             iTweenEvent.GetEvent(battleCustomBar, "Show").Play();
             battleCustomBar.SendMessage("ActivateGaugeFilling", true);
         }
         else
         {
-//            Debug.Log("Hiding custom bar");
+            //            Debug.Log("Hiding custom bar");
             iTweenEvent.GetEvent(battleCustomBar, "Hide").Play();
             battleCustomBar.SendMessage("ResetGaugeFilling", true);
         }
