@@ -34,6 +34,8 @@ public class FolderInBattle : MonoBehaviour {
         characterControl = GameObject
                             .Find("Player1")
                             .GetComponent<CharacterControl>();
+        
+        characterControl.MyFolderInBattle=this;
 
         battleHud = GameObject
                     .Find("HUD")
@@ -87,6 +89,9 @@ public class FolderInBattle : MonoBehaviour {
             "GrenadeChip",
             "GrenadeChip"*/
         };
+    }
+    public void addChipToFolder(string chipName){
+        this.equippedFolder.Add(chipName);
     }
 
     /// <summary>

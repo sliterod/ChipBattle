@@ -6,6 +6,7 @@ public class CharacterControl : MonoBehaviour {
     Transform character;
     CharacterController movementController; 
     Character characterState;
+    public FolderInBattle MyFolderInBattle;
     Vector3 movementArray = new Vector3(0, 0, 0);
 
     void Start() {
@@ -108,41 +109,32 @@ public class CharacterControl : MonoBehaviour {
     public void setChip(string chipPrefabName,int slot)
     {
         Object chipPrefab = Resources.Load("ChipsInBattle/"+ chipPrefabName, typeof(GameObject));
-        Transform chipParent;
+        Transform chipParent = null;
         GameObject newChip;
 
         switch (slot)
         {
             case 1:
                 chipParent = transform.FindChild("Chip1");
-                if(chipParent.transform.childCount > 0){
-                    Destroy(chipParent.transform.GetChild(0).gameObject);
-                }                
-                newChip = Instantiate(chipPrefab,Vector3.zero,Quaternion.identity,chipParent) as GameObject;
                 break;
             case 2:
                 chipParent = transform.FindChild("Chip2");
-                if(chipParent.transform.childCount > 0){
-                    Destroy(chipParent.transform.GetChild(0).gameObject);
-                }                
-                newChip = Instantiate(chipPrefab,Vector3.zero,Quaternion.identity,chipParent) as GameObject;
                 break;
             case 3:
                 chipParent = transform.FindChild("Chip3");
-                if(chipParent.transform.childCount > 0){
-                    Destroy(chipParent.transform.GetChild(0).gameObject);
-                }                
-                newChip = Instantiate(chipPrefab,Vector3.zero,Quaternion.identity,chipParent) as GameObject;
                 break;
             case 4:
                 chipParent = transform.FindChild("Chip4");
-                if(chipParent.transform.childCount > 0){
-                    Destroy(chipParent.transform.GetChild(0).gameObject);
-                }                
-                newChip = Instantiate(chipPrefab,Vector3.zero,Quaternion.identity,chipParent) as GameObject;
                 break;
         }
-
+        
+        if(chipParent.transform.childCount > 0){
+            MyFolderInBattle.addChipToFolder(chipParent.transform.GetChild(0).name);
+            Destroy(chipParent.transform.GetChild(0).gameObject);
+        }
+        
+        newChip = Instantiate(chipPrefab,Vector3.zero,Quaternion.identity,chipParent) as GameObject;
+        newChip.name=chipPrefabName;
     }
 
     /// <summary>
