@@ -16,18 +16,6 @@ public class Heal50 : Chip
         _animation = (int)ChipAnimations.Buff;
     }
 
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     void OnHitFrame()
     {
         if (isActive)

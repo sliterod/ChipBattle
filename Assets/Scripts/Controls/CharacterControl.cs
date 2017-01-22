@@ -107,38 +107,42 @@ public class CharacterControl : MonoBehaviour {
     /// <param name="slot">number between 1 - 4 (both included)</param>
     public void setChip(string chipPrefabName,int slot)
     {
-        
-        GameObject newChip = Instantiate(Resources.Load("ChipsInBattle/"+ chipPrefabName, typeof(GameObject))) as GameObject;
+        Object chipPrefab = Resources.Load("ChipsInBattle/"+ chipPrefabName, typeof(GameObject));
+        Transform chipParent;
+        GameObject newChip;
 
         switch (slot)
         {
             case 1:
-                if(transform.FindChild("Chip1").transform.childCount > 0){
-                    Destroy(transform.FindChild("Chip1").transform.GetChild(0).gameObject);
-                }
-                newChip.transform.parent = transform.FindChild("Chip1"); 
+                chipParent = transform.FindChild("Chip1");
+                if(chipParent.transform.childCount > 0){
+                    Destroy(chipParent.transform.GetChild(0).gameObject);
+                }                
+                newChip = Instantiate(chipPrefab,Vector3.zero,Quaternion.identity,chipParent) as GameObject;
                 break;
             case 2:
-                if(transform.FindChild("Chip2").transform.childCount > 0){
-                    Destroy(transform.FindChild("Chip2").transform.GetChild(0).gameObject);
-                }
-                newChip.transform.parent = transform.FindChild("Chip2");
+                chipParent = transform.FindChild("Chip2");
+                if(chipParent.transform.childCount > 0){
+                    Destroy(chipParent.transform.GetChild(0).gameObject);
+                }                
+                newChip = Instantiate(chipPrefab,Vector3.zero,Quaternion.identity,chipParent) as GameObject;
                 break;
             case 3:
-                if(transform.FindChild("Chip3").transform.childCount > 0){
-                    Destroy(transform.FindChild("Chip3").transform.GetChild(0).gameObject);
-                }
-                newChip.transform.parent = transform.FindChild("Chip3");
+                chipParent = transform.FindChild("Chip3");
+                if(chipParent.transform.childCount > 0){
+                    Destroy(chipParent.transform.GetChild(0).gameObject);
+                }                
+                newChip = Instantiate(chipPrefab,Vector3.zero,Quaternion.identity,chipParent) as GameObject;
                 break;
             case 4:
-                if(transform.FindChild("Chip4").transform.childCount > 0){
-                    Destroy(transform.FindChild("Chip4").transform.GetChild(0).gameObject);
-                }
-                newChip.transform.parent = transform.FindChild("Chip4");
+                chipParent = transform.FindChild("Chip4");
+                if(chipParent.transform.childCount > 0){
+                    Destroy(chipParent.transform.GetChild(0).gameObject);
+                }                
+                newChip = Instantiate(chipPrefab,Vector3.zero,Quaternion.identity,chipParent) as GameObject;
                 break;
         }
 
-        newChip.transform.localPosition = Vector3.zero;
     }
 
     /// <summary>

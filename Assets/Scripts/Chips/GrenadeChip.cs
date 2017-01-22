@@ -14,21 +14,11 @@ public class GrenadeChip : Chip {
         _animation = (int)ChipAnimations.Launch;
     }
 
-    // Use this for initialization
-    void Start () {
-    }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
     /// <summary>
     /// Override of the Chip's Activate function
     /// </summary>
     public override void Activate(int chipSlot)
     {
-        //Debug.Log("Grenade Activated");
         projectilePoint = transform.root.Find(RIGHT_HAND_PATH);
         base.Activate(chipSlot);
     }

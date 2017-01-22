@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class Chip : MonoBehaviour {
 
+    public const string playerOneName="Player1";
     protected static string RIGHT_HAND_PATH = "Mesh/Dummy/Armature/Torso/UpperArm_R/LowerArm_R/Hand_R"; //Heirachy path to find the right hand object form the root.
     protected static string LEFT_HAND_PATH = "Mesh/Dummy/Armature/Torso/UpperArm_L/LowerArm_L/Hand_L"; //Heirachy path to find the left hand object form the root.
     private float coolDown=4;//seconds
@@ -65,11 +66,13 @@ public class Chip : MonoBehaviour {
 
     void Awake()
     {
-        chipSlotContainer = GameObject.Find("BattleChipHelp");
+        if(this.transform.root.name.Equals(playerOneName)){
+            chipSlotContainer = GameObject.Find("BattleChipHelp");
+        }
     }
     // Use this for initialization
     void Start () {
-	
+	        
 	}
 	
 	// Update is called once per frame
@@ -77,17 +80,19 @@ public class Chip : MonoBehaviour {
         if(isCoolDown){
             if(currentCoolDown > 0){
                 currentCoolDown -= Time.smoothDeltaTime;
-                if(coolDownText != null){   
+                if(coolDownText != null){
                     coolDownText.text = currentCoolDown.ToString("0.00");
                 }
             }
             else {
                 if(currentCoolDown != 0){
                     currentCoolDown = 0;
-                    if(!coolDownText.text.Equals("0.00")){
-                        coolDownText.text = "0.00";
+                    if(coolDownText != null){
+                        if(!coolDownText.text.Equals("0.00")){
+                            coolDownText.text = "0.00";
+                        }
+                        isCoolDown = false;
                     }
-                    isCoolDown = false;
                 }
             }
         }
@@ -100,20 +105,21 @@ public class Chip : MonoBehaviour {
     public virtual void Activate(int chipSlot)
     {
         // !isActive To prevent using the chip multiple times and spaming
-        // currentCoolDown == 0 To check if can I use the chip
+        // !currentCoolDown To check if the chip is not in cooldown
         if (!isActive&&!isCoolDown)
         {
             isActive = true;
             isCoolDown = true;
-            Debug.Log("The Chip "+_chipName+" is active!");
                     
             //Set the cool down counter
             currentCoolDown = coolDown;
-            if(chipSlot > 0){
-                chipSlot--;
-                coolDownText = chipSlotContainer.transform.GetChild(chipSlot).GetChild(4).GetComponent<Text>();
+            if(this.transform.root.name.Equals(playerOneName)){
+                if(chipSlot > 0){
+                    chipSlot--;
+                    coolDownText = chipSlotContainer.transform.GetChild(chipSlot).GetChild(4).GetComponent<Text>();
+                }
             }
-            
+
             foreach (GameObject element in GameObject.FindGameObjectsWithTag("Player"))
             //We search for every "animationController" objects in the scene
             {
@@ -153,6 +159,7 @@ public class Chip : MonoBehaviour {
         if (isActive)
         {
             isActive = false;
+            // We don't wanna destroy the chip because we can reused it!
             //KillSelf();
         }
     }

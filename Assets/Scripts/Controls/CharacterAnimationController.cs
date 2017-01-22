@@ -84,8 +84,8 @@ public class CharacterAnimationController : MonoBehaviour {
             if (element.transform.root == this.transform.root)
             {
                 //we select the one inside our hierchy
-                element.SendMessage("OnChipAnimationFinish");
                 ChangeAnimState(PlayerStates.idle);
+                element.SendMessage("OnChipAnimationFinish");
                 //and tell it to play the corresponding animation 
             }
         }
