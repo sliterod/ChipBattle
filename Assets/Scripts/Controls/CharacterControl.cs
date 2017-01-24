@@ -88,14 +88,6 @@ public class CharacterControl : MonoBehaviour {
                 newPosition = new Vector3(character.position.x + 0.1f, character.position.y, character.position.z);
                 break;
         }
-
-        //Boundaries
-        if (newPosition.x >= -9.0 && newPosition.x <= -0.6) {
-            if (newPosition.z >= -4.4 && newPosition.z <= 4.4)
-            {
-                character.position = newPosition;
-            }
-        }
         
         Debug.Log(character.position);
     }

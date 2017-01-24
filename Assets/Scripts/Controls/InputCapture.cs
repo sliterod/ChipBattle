@@ -172,13 +172,13 @@ public class InputCapture : MonoBehaviour {
             if (gamestate.CurrentBattleState == BattleState.battle && Time.timeScale > 0)
             {
                 Debug.Log("Input captured. Back button, pausing game");
-                gamestate.CurrentBattleState = BattleState.pause;
+                gamestate.ChangeBattleState(BattleState.pause);
             }
 
             if (gamestate.CurrentBattleState == BattleState.pause && Time.timeScale == 0)
             {
                 Debug.Log("Input captured. Back button, unpausing game");
-                gamestate.CurrentBattleState = BattleState.battle;
+                gamestate.ChangeBattleState(BattleState.battle);
             }
         }
 

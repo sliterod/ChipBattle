@@ -4,9 +4,9 @@ using System.Collections;
 public class TimeModifiers : MonoBehaviour {
 
     //Custom Gauge timer
-    float currentCustomGaugeTime;           //Current custom gauge time
-    float customGaugeTimeOnReset;           //Custom gauge time reset value
-    float defaultCustomGaugeTime;           //Predeterminated time for custom gauge
+    float currentCustomGaugeTime;                   //Current custom gauge time
+    float customGaugeTimeOnReset;                   //Custom gauge time reset value
+    public float defaultCustomGaugeTime;           //Predeterminated time for custom gauge
 
     //Custom Gauge modifiers
     float slowModifier;
@@ -45,7 +45,7 @@ public class TimeModifiers : MonoBehaviour {
     void InitializeTimers() {
 
         //Custom gauge
-        defaultCustomGaugeTime = 9.0f;
+        //defaultCustomGaugeTime = 9.0f;
 
         currentCustomGaugeTime = defaultCustomGaugeTime;
         customGaugeTimeOnReset = defaultCustomGaugeTime;
@@ -74,7 +74,7 @@ public class TimeModifiers : MonoBehaviour {
 
             //Send message to UI
             Debug.Log("Sending message, indicates that custom gauge is full");
-            this.GetComponent<Gamestate>().CurrentBattleState = BattleState.selectionScreen;
+            this.GetComponent<Gamestate>().ChangeBattleState(BattleState.selectionScreen);
         }
     }
 

@@ -9,7 +9,7 @@ public class StateListener : MonoBehaviour {
     Gamestate gamestate;
     BattleState battleState;
 
-    void Awake() {
+    void OnEnable() {
         gamestate = this.GetComponent<Gamestate>();
         battleState = BattleState.battleStart;
     }
