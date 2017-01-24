@@ -63,16 +63,6 @@ public class David : MonoBehaviour
         this.GetComponent<CharacterControl>().setChip("SkyBoxAttkChip", 4);
     }
 
-    void initXSteps()
-    {
-        this.xSteps = 43;
-    }
-
-    void initYSteps()
-    {
-        this.ySteps = 83;
-    }
-
     void initIa()
     {
         this.wallking = false;
@@ -84,17 +74,9 @@ public class David : MonoBehaviour
         this.plusPlusFlag = true;
         this.minusPlusFlag = true;
         this.plusMinusFlag = true;
-        initXSteps();
-        initYSteps();
         player1 = GameObject.Find("Player1");
         player2 = GameObject.Find("Player2");
 
-    }
-    void attack()
-    {
-    }
-    void Dodge()
-    {
     }
     bool weAreInBatlle()
     {

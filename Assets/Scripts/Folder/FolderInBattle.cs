@@ -66,7 +66,7 @@ public class FolderInBattle : MonoBehaviour {
         {   "Cannon",
             "GrenadeChip",
             "GrenadeChip",
-            /*"Rocket",
+            "Rocket",
 			"Meteor",
             "GrenadeChip",
             "Heal50",
@@ -87,7 +87,7 @@ public class FolderInBattle : MonoBehaviour {
             "GrenadeChip",
             "GrenadeChip",
             "GrenadeChip",
-            "GrenadeChip"*/
+            "GrenadeChip"
         };
     }
     public void addChipToFolder(string chipName){

@@ -2,7 +2,6 @@
 using System.Collections;
 
 public class GrenadeChip : Chip {
-
     Transform projectilePoint;
     /// <summary>
     /// Class constructor
