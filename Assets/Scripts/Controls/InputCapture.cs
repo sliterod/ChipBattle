@@ -28,25 +28,25 @@ public class InputCapture : MonoBehaviour {
         if (Input.GetButtonDown("A") || Input.GetKeyDown(KeyCode.Q)) {
             if (gamestate.CurrentBattleState == BattleState.battle)
             {
-                //Debug.Log("Input captured. Using Chip 1");
+                Debug.Log("Input captured. Using Chip 1");
                 characterControl.UseChip(1);
                 gamestate.DestroyChipBattleScreen(1);
             }
 
             if (gamestate.CurrentBattleState == BattleState.standby)
             {
-                //Debug.Log("Input captured. Standing by, no chip can be used.");
+                Debug.Log("Input captured. Standing by, no chip can be used.");
             }
 
             if (gamestate.CurrentBattleState == BattleState.selectionScreen)
             {
-                //Debug.Log("Input captured. Current highlighted card assigned to Chip 1 button");
+                Debug.Log("Input captured. Current highlighted card assigned to Chip 1 button");
                 gamestate.SetChipSelectionScreen(1);
             }
 
             if (gamestate.CurrentBattleState == BattleState.results)
             {
-                //Debug.Log("Input captured. Result screen, skiping results");
+                Debug.Log("Input captured. Result screen, skiping results");
             }
 
             if (gamestate.CurrentBattleState == BattleState.restart)
@@ -60,14 +60,14 @@ public class InputCapture : MonoBehaviour {
         {
             if (gamestate.CurrentBattleState == BattleState.battle)
             {
-                //Debug.Log("Input captured. Using Chip 2");
+                Debug.Log("Input captured. Using Chip 2");
                 characterControl.UseChip(2);
                 gamestate.DestroyChipBattleScreen(2);
             }
 
             if (gamestate.CurrentBattleState == BattleState.selectionScreen)
             {
-                //Debug.Log("Input captured. Current highlighted card assigned to Chip 1 button");
+                Debug.Log("Input captured. Current highlighted card assigned to Chip 1 button");
                 gamestate.SetChipSelectionScreen(2);
             }
 
@@ -82,14 +82,14 @@ public class InputCapture : MonoBehaviour {
         {
             if (gamestate.CurrentBattleState == BattleState.battle)
             {
-                //Debug.Log("Input captured. Using Chip 3");
+                Debug.Log("Input captured. Using Chip 3");
                 characterControl.UseChip(3);
                 gamestate.DestroyChipBattleScreen(3);
             }
 
             if (gamestate.CurrentBattleState == BattleState.selectionScreen)
             {
-                //Debug.Log("Input captured. Current highlighted card assigned to Chip 1 button");
+                Debug.Log("Input captured. Current highlighted card assigned to Chip 1 button");
                 gamestate.SetChipSelectionScreen(3);
             }
 
@@ -104,14 +104,14 @@ public class InputCapture : MonoBehaviour {
         {
             if (gamestate.CurrentBattleState == BattleState.battle)
             {
-                //Debug.Log("Input captured. Using Chip 4");
+                Debug.Log("Input captured. Using Chip 4");
                 characterControl.UseChip(4);
                 gamestate.DestroyChipBattleScreen(4);
             }
 
             if (gamestate.CurrentBattleState == BattleState.selectionScreen)
             {
-                //Debug.Log("Input captured. Current highlighted card assigned to Chip 1 button");
+                Debug.Log("Input captured. Current highlighted card assigned to Chip 1 button");
                 gamestate.SetChipSelectionScreen(4);
             }
 
@@ -144,19 +144,19 @@ public class InputCapture : MonoBehaviour {
         {
             if (gamestate.CurrentBattleState == BattleState.battle && Time.timeScale > 0)
             {
-                //Debug.Log("Input captured. Start button, pausing game");
+                Debug.Log("Input captured. Start button, pausing game");
                 gamestate.CurrentBattleState = BattleState.pause;
             }
 
             if (gamestate.CurrentBattleState == BattleState.pause && Time.timeScale == 0)
             {
-                //Debug.Log("Input captured. Start button, unpausing game");
+                Debug.Log("Input captured. Start button, unpausing game");
                 gamestate.CurrentBattleState = BattleState.battle;
             }
 
             if (gamestate.CurrentBattleState == BattleState.selectionScreen)
             {
-                //Debug.Log("Input captured. Setting cursor on OK button");
+                Debug.Log("Input captured. Setting cursor on OK button");
                 gamestate.SetSelectionScreenCursorOK();
             }
 
@@ -171,14 +171,14 @@ public class InputCapture : MonoBehaviour {
         {
             if (gamestate.CurrentBattleState == BattleState.battle && Time.timeScale > 0)
             {
-                //Debug.Log("Input captured. Back button, pausing game");
-                gamestate.CurrentBattleState = BattleState.pause;
+                Debug.Log("Input captured. Back button, pausing game");
+                gamestate.ChangeBattleState(BattleState.pause);
             }
 
             if (gamestate.CurrentBattleState == BattleState.pause && Time.timeScale == 0)
             {
-                //Debug.Log("Input captured. Back button, unpausing game");
-                gamestate.CurrentBattleState = BattleState.battle;
+                Debug.Log("Input captured. Back button, unpausing game");
+                gamestate.ChangeBattleState(BattleState.battle);
             }
         }
 
@@ -187,13 +187,13 @@ public class InputCapture : MonoBehaviour {
         {
             if (gamestate.CurrentBattleState == BattleState.selectionScreen)
             {
-                //Debug.Log("Input captured. Showing info");
+                Debug.Log("Input captured. Showing info");
                 gamestate.DisplayChipInformation();
             }
 
             if (gamestate.CurrentBattleState == BattleState.battle)
             {
-                //Debug.Log("Input captured. Skill 1 fired");
+                Debug.Log("Input captured. Skill 1 fired");
                 /*Debug.Log("Input captured. Custom bar full, entering selection screen");
                 characterControl.FlushChips();
                 characterControl.setChip("GrenadeChip", 1);
@@ -208,12 +208,12 @@ public class InputCapture : MonoBehaviour {
         {
             if (gamestate.CurrentBattleState == BattleState.selectionScreen)
             {
-                //Debug.Log("Input captured. Shuffling folder");
+                Debug.Log("Input captured. Shuffling folder");
             }
 
             if (gamestate.CurrentBattleState == BattleState.battle)
             {
-                //Debug.Log("Input captured. Skill 2 fired");
+                Debug.Log("Input captured. Skill 2 fired");
             }
         }
     }

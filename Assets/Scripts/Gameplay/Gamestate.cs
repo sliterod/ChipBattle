@@ -31,7 +31,7 @@ public class Gamestate : MonoBehaviour {
 
     // Use this for initialization
     void Awake () {      
-        currentBattleState = BattleState.battleStart;
+        ChangeBattleState(BattleState.battleStart);
 
         InitializeHudObjects();
         InitializeEventListeners();
@@ -43,7 +43,7 @@ public class Gamestate : MonoBehaviour {
     /// Initializes listeners to capture changes on BattleState 
     /// </summary>
     void InitializeEventListeners() {
-        StateListener.OnBattleStateChanged += OnBattlestateChange;
+        //StateListener.OnBattleStateChanged += OnBattlestateChange;
     }
 
     /// <summary>
@@ -106,12 +106,12 @@ public class Gamestate : MonoBehaviour {
     void Pause(bool gamePaused) {
         if (gamePaused) {
             //TimeScale and state
-            currentBattleState = BattleState.pause;
+            ChangeBattleState(BattleState.pause);
             Time.timeScale = 0.0f;
         }
         else if (!gamePaused) {
             //TimeScale and state
-            currentBattleState = BattleState.battle;
+            ChangeBattleState(BattleState.battle);
             Time.timeScale = 1.0f;
         }
 
@@ -144,7 +144,7 @@ public class Gamestate : MonoBehaviour {
         yield return new WaitForSeconds(0.5f);
 
         //Changing current gamestate
-        currentBattleState = BattleState.selectionScreen;
+        ChangeBattleState(BattleState.selectionScreen);
     }
 
     /// <summary>
@@ -183,7 +183,7 @@ public class Gamestate : MonoBehaviour {
             else if (isOkButtonHighlighted) {
                 //Debug.Log("Changing state");
                 isOkButtonHighlighted = false;
-                currentBattleState = BattleState.standby;
+                ChangeBattleState(BattleState.standby);
 
                 battleHud.BattleGuidePosition();
             }
@@ -256,14 +256,14 @@ public class Gamestate : MonoBehaviour {
 
         Time.timeScale = 1.0f;
 
-        currentBattleState = BattleState.battle;
+        ChangeBattleState (BattleState.battle);
     }
 
     /// <summary>
     /// Triggers the activation of battle results screen after any player is defeated
     /// </summary>
     void ChangeToBattleEnd() {
-        currentBattleState = BattleState.results;
+        ChangeBattleState(BattleState.results);
     }
 
     /// <summary>
@@ -273,7 +273,7 @@ public class Gamestate : MonoBehaviour {
     IEnumerator ChangeToRestart() {
         yield return new WaitForSeconds(3.0f);
 
-        currentBattleState = BattleState.restart;
+        ChangeBattleState(BattleState.restart);
     }
 
     /// <summary>
@@ -292,7 +292,7 @@ public class Gamestate : MonoBehaviour {
 
         //string sceneName = SceneManager.GetActiveScene().name;
         //string sceneName = "middle_load";
-        string sceneName = "alpha_endload";
+        string sceneName = "Demo";
         Debug.Log(sceneName);
 
         SceneManager.LoadScene(sceneName);
@@ -302,7 +302,7 @@ public class Gamestate : MonoBehaviour {
     /// Executes a method after StateListener captures a change on currentBattleState variable
     /// </summary>
     /// <param name="newBattleState">The new BattleState value</param>
-    void OnBattlestateChange(BattleState newBattleState) {
+    /*void OnBattlestateChange(BattleState newBattleState) {
 //        Debug.Log("Changing state to: " + newBattleState.ToString());
 
         switch (newBattleState) {
@@ -368,6 +368,89 @@ public class Gamestate : MonoBehaviour {
 
                 //Ending battle
                 //Debug.Log("Battle has ended, showing results screen");
+                battleHud.ShowResultsScreen();
+
+                //Changing to restart 
+                StartCoroutine(ChangeToRestart());
+                break;
+        }
+    }*/
+
+    /// <summary>
+    /// Executes a method after StateListener captures a change on currentBattleState variable
+    /// </summary>
+    /// <param name="newBattleState">The new BattleState value</param>
+    public void ChangeBattleState(BattleState newBattleState)
+    {
+        //        Debug.Log("Changing state to: " + newBattleState.ToString());
+
+        currentBattleState = newBattleState;
+
+        switch (newBattleState)
+        {
+
+            case BattleState.battleStart:
+                Debug.Log("Battle initial setup");
+                //Showing enemy name and area
+                break;
+
+            case BattleState.battle:
+                Debug.Log("Starting battle");
+
+                //Unpauses the game
+                if (isGamePaused)
+                {
+                    isGamePaused = false;
+                    Pause(isGamePaused);
+                }
+
+                //StandBy
+                battleHud.ShowStandBy(false);
+
+                //Battle
+                battleHud.ShowCustomBar(true);
+                battleHud.ShowBattleChipHelp(true);
+
+                GameObject.Find("Gamestate").SendMessage("ActivateCustomGauge", true);
+                break;
+
+            case BattleState.selectionScreen:
+                //                Debug.Log("Displaying Selection screen");
+                battleHud.ShowCustomBar(false);
+                battleHud.ShowBattleChipHelp(false);
+                battleHud.ShowSelectionScreen(true);
+
+                //Destroying chip guides
+                DestroyChipBattleScreen(1);
+                DestroyChipBattleScreen(2);
+                DestroyChipBattleScreen(3);
+                DestroyChipBattleScreen(4);
+
+                //Refreshing chip list
+                GameObject.Find("Folder").SendMessage("SetSelectionScreenChips");
+
+                //Setting time to zero
+                Time.timeScale = 0.0f;
+                break;
+
+            case BattleState.standby:
+                Debug.Log("Standing by...");
+                ChangeToStandBy();
+                break;
+
+            case BattleState.pause:
+                Debug.Log("Game paused");
+                isGamePaused = true;
+                Pause(isGamePaused);
+                break;
+
+            case BattleState.results:
+                //Stoping custom gauge
+                GameObject.Find("Gamestate").SendMessage("ActivateCustomGauge", false);
+                battleHud.ShowSelectionScreen(false);
+
+                //Ending battle
+                Debug.Log("Battle has ended, showing results screen");
                 battleHud.ShowResultsScreen();
 
                 //Changing to restart 
